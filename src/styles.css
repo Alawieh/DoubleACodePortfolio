@@ -103,50 +103,72 @@
   --shadow-elevated: 0 30px 80px -20px oklch(0 0 0 / 0.6);
 }
 
-/* Light mode — opt-in via .light on <html>. Dark mode (default :root) is untouched. */
+/* Light mode — opt-in via .light on <html>. Dark mode (default :root) is untouched.
+   Warm, low-glare palette: soft off-white canvas with layered neutrals for clear
+   section / card / elevated hierarchy. No pure white anywhere. */
 :root.light {
-  --background: oklch(0.99 0.003 300);
-  --surface: oklch(0.97 0.005 300);
-  --surface-2: oklch(0.94 0.008 300);
+  --background: oklch(0.965 0.006 300);     /* soft warm off-white canvas */
+  --surface: oklch(0.945 0.008 300);        /* card / panel */
+  --surface-2: oklch(0.915 0.012 300);      /* elevated / inset */
 
-  --foreground: oklch(0.18 0.015 300);
-  --muted: oklch(0.94 0.008 300);
-  --muted-foreground: oklch(0.42 0.02 300);
+  --foreground: oklch(0.22 0.02 295);       /* deep ink, never pure black */
+  --muted: oklch(0.92 0.01 300);
+  --muted-foreground: oklch(0.46 0.025 295);
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.015 300);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.015 300);
+  --card: oklch(0.985 0.005 300);           /* slightly brighter than bg */
+  --card-foreground: oklch(0.22 0.02 295);
+  --popover: oklch(0.985 0.005 300);
+  --popover-foreground: oklch(0.22 0.02 295);
 
-  --primary: oklch(0.55 0.24 305);
-  --primary-foreground: oklch(0.99 0 0);
-  --accent: oklch(0.65 0.27 5);
-  --accent-foreground: oklch(0.99 0 0);
+  --primary: oklch(0.5 0.24 305);
+  --primary-foreground: oklch(0.985 0.005 300);
+  --accent: oklch(0.6 0.27 5);
+  --accent-foreground: oklch(0.985 0.005 300);
+  --accent-glow: oklch(0.6 0.27 5 / 0.35);
+  --accent-bright: oklch(0.72 0.2 55);
 
-  --secondary: oklch(0.94 0.008 300);
-  --secondary-foreground: oklch(0.2 0.015 300);
+  --secondary: oklch(0.92 0.01 300);
+  --secondary-foreground: oklch(0.22 0.02 295);
 
-  --border: oklch(0.2 0.02 300 / 0.12);
-  --input: oklch(0.2 0.02 300 / 0.14);
-  --ring: oklch(0.55 0.24 305 / 0.5);
+  --border: oklch(0.35 0.03 295 / 0.16);
+  --input: oklch(0.35 0.03 295 / 0.16);
+  --ring: oklch(0.5 0.24 305 / 0.5);
 
-  --gradient-text: linear-gradient(180deg, oklch(0.15 0.02 300) 0%, oklch(0.35 0.02 300) 100%);
-  --shadow-elevated: 0 30px 80px -20px oklch(0.2 0.02 300 / 0.18);
+  --gradient-text: linear-gradient(180deg, oklch(0.18 0.02 295) 0%, oklch(0.38 0.02 295) 100%);
+  --shadow-glow: 0 0 60px -10px oklch(0.5 0.24 305 / 0.25);
+  --shadow-brand: 0 24px 60px -24px oklch(0.5 0.24 305 / 0.35);
+  --shadow-elevated: 0 24px 60px -24px oklch(0.22 0.02 295 / 0.18);
+}
+
+:root.light body {
+  /* Subtle warm gradient canvas so large empty areas don't feel washed out */
+  background:
+    radial-gradient(ellipse at 0% 0%, oklch(0.5 0.24 305 / 0.06), transparent 55%),
+    radial-gradient(ellipse at 100% 100%, oklch(0.72 0.2 55 / 0.05), transparent 55%),
+    var(--color-background);
 }
 
 :root.light .bg-hex {
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='92' viewBox='0 0 80 92'><polygon points='40,2 78,24 78,68 40,90 2,68 2,24' fill='none' stroke='%23000000' stroke-opacity='0.08' stroke-width='1'/></svg>");
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='92' viewBox='0 0 80 92'><polygon points='40,2 78,24 78,68 40,90 2,68 2,24' fill='none' stroke='%23241a3a' stroke-opacity='0.07' stroke-width='1'/></svg>");
 }
 
 :root.light .bg-grid {
   background-image:
-    linear-gradient(to right, oklch(0.2 0.02 300 / 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, oklch(0.2 0.02 300 / 0.06) 1px, transparent 1px);
+    linear-gradient(to right, oklch(0.22 0.02 295 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.22 0.02 295 / 0.07) 1px, transparent 1px);
 }
 
 :root.light .glass {
-  background: oklch(1 0 0 / 0.6);
-  border-color: oklch(0.2 0.02 300 / 0.08);
+  background: oklch(0.985 0.005 300 / 0.72);
+  border-color: oklch(0.22 0.02 295 / 0.1);
+  backdrop-filter: blur(20px) saturate(140%);
+}
+
+:root.light .bg-noise { opacity: 0.5; }
+
+:root.light ::selection {
+  background: oklch(0.5 0.24 305 / 0.2);
+  color: oklch(0.18 0.02 295);
 }
 
 
