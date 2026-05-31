@@ -143,37 +143,9 @@ export function Projects() {
   };
 
   if (mode === "list") {
-    return (
-      <section id="work" className="relative px-6 py-32 md:px-10">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <SectionLabel>03 / Selected Work</SectionLabel>
-              <h2 className="mt-4 font-display text-4xl font-bold md:text-5xl">All projects</h2>
-            </div>
-            <ViewToggle mode={mode} onChange={setView} />
-          </div>
-          <ul className="divide-y divide-border rounded-2xl border border-border bg-surface/40">
-            {projects.map((p) => (
-              <li key={p.id} className="grid grid-cols-12 items-center gap-4 px-6 py-5">
-                <span className="col-span-1 font-mono text-xs text-muted-foreground">{p.id}</span>
-                <div className="col-span-4">
-                  <div className="font-display text-lg font-semibold">{p.name}</div>
-                  <div className="text-xs uppercase tracking-widest text-muted-foreground">{p.category}</div>
-                </div>
-                <p className="col-span-5 text-sm text-muted-foreground">{p.tagline}</p>
-                <div className="col-span-2 flex flex-wrap justify-end gap-1">
-                  {p.stack.slice(0, 2).map((s) => (
-                    <span key={s} className="rounded-full border border-border bg-background/60 px-2 py-0.5 font-mono text-[10px] text-muted-foreground">{s}</span>
-                  ))}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    );
+    return <ProjectsCardCarousel mode={mode} setView={setView} />;
   }
+
 
   return (
     <section
