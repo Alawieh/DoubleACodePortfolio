@@ -38,13 +38,16 @@ export function Nav() {
           ))}
         </ul>
 
-        <a
-          href="#contact"
-          className="relative overflow-hidden rounded-full px-4 py-2 text-sm font-medium text-background"
-          style={{ background: "var(--gradient-brand)" }}
-        >
-          Start Project
-        </a>
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <a
+            href="#contact"
+            className="relative overflow-hidden rounded-full px-4 py-2 text-sm font-medium text-background"
+            style={{ background: "var(--gradient-brand)" }}
+          >
+            Start Project
+          </a>
+        </div>
       </nav>
     </motion.header>
   );
