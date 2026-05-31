@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { useRef } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform, MotionValue } from "framer-motion";
+import { useRef, useState } from "react";
 import { HexFrame } from "./Logo";
 import { SectionLabel } from "./Journey";
 
