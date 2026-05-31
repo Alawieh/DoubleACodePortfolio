@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { LogoMark } from "./Logo";
+import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
   { label: "Work", href: "#work" },
