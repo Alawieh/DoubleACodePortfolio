@@ -1,5 +1,5 @@
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
-import { useRef } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform, MotionValue } from "framer-motion";
+import { useRef, useState } from "react";
 import { HexFrame } from "./Logo";
 import { SectionLabel } from "./Journey";
 
@@ -123,6 +123,15 @@ export function Projects() {
 
   const total = projects.length;
 
+  // Derive a single active index from scroll. Only ONE slide is mounted at a time.
+  const activeMV = useTransform(scrollYProgress, (v) =>
+    Math.min(total - 1, Math.max(0, Math.floor(v * total * 0.999))),
+  );
+  const [active, setActive] = useState(0);
+  useMotionValueEvent(activeMV, "change", (v) => setActive(v as number));
+
+  const current = projects[active];
+
   return (
     <section
       id="work"
@@ -132,23 +141,18 @@ export function Projects() {
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Section frame */}
-        <div className="pointer-events-none absolute left-6 top-8 z-30 md:left-10">
+        <div className="pointer-events-none absolute left-6 top-8 z-40 md:left-10">
           <SectionLabel>03 / Selected Work</SectionLabel>
         </div>
-        <div className="pointer-events-none absolute right-6 top-8 z-30 flex items-center gap-3 font-mono text-xs text-muted-foreground md:right-10">
+        <div className="pointer-events-none absolute right-6 top-8 z-40 flex items-center gap-3 font-mono text-xs text-muted-foreground md:right-10">
           <ProgressIndicator progress={scrollYProgress} total={total} />
         </div>
 
-        {/* Slides */}
-        {projects.map((p, i) => (
-          <ProjectSlide
-            key={p.id}
-            project={p}
-            index={i}
-            total={total}
-            progress={scrollYProgress}
-          />
-        ))}
+        {/* Single active slide — AnimatePresence guarantees the previous
+            slide fully exits before the next mounts. */}
+        <AnimatePresence mode="wait" initial={false}>
+          <ProjectSlide key={current.id} project={current} index={active} total={total} />
+        </AnimatePresence>
       </div>
     </section>
   );
@@ -156,7 +160,7 @@ export function Projects() {
 
 function ProgressIndicator({ progress, total }: { progress: MotionValue<number>; total: number }) {
   const idx = useTransform(progress, (v) => {
-    const i = Math.min(total - 1, Math.max(0, Math.floor(v * total + 0.001)));
+    const i = Math.min(total - 1, Math.max(0, Math.floor(v * total * 0.999)));
     return String(i + 1).padStart(2, "0");
   });
   return (
@@ -172,55 +176,52 @@ function ProjectSlide({
   project,
   index,
   total,
-  progress,
 }: {
   project: Project;
   index: number;
   total: number;
-  progress: MotionValue<number>;
 }) {
-  const step = 1 / total;
-  const start = index * step;
-  const end = start + step;
-
-  // Each slide: fade & translate in, then out
-  const fadeIn = Math.max(0, start - step * 0.4);
-  const fadeOut = Math.min(1, end + step * 0.0);
-
-  const opacity = useTransform(progress, [fadeIn, start, end - step * 0.15, fadeOut], [0, 1, 1, 0]);
-  const y = useTransform(progress, [fadeIn, start, end, fadeOut], [80, 0, 0, -80]);
-  const mockY = useTransform(progress, [start, end], [40, -40]);
-  const mockRotate = useTransform(progress, [start, end], [4, -4]);
-  const hexRotate = useTransform(progress, [0, 1], [index * 30, index * 30 + 360]);
-
   return (
     <motion.div
-      style={{ opacity }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
       className="absolute inset-0 flex items-center justify-center px-6 md:px-12"
     >
       {/* Per-project background wash */}
-      <div
-        className="absolute inset-0 -z-10"
+      <motion.div
+        initial={{ opacity: 0, scale: 1.05 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.98 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="pointer-events-none absolute inset-0 -z-10"
         style={{
           background: `radial-gradient(ellipse at 30% 40%, ${project.hue.from}, transparent 55%), radial-gradient(ellipse at 80% 70%, ${project.hue.via}, transparent 60%), radial-gradient(ellipse at 50% 100%, ${project.hue.to}, transparent 70%)`,
         }}
       />
-      <div className="absolute inset-0 -z-10 bg-hex opacity-30" />
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-hex opacity-30" />
 
       {/* Decorative hex */}
       <motion.div
-        style={{ rotate: hexRotate }}
-        className="pointer-events-none absolute -right-40 top-1/2 hidden h-[680px] w-[680px] -translate-y-1/2 opacity-[0.12] md:block"
+        initial={{ opacity: 0, rotate: -20 }}
+        animate={{ opacity: 0.12, rotate: 0 }}
+        exit={{ opacity: 0, rotate: 20 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="pointer-events-none absolute -right-40 top-1/2 hidden h-[680px] w-[680px] -translate-y-1/2 md:block"
       >
         <HexFrame strokeWidth={0.4} />
       </motion.div>
 
-      <motion.div
-        style={{ y }}
-        className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12"
-      >
+      <div className="relative z-10 mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 lg:grid-cols-12">
         {/* Left: copy */}
-        <div className="lg:col-span-5">
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -30 }}
+          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1], delay: 0.05 }}
+          className="lg:col-span-5"
+        >
           <div className="flex items-center gap-3 font-mono text-xs uppercase tracking-widest text-muted-foreground">
             <span className="text-gradient-brand">{project.id}</span>
             <span className="h-px w-8 bg-border" />
@@ -253,11 +254,14 @@ function ProjectSlide({
               </span>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Right: mockup */}
         <motion.div
-          style={{ y: mockY, rotate: mockRotate }}
+          initial={{ opacity: 0, y: 60, rotate: 3 }}
+          animate={{ opacity: 1, y: 0, rotate: 0 }}
+          exit={{ opacity: 0, y: -40, rotate: -3 }}
+          transition={{ duration: 0.65, ease: [0.22, 1, 0.36, 1], delay: 0.12 }}
           className="relative lg:col-span-7"
         >
           <div className="relative mx-auto aspect-[5/4] w-full max-w-2xl">
@@ -271,7 +275,7 @@ function ProjectSlide({
             />
           </div>
         </motion.div>
-      </motion.div>
+      </div>
 
       {/* Slide footer */}
       <div className="pointer-events-none absolute bottom-6 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.4em] text-muted-foreground">

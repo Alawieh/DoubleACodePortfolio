@@ -1,4 +1,4 @@
-import logo from "@/assets/aa-logo.jpg";
+import logo from "@/assets/aa-logo.png";
 
 export function LogoMark({ className = "h-9 w-9", glow = false }: { className?: string; glow?: boolean }) {
   return (
@@ -6,7 +6,7 @@ export function LogoMark({ className = "h-9 w-9", glow = false }: { className?: 
       {glow && (
         <span
           aria-hidden
-          className="absolute inset-0 -z-10 rounded-full blur-xl opacity-70"
+          className="absolute inset-0 -z-10 rounded-full blur-2xl opacity-70"
           style={{ background: "var(--gradient-brand)" }}
         />
       )}
@@ -14,12 +14,7 @@ export function LogoMark({ className = "h-9 w-9", glow = false }: { className?: 
         src={logo}
         alt="Double A"
         className="h-full w-full object-contain"
-        style={{
-          // Crop out the "AA CODE" wordmark baked into the asset – keep just the hex mark
-          objectPosition: "center 30%",
-          clipPath: "inset(8% 12% 28% 12%)",
-          transform: "scale(1.35)",
-        }}
+        style={{ objectPosition: "center 28%", clipPath: "inset(4% 4% 30% 4%)", transform: "scale(1.35)" }}
       />
     </span>
   );
