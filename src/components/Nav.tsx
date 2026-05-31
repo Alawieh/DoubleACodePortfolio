@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { LogoMark } from "./Logo";
 
 const links = [
   { label: "Work", href: "#work" },
@@ -15,23 +16,11 @@ export function Nav() {
       transition={{ delay: 0.2, duration: 0.6 }}
       className="fixed left-0 right-0 top-0 z-50 flex justify-center px-6 pt-6"
     >
-      <nav className="glass flex w-full max-w-5xl items-center justify-between rounded-full px-5 py-2.5">
-        <a href="#top" className="flex items-center gap-2.5">
-          <div className="relative h-7 w-7">
-            <svg viewBox="0 0 100 100" className="h-full w-full">
-              <polygon
-                points="50,5 90,27 90,73 50,95 10,73 10,27"
-                fill="none"
-                stroke="oklch(0.78 0.14 220)"
-                strokeWidth="4"
-              />
-            </svg>
-            <span className="absolute inset-0 flex items-center justify-center font-display text-[11px] font-bold">
-              AA
-            </span>
-          </div>
-          <span className="font-display text-sm font-semibold tracking-[0.2em]">
-            DOUBLE A
+      <nav className="glass flex w-full max-w-5xl items-center justify-between rounded-full px-3 py-2">
+        <a href="#top" className="flex items-center gap-2.5 pl-1.5">
+          <LogoMark className="h-8 w-8" />
+          <span className="font-display text-sm font-semibold tracking-[0.25em] text-gradient-brand">
+            AA CODE
           </span>
         </a>
 
@@ -50,7 +39,8 @@ export function Nav() {
 
         <a
           href="#contact"
-          className="rounded-full bg-foreground px-4 py-1.5 text-sm font-medium text-background transition-transform hover:scale-[1.02]"
+          className="relative overflow-hidden rounded-full px-4 py-2 text-sm font-medium text-background"
+          style={{ background: "var(--gradient-brand)" }}
         >
           Start Project
         </a>
