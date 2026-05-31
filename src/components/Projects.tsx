@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { HexFrame } from "./Logo";
 import { SectionLabel } from "./Journey";
 
