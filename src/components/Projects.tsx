@@ -1,5 +1,6 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform, MotionValue } from "framer-motion";
 import { useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { HexFrame } from "./Logo";
 import { SectionLabel } from "./Journey";
 
@@ -142,37 +143,9 @@ export function Projects() {
   };
 
   if (mode === "list") {
-    return (
-      <section id="work" className="relative px-6 py-32 md:px-10">
-        <div className="mx-auto max-w-6xl">
-          <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <SectionLabel>03 / Selected Work</SectionLabel>
-              <h2 className="mt-4 font-display text-4xl font-bold md:text-5xl">All projects</h2>
-            </div>
-            <ViewToggle mode={mode} onChange={setView} />
-          </div>
-          <ul className="divide-y divide-border rounded-2xl border border-border bg-surface/40">
-            {projects.map((p) => (
-              <li key={p.id} className="grid grid-cols-12 items-center gap-4 px-6 py-5">
-                <span className="col-span-1 font-mono text-xs text-muted-foreground">{p.id}</span>
-                <div className="col-span-4">
-                  <div className="font-display text-lg font-semibold">{p.name}</div>
-                  <div className="text-xs uppercase tracking-widest text-muted-foreground">{p.category}</div>
-                </div>
-                <p className="col-span-5 text-sm text-muted-foreground">{p.tagline}</p>
-                <div className="col-span-2 flex flex-wrap justify-end gap-1">
-                  {p.stack.slice(0, 2).map((s) => (
-                    <span key={s} className="rounded-full border border-border bg-background/60 px-2 py-0.5 font-mono text-[10px] text-muted-foreground">{s}</span>
-                  ))}
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-    );
+    return <ProjectsCardCarousel mode={mode} setView={setView} />;
   }
+
 
   return (
     <section
@@ -218,6 +191,181 @@ function ViewToggle({ mode, onChange }: { mode: "animated" | "list"; onChange: (
     </div>
   );
 }
+
+function ProjectsCardCarousel({
+  mode,
+  setView,
+}: {
+  mode: "animated" | "list";
+  setView: (m: "animated" | "list") => void;
+}) {
+  const [index, setIndex] = useState(0);
+  const [dir, setDir] = useState<1 | -1>(1);
+  const total = projects.length;
+  const project = projects[index];
+
+  const go = (next: number) => {
+    const wrapped = (next + total) % total;
+    setDir(next > index ? 1 : -1);
+    setIndex(wrapped);
+  };
+
+  return (
+    <section id="work" className="relative px-6 py-32 md:px-10">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-hex opacity-30" />
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <SectionLabel>03 / Selected Work</SectionLabel>
+            <h2 className="mt-4 font-display text-4xl font-bold md:text-5xl">
+              Selected <span className="text-gradient-brand">work</span>
+            </h2>
+            <p className="mt-3 max-w-xl text-sm text-muted-foreground md:text-base">
+              Browse our case studies one by one. Use the controls below to navigate.
+            </p>
+          </div>
+          <ViewToggle mode={mode} onChange={setView} />
+        </div>
+
+        {/* Card */}
+        <div className="relative overflow-hidden rounded-3xl border border-border bg-surface/60 shadow-elevated backdrop-blur-xl">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-70"
+            style={{
+              background: `radial-gradient(ellipse at 20% 0%, ${project.hue.from}, transparent 55%), radial-gradient(ellipse at 90% 100%, ${project.hue.to}, transparent 60%)`,
+            }}
+          />
+          <AnimatePresence mode="wait" initial={false} custom={dir}>
+            <motion.article
+              key={project.id}
+              custom={dir}
+              initial={{ opacity: 0, x: dir * 60 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: dir * -60 }}
+              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="relative grid grid-cols-1 gap-0 lg:grid-cols-12"
+            >
+              {/* Visual */}
+              <div className="relative lg:col-span-7">
+                <div className="relative aspect-[5/4] w-full overflow-hidden border-b border-border lg:aspect-auto lg:h-full lg:border-b-0 lg:border-r">
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: `radial-gradient(ellipse at 50% 50%, ${project.hue.from}, transparent 70%)`,
+                    }}
+                  />
+                  <div className="absolute inset-0">
+                    <project.Mockup />
+                  </div>
+                </div>
+              </div>
+
+              {/* Copy */}
+              <div className="relative flex flex-col justify-between gap-8 p-7 md:p-10 lg:col-span-5">
+                <div>
+                  <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+                    <span className="text-gradient-brand">{project.id}</span>
+                    <span className="h-px w-8 bg-border" />
+                    <span>{project.category}</span>
+                  </div>
+                  <h3 className="mt-4 font-display text-3xl font-bold leading-tight md:text-4xl">
+                    {project.name}
+                  </h3>
+                  <p className="mt-2 font-display text-lg text-gradient-brand">
+                    {project.tagline}
+                  </p>
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                    {project.description}
+                  </p>
+
+                  <div className="mt-6 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-border bg-border/60">
+                    {project.metrics.map((m) => (
+                      <div key={m.label} className="bg-background/80 p-3 backdrop-blur">
+                        <div className="font-display text-lg font-bold text-gradient-brand">
+                          {m.value}
+                        </div>
+                        <div className="mt-1 text-[9px] uppercase tracking-widest text-muted-foreground">
+                          {m.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-5 flex flex-wrap gap-1.5">
+                    {project.stack.map((s) => (
+                      <span
+                        key={s}
+                        className="rounded-full border border-border bg-background/60 px-2.5 py-1 font-mono text-[10px] text-muted-foreground"
+                      >
+                        {s}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <a
+                  href="#contact"
+                  className="group inline-flex items-center justify-between gap-3 rounded-full px-5 py-3 text-sm font-medium text-background transition-transform hover:scale-[1.02]"
+                  style={{ background: "var(--gradient-brand)" }}
+                >
+                  <span>View project</span>
+                  <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
+                </a>
+              </div>
+            </motion.article>
+          </AnimatePresence>
+        </div>
+
+        {/* Controls */}
+        <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3 font-mono text-xs text-muted-foreground">
+            <span className="text-gradient-brand text-sm font-semibold">
+              {String(index + 1).padStart(2, "0")}
+            </span>
+            <span className="h-px w-10 bg-border" />
+            <span>{String(total).padStart(2, "0")}</span>
+          </div>
+
+          {/* Dots */}
+          <div className="order-3 flex items-center gap-2 sm:order-2">
+            {projects.map((p, i) => (
+              <button
+                key={p.id}
+                onClick={() => {
+                  setDir(i > index ? 1 : -1);
+                  setIndex(i);
+                }}
+                aria-label={`Go to ${p.name}`}
+                className={`h-1.5 rounded-full transition-all ${
+                  i === index ? "w-8 bg-foreground" : "w-3 bg-border hover:bg-muted-foreground"
+                }`}
+              />
+            ))}
+          </div>
+
+          <div className="order-2 flex items-center gap-2 sm:order-3">
+            <button
+              onClick={() => go(index - 1)}
+              aria-label="Previous project"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-surface/60 text-foreground transition-colors hover:bg-surface"
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+            <button
+              onClick={() => go(index + 1)}
+              aria-label="Next project"
+              className="flex h-11 w-11 items-center justify-center rounded-full text-background transition-transform hover:scale-105"
+              style={{ background: "var(--gradient-brand)" }}
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 
 function ProgressIndicator({ progress, total }: { progress: MotionValue<number>; total: number }) {
   const idx = useTransform(progress, (v) => {
