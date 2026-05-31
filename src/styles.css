@@ -103,6 +103,53 @@
   --shadow-elevated: 0 30px 80px -20px oklch(0 0 0 / 0.6);
 }
 
+/* Light mode — opt-in via .light on <html>. Dark mode (default :root) is untouched. */
+:root.light {
+  --background: oklch(0.99 0.003 300);
+  --surface: oklch(0.97 0.005 300);
+  --surface-2: oklch(0.94 0.008 300);
+
+  --foreground: oklch(0.18 0.015 300);
+  --muted: oklch(0.94 0.008 300);
+  --muted-foreground: oklch(0.42 0.02 300);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.015 300);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.015 300);
+
+  --primary: oklch(0.55 0.24 305);
+  --primary-foreground: oklch(0.99 0 0);
+  --accent: oklch(0.65 0.27 5);
+  --accent-foreground: oklch(0.99 0 0);
+
+  --secondary: oklch(0.94 0.008 300);
+  --secondary-foreground: oklch(0.2 0.015 300);
+
+  --border: oklch(0.2 0.02 300 / 0.12);
+  --input: oklch(0.2 0.02 300 / 0.14);
+  --ring: oklch(0.55 0.24 305 / 0.5);
+
+  --gradient-text: linear-gradient(180deg, oklch(0.15 0.02 300) 0%, oklch(0.35 0.02 300) 100%);
+  --shadow-elevated: 0 30px 80px -20px oklch(0.2 0.02 300 / 0.18);
+}
+
+:root.light .bg-hex {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='80' height='92' viewBox='0 0 80 92'><polygon points='40,2 78,24 78,68 40,90 2,68 2,24' fill='none' stroke='%23000000' stroke-opacity='0.08' stroke-width='1'/></svg>");
+}
+
+:root.light .bg-grid {
+  background-image:
+    linear-gradient(to right, oklch(0.2 0.02 300 / 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, oklch(0.2 0.02 300 / 0.06) 1px, transparent 1px);
+}
+
+:root.light .glass {
+  background: oklch(1 0 0 / 0.6);
+  border-color: oklch(0.2 0.02 300 / 0.08);
+}
+
+
 @layer base {
   html {
     color-scheme: dark;
