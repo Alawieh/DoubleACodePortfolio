@@ -49,6 +49,7 @@ function Index() {
           <Journey />
           <Capabilities />
           <Projects />
+          <SnapGoCaseStudy />
           <Metrics />
           <Founders />
           <Process />
