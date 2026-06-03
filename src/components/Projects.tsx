@@ -17,23 +17,7 @@ type Project = {
 };
 
 const projects: Project[] = [
-  {
-    id: "01",
-    name: "snapGo tech",
-    category: "Ecommerce Catalog / Electronics Storefront",
-    tagline: "A fast catalog-to-WhatsApp shopping flow.",
-    description:
-      "A lightweight ecommerce catalog for electronics: browse by category, search, view product details, manage a side-cart, and send the full order directly through WhatsApp. Includes an admin panel for products, categories, stock, discounts, and a visual homepage banner designer.",
-    metrics: [
-      { label: "Products", value: "10" },
-      { label: "Categories", value: "8" },
-      { label: "Banners", value: "4" },
-    ],
-    stack: ["Next.js", "React", "TypeScript", "Tailwind", "Redux Toolkit", "Supabase"],
-    hue: { from: "oklch(0.6 0.22 265 / 0.55)", via: "oklch(0.55 0.24 280 / 0.35)", to: "oklch(0.7 0.18 230 / 0.2)" },
-    Mockup: SnapGoMockup,
-  },
-  {
+
     id: "02",
     name: "NovaCommerce",
     category: "E-Commerce Platform",
