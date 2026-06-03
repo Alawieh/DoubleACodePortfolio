@@ -35,7 +35,7 @@ const projects: Project[] = [
     Mockup: CommerceMockup,
   },
   {
-    id: "03",
+    id: "02",
     name: "AtlasERP",
     category: "Enterprise Suite",
     tagline: "Operations, unified.",
@@ -51,7 +51,7 @@ const projects: Project[] = [
     Mockup: DashboardMockup,
   },
   {
-    id: "04",
+    id: "03",
     name: "SwiftPay",
     category: "Fintech",
     tagline: "Money that moves at the speed of intent.",
@@ -67,7 +67,7 @@ const projects: Project[] = [
     Mockup: PayMockup,
   },
   {
-    id: "05",
+    id: "04",
     name: "MediFlow",
     category: "Healthcare",
     tagline: "Care, coordinated.",
@@ -83,7 +83,7 @@ const projects: Project[] = [
     Mockup: MediMockup,
   },
   {
-    id: "06",
+    id: "05",
     name: "UrbanEstate",
     category: "Real Estate",
     tagline: "A new map for living.",
@@ -99,7 +99,7 @@ const projects: Project[] = [
     Mockup: EstateMockup,
   },
   {
-    id: "07",
+    id: "06",
     name: "EduSphere",
     category: "Learning Systems",
     tagline: "Mastery, on a curve of its own.",
