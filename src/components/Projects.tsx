@@ -50,7 +50,7 @@ const projects: Project[] = [
     Mockup: CommerceMockup,
   },
   {
-    id: "02",
+    id: "03",
     name: "AtlasERP",
     category: "Enterprise Suite",
     tagline: "Operations, unified.",
@@ -66,7 +66,7 @@ const projects: Project[] = [
     Mockup: DashboardMockup,
   },
   {
-    id: "03",
+    id: "04",
     name: "SwiftPay",
     category: "Fintech",
     tagline: "Money that moves at the speed of intent.",
@@ -82,7 +82,7 @@ const projects: Project[] = [
     Mockup: PayMockup,
   },
   {
-    id: "04",
+    id: "05",
     name: "MediFlow",
     category: "Healthcare",
     tagline: "Care, coordinated.",
@@ -98,7 +98,7 @@ const projects: Project[] = [
     Mockup: MediMockup,
   },
   {
-    id: "05",
+    id: "06",
     name: "UrbanEstate",
     category: "Real Estate",
     tagline: "A new map for living.",
@@ -114,7 +114,7 @@ const projects: Project[] = [
     Mockup: EstateMockup,
   },
   {
-    id: "06",
+    id: "07",
     name: "EduSphere",
     category: "Learning Systems",
     tagline: "Mastery, on a curve of its own.",
@@ -537,6 +537,102 @@ function FloatPill({ children, className = "" }: { children: React.ReactNode; cl
   return (
     <div className={`glass animate-float absolute rounded-xl px-3 py-2 text-[10px] ${className}`}>
       {children}
+    </div>
+  );
+}
+
+function SnapGoMockup() {
+  return (
+    <div className="relative h-full w-full p-6">
+      {/* Storefront browser */}
+      <Browser className="absolute left-4 top-4 w-[72%]">
+        <div className="space-y-2.5">
+          {/* Top bar */}
+          <div className="flex items-center gap-2 border-b border-white/5 pb-2">
+            <div className="flex h-5 w-5 items-center justify-center rounded-full" style={{ background: "var(--gradient-brand)" }}>
+              <span className="text-[7px] font-bold text-white">N</span>
+            </div>
+            <div className="text-[9px] font-bold text-white/90">snapGo tech</div>
+            <div className="ml-2 h-4 flex-1 rounded bg-white/5" />
+            <div className="flex h-4 items-center gap-1 rounded bg-white/5 px-1.5">
+              <div className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-brand)" }} />
+              <div className="text-[7px] text-white/70">Cart</div>
+            </div>
+          </div>
+          {/* Hero banner */}
+          <div className="grid grid-cols-3 gap-2">
+            <div className="col-span-2 relative h-24 overflow-hidden rounded-lg" style={{ background: "linear-gradient(135deg, oklch(0.65 0.2 265 / 0.45), oklch(0.55 0.24 280 / 0.2))" }}>
+              <div className="absolute inset-0 bg-hex opacity-25" />
+              <div className="absolute left-3 top-3">
+                <div className="font-display text-base font-bold text-gradient-brand">35%</div>
+                <div className="text-[8px] text-white/70">Sale Off</div>
+              </div>
+              <div className="absolute bottom-2 left-3">
+                <div className="text-[9px] font-bold text-white">Soundcore R50i</div>
+                <div className="mt-1 inline-block rounded px-1.5 py-0.5 text-[7px] text-white" style={{ background: "var(--gradient-brand)" }}>Shop Now</div>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <div className="rounded-lg border border-white/5 bg-white/[0.03] p-2">
+                <div className="text-[8px] font-semibold text-white">Wireless HP</div>
+                <div className="mt-0.5 flex items-baseline gap-1">
+                  <div className="text-[9px] font-bold" style={{ color: "oklch(0.7 0.22 25)" }}>$699</div>
+                  <div className="text-[7px] text-white/40 line-through">$999</div>
+                </div>
+              </div>
+              <div className="rounded-lg border border-white/5 bg-white/[0.03] p-2">
+                <div className="text-[8px] font-semibold text-white">Test Info</div>
+                <div className="mt-0.5 flex items-baseline gap-1">
+                  <div className="text-[9px] font-bold" style={{ color: "oklch(0.7 0.22 25)" }}>$699</div>
+                  <div className="text-[7px] text-white/40 line-through">$999</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Category strip */}
+          <div className="flex gap-1.5">
+            {["Laptop", "Mobile", "Games", "Audio", "Home"].map((c) => (
+              <div key={c} className="flex-1 rounded-md border border-white/5 bg-white/[0.02] px-1.5 py-1 text-center text-[7px] text-white/70">{c}</div>
+            ))}
+          </div>
+        </div>
+      </Browser>
+
+      {/* Side cart / WhatsApp checkout phone */}
+      <Phone className="absolute bottom-3 right-4 h-[80%] w-[30%]">
+        <div className="space-y-2">
+          <div className="flex items-center gap-1.5">
+            <div className="flex h-4 w-4 items-center justify-center rounded" style={{ background: "oklch(0.7 0.18 145)" }}>
+              <span className="text-[6px] text-white">W</span>
+            </div>
+            <div className="text-[8px] font-semibold text-white/90">Send via WhatsApp</div>
+          </div>
+          <div className="space-y-1.5 rounded-lg border border-white/5 bg-white/[0.02] p-2">
+            {[1,2,3].map((i) => (
+              <div key={i} className="flex items-center gap-1.5">
+                <div className="h-6 w-6 rounded" style={{ background: "linear-gradient(135deg, oklch(0.65 0.2 265 / 0.5), oklch(0.55 0.24 280 / 0.2))" }} />
+                <div className="flex-1 space-y-0.5">
+                  <div className="h-1 w-3/4 rounded bg-white/20" />
+                  <div className="h-1 w-1/2 rounded bg-white/10" />
+                </div>
+                <div className="text-[7px] font-bold text-gradient-brand">×{i}</div>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center justify-between rounded-md bg-white/[0.03] p-2">
+            <div className="text-[7px] text-white/60">Total</div>
+            <div className="font-display text-[10px] font-bold text-gradient-brand">$2,396</div>
+          </div>
+          <div className="rounded-md py-1.5 text-center text-[8px] font-semibold text-white" style={{ background: "oklch(0.65 0.2 145)" }}>
+            Order on WhatsApp
+          </div>
+        </div>
+      </Phone>
+
+      <FloatPill className="left-2 bottom-6">
+        <div className="text-muted-foreground">Admin</div>
+        <div className="font-display text-sm font-semibold">10 SKUs</div>
+      </FloatPill>
     </div>
   );
 }
