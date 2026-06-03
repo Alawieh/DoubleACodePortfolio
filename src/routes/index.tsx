@@ -8,6 +8,7 @@ import { Hero } from "@/components/Hero";
 import { Journey } from "@/components/Journey";
 import { Capabilities } from "@/components/Capabilities";
 import { Projects } from "@/components/Projects";
+import { SnapGoCaseStudy } from "@/components/SnapGoCaseStudy";
 import { Metrics } from "@/components/Metrics";
 import { Founders } from "@/components/Founders";
 import { Process } from "@/components/Process";
