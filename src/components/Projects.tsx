@@ -19,22 +19,7 @@ type Project = {
 const projects: Project[] = [
   {
     id: "01",
-    name: "snapGo tech",
-    category: "Ecommerce Catalog / Electronics Storefront",
-    tagline: "A fast catalog-to-WhatsApp shopping flow.",
-    description:
-      "A lightweight ecommerce catalog for electronics: browse by category, search, view product details, manage a side-cart, and send the full order directly through WhatsApp. Includes an admin panel for products, categories, stock, discounts, and a visual homepage banner designer.",
-    metrics: [
-      { label: "Products", value: "10" },
-      { label: "Categories", value: "8" },
-      { label: "Banners", value: "4" },
-    ],
-    stack: ["Next.js", "React", "TypeScript", "Tailwind", "Redux Toolkit", "Supabase"],
-    hue: { from: "oklch(0.6 0.22 265 / 0.55)", via: "oklch(0.55 0.24 280 / 0.35)", to: "oklch(0.7 0.18 230 / 0.2)" },
-    Mockup: SnapGoMockup,
-  },
-  {
-    id: "02",
+
     name: "NovaCommerce",
     category: "E-Commerce Platform",
     tagline: "Luxury electronics, reimagined.",
@@ -50,7 +35,7 @@ const projects: Project[] = [
     Mockup: CommerceMockup,
   },
   {
-    id: "03",
+    id: "02",
     name: "AtlasERP",
     category: "Enterprise Suite",
     tagline: "Operations, unified.",
@@ -66,7 +51,7 @@ const projects: Project[] = [
     Mockup: DashboardMockup,
   },
   {
-    id: "04",
+    id: "03",
     name: "SwiftPay",
     category: "Fintech",
     tagline: "Money that moves at the speed of intent.",
@@ -82,7 +67,7 @@ const projects: Project[] = [
     Mockup: PayMockup,
   },
   {
-    id: "05",
+    id: "04",
     name: "MediFlow",
     category: "Healthcare",
     tagline: "Care, coordinated.",
@@ -98,7 +83,7 @@ const projects: Project[] = [
     Mockup: MediMockup,
   },
   {
-    id: "06",
+    id: "05",
     name: "UrbanEstate",
     category: "Real Estate",
     tagline: "A new map for living.",
@@ -114,7 +99,7 @@ const projects: Project[] = [
     Mockup: EstateMockup,
   },
   {
-    id: "07",
+    id: "06",
     name: "EduSphere",
     category: "Learning Systems",
     tagline: "Mastery, on a curve of its own.",
