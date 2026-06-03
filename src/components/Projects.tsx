@@ -17,8 +17,9 @@ type Project = {
 };
 
 const projects: Project[] = [
+  {
+    id: "01",
 
-    id: "02",
     name: "NovaCommerce",
     category: "E-Commerce Platform",
     tagline: "Luxury electronics, reimagined.",
