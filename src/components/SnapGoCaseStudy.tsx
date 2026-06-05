@@ -1,47 +1,57 @@
 import { motion } from "framer-motion";
 import { ShoppingCart, MessageCircle, LayoutDashboard, Package, ArrowRight, Check } from "lucide-react";
-import homepageAsset from "@/assets/snapgo-homepage.png.asset.json";
-import productAsset from "@/assets/snapgo-product.png.asset.json";
-import adminAsset from "@/assets/snapgo-admin.png.asset.json";
-import bannerAsset from "@/assets/snapgo-banner.png.asset.json";
 
 const stack = ["Next.js", "React", "TypeScript", "Tailwind CSS", "Redux Toolkit", "Supabase"];
+
+const images = {
+  homepage: "/images/case-studies/snapgo/homepage.png",
+  product: "/images/case-studies/snapgo/product.png",
+  admin: "/images/case-studies/snapgo/admin.png",
+  banner: "/images/case-studies/snapgo/banner.png",
+};
 
 const features = [
   {
     label: "Storefront Homepage",
     title: "Catalog homepage",
     text: "Clean catalog homepage with search, categories, banners, offers, and WhatsApp contact access.",
-    img: homepageAsset.url,
+    img: images.homepage,
   },
   {
     label: "Product Details",
     title: "Product page",
     text: "Dedicated product page with image gallery, stock status, price, quantity selector, and purchase action.",
-    img: productAsset.url,
+    img: images.product,
   },
   {
     label: "Admin Dashboard",
     title: "Catalog management",
     text: "Admin panel for managing products, categories, publishing status, images, sort order, and content.",
-    img: adminAsset.url,
+    img: images.admin,
   },
   {
     label: "Banner Designer",
     title: "Visual banner editor",
-    text: "Visual homepage banner editor — choose linked products, edit promotion text, upload images, and preview before saving.",
-    img: bannerAsset.url,
+    text: "Visual homepage banner editor - choose linked products, edit promotion text, upload images, and preview before saving.",
+    img: images.banner,
   },
 ];
 
 const flow = ["Browse Products", "Add to Cart", "Send Order by WhatsApp", "Admin Manages Catalog"];
 
-const stats = [
-  { v: "10", l: "Products" },
-  { v: "8", l: "Categories" },
-  { v: "4", l: "Banners" },
-  { v: "✓", l: "Admin Panel" },
-  { v: "✓", l: "WhatsApp Ordering" },
+const productScope = [
+  {
+    title: "Storefront",
+    text: "Responsive catalog, search, product pages, and category browsing.",
+  },
+  {
+    title: "Checkout",
+    text: "Cart flow that packages customer orders for direct WhatsApp handoff.",
+  },
+  {
+    title: "Admin System",
+    text: "Catalog, category, image, stock, price, and homepage banner controls.",
+  },
 ];
 
 function BrowserFrame({ src, alt, label }: { src: string; alt: string; label?: string }) {
@@ -98,7 +108,7 @@ export function SnapGoCaseStudy() {
           <div className="lg:col-span-8">
             <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-medium tracking-wide text-slate-600">
               <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-              Case Study · Ecommerce
+              Case Study - Ecommerce
             </div>
             <h2 className="font-display text-4xl font-semibold tracking-tight text-slate-900 sm:text-5xl lg:text-6xl">
               snapGo tech
@@ -144,7 +154,7 @@ export function SnapGoCaseStudy() {
           transition={{ duration: 0.7, delay: 0.05 }}
           className="mt-14"
         >
-          <BrowserFrame src={homepageAsset.url} alt="snapGo tech homepage" label="Live homepage" />
+          <BrowserFrame src={images.homepage} alt="snapGo tech homepage" label="Live homepage" />
         </motion.div>
 
         {/* Feature grid */}
@@ -230,18 +240,16 @@ export function SnapGoCaseStudy() {
 
           <div className="lg:col-span-2">
             <h3 className="font-display text-2xl font-semibold text-slate-900 sm:text-3xl">
-              By the numbers
+              Product scope
             </h3>
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {stats.map((s) => (
+            <div className="mt-5 grid gap-3">
+              {productScope.map((item) => (
                 <div
-                  key={s.l}
-                  className="rounded-xl border border-slate-200 bg-white p-4 text-center shadow-sm"
+                  key={item.title}
+                  className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm"
                 >
-                  <div className="font-display text-2xl font-semibold text-indigo-600">{s.v}</div>
-                  <div className="mt-1 text-[11px] font-medium uppercase tracking-wider text-slate-500">
-                    {s.l}
-                  </div>
+                  <div className="font-display text-lg font-semibold text-indigo-600">{item.title}</div>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600">{item.text}</p>
                 </div>
               ))}
             </div>

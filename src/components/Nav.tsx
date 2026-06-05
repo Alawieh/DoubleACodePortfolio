@@ -3,10 +3,10 @@ import { LogoMark } from "./Logo";
 import { ThemeToggle } from "./ThemeToggle";
 
 const links = [
-  { label: "Work", href: "#work" },
-  { label: "Capabilities", href: "#capabilities" },
-  { label: "Process", href: "#process" },
-  { label: "Studio", href: "#studio" },
+  { label: "Work", href: "/#work" },
+  { label: "Capabilities", href: "/#capabilities" },
+  { label: "Process", href: "/#process" },
+  { label: "Studio", href: "/#studio" },
 ];
 
 export function Nav() {
@@ -18,7 +18,7 @@ export function Nav() {
       className="fixed left-0 right-0 top-0 z-50 flex justify-center px-6 pt-6"
     >
       <nav className="glass flex w-full max-w-5xl items-center justify-between rounded-full px-3 py-2">
-        <a href="#top" className="flex items-center gap-2.5 pl-1.5">
+        <a href="/" className="flex items-center gap-2.5 pl-1.5">
           <LogoMark className="h-8 w-8" />
           <span className="font-display text-sm font-semibold tracking-[0.25em] text-gradient-brand">
             AA CODE
@@ -41,7 +41,7 @@ export function Nav() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <a
-            href="#contact"
+            href="/#contact"
             className="relative overflow-hidden rounded-full px-4 py-2 text-sm font-medium text-background"
             style={{ background: "var(--gradient-brand)" }}
           >

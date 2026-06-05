@@ -10,33 +10,89 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as WorkTijaratiProRouteImport } from './routes/work/tijarati-pro'
+import { Route as WorkSnapgoRouteImport } from './routes/work/snapgo'
+import { Route as WorkDetailingLabRouteImport } from './routes/work/detailing-lab'
+import { Route as WorkDataInsightsRouteImport } from './routes/work/data-insights'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const WorkTijaratiProRoute = WorkTijaratiProRouteImport.update({
+  id: '/work/tijarati-pro',
+  path: '/work/tijarati-pro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkSnapgoRoute = WorkSnapgoRouteImport.update({
+  id: '/work/snapgo',
+  path: '/work/snapgo',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkDetailingLabRoute = WorkDetailingLabRouteImport.update({
+  id: '/work/detailing-lab',
+  path: '/work/detailing-lab',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WorkDataInsightsRoute = WorkDataInsightsRouteImport.update({
+  id: '/work/data-insights',
+  path: '/work/data-insights',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/work/data-insights': typeof WorkDataInsightsRoute
+  '/work/detailing-lab': typeof WorkDetailingLabRoute
+  '/work/snapgo': typeof WorkSnapgoRoute
+  '/work/tijarati-pro': typeof WorkTijaratiProRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/work/data-insights': typeof WorkDataInsightsRoute
+  '/work/detailing-lab': typeof WorkDetailingLabRoute
+  '/work/snapgo': typeof WorkSnapgoRoute
+  '/work/tijarati-pro': typeof WorkTijaratiProRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/work/data-insights': typeof WorkDataInsightsRoute
+  '/work/detailing-lab': typeof WorkDetailingLabRoute
+  '/work/snapgo': typeof WorkSnapgoRoute
+  '/work/tijarati-pro': typeof WorkTijaratiProRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/work/data-insights'
+    | '/work/detailing-lab'
+    | '/work/snapgo'
+    | '/work/tijarati-pro'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/work/data-insights'
+    | '/work/detailing-lab'
+    | '/work/snapgo'
+    | '/work/tijarati-pro'
+  id:
+    | '__root__'
+    | '/'
+    | '/work/data-insights'
+    | '/work/detailing-lab'
+    | '/work/snapgo'
+    | '/work/tijarati-pro'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  WorkDataInsightsRoute: typeof WorkDataInsightsRoute
+  WorkDetailingLabRoute: typeof WorkDetailingLabRoute
+  WorkSnapgoRoute: typeof WorkSnapgoRoute
+  WorkTijaratiProRoute: typeof WorkTijaratiProRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +104,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/work/tijarati-pro': {
+      id: '/work/tijarati-pro'
+      path: '/work/tijarati-pro'
+      fullPath: '/work/tijarati-pro'
+      preLoaderRoute: typeof WorkTijaratiProRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/snapgo': {
+      id: '/work/snapgo'
+      path: '/work/snapgo'
+      fullPath: '/work/snapgo'
+      preLoaderRoute: typeof WorkSnapgoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/detailing-lab': {
+      id: '/work/detailing-lab'
+      path: '/work/detailing-lab'
+      fullPath: '/work/detailing-lab'
+      preLoaderRoute: typeof WorkDetailingLabRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/work/data-insights': {
+      id: '/work/data-insights'
+      path: '/work/data-insights'
+      fullPath: '/work/data-insights'
+      preLoaderRoute: typeof WorkDataInsightsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  WorkDataInsightsRoute: WorkDataInsightsRoute,
+  WorkDetailingLabRoute: WorkDetailingLabRoute,
+  WorkSnapgoRoute: WorkSnapgoRoute,
+  WorkTijaratiProRoute: WorkTijaratiProRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

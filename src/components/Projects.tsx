@@ -12,6 +12,7 @@ type Project = {
   description: string;
   metrics: { label: string; value: string }[];
   stack: string[];
+  href?: string;
   hue: { from: string; via: string; to: string };
   Mockup: React.ComponentType;
 };
@@ -19,55 +20,74 @@ type Project = {
 const projects: Project[] = [
   {
     id: "01",
-
-    name: "NovaCommerce",
-    category: "E-Commerce Platform",
-    tagline: "Luxury electronics, reimagined.",
+    name: "snapGo tech",
+    category: "Ecommerce Catalog",
+    tagline: "Catalog browsing with WhatsApp checkout.",
     description:
-      "A headless commerce platform engineered for sub-second product discovery, dynamic merchandising, and frictionless checkout across web and mobile.",
+      "An electronics catalog with product browsing, cart management, WhatsApp ordering, and a Supabase admin panel for products, categories, banners, stock, and pricing.",
     metrics: [
-      { label: "Conversion lift", value: "+38%" },
-      { label: "Time to checkout", value: "12s" },
-      { label: "Lighthouse", value: "99" },
+      { label: "Responsive catalog", value: "Storefront" },
+      { label: "WhatsApp orders", value: "Checkout" },
+      { label: "Inventory control", value: "Admin" },
     ],
-    stack: ["Next.js", "Stripe", "Algolia", "Sanity"],
-    hue: { from: "oklch(0.55 0.24 305 / 0.55)", via: "oklch(0.65 0.27 5 / 0.35)", to: "oklch(0.78 0.18 55 / 0.2)" },
-    Mockup: CommerceMockup,
+    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Redux Toolkit", "Supabase"],
+    href: "/work/snapgo",
+    hue: { from: "oklch(0.58 0.22 265 / 0.55)", via: "oklch(0.68 0.18 230 / 0.35)", to: "oklch(0.78 0.16 200 / 0.2)" },
+    Mockup: SnapGoMockup,
   },
   {
     id: "02",
-    name: "AtlasERP",
-    category: "Enterprise Suite",
-    tagline: "Operations, unified.",
+    name: "Data Insights Workspace",
+    category: "AI Analytics Interface",
+    tagline: "A clear UI for advanced AI analysis.",
     description:
-      "Full-stack enterprise resource planning with real-time inventory, finance, HR, and supply-chain telemetry across 14 timezones.",
+      "A web and desktop interface for a client-provided Python analytics backend, covering dataset upload, context review, guided analysis routes, API-connected workflows, and readable result presentation.",
     metrics: [
-      { label: "Modules", value: "26" },
-      { label: "Daily users", value: "12k" },
-      { label: "Uptime", value: "99.99%" },
+      { label: "Dataset onboarding", value: "Upload" },
+      { label: "Guided workspaces", value: "Analysis" },
+      { label: "Backend bridge", value: "APIs" },
     ],
-    stack: ["Angular", "Node.js", "PostgreSQL", "Redis"],
-    hue: { from: "oklch(0.6 0.22 280 / 0.5)", via: "oklch(0.7 0.2 330 / 0.3)", to: "oklch(0.78 0.18 55 / 0.18)" },
-    Mockup: DashboardMockup,
+    stack: ["React", "TypeScript", "Vite", "Tailwind CSS", "REST APIs", "Electron"],
+    href: "/work/data-insights",
+    hue: { from: "oklch(0.58 0.16 185 / 0.5)", via: "oklch(0.62 0.15 215 / 0.32)", to: "oklch(0.78 0.13 165 / 0.2)" },
+    Mockup: DataInsightsMockup,
   },
   {
     id: "03",
-    name: "SwiftPay",
-    category: "Fintech",
-    tagline: "Money that moves at the speed of intent.",
+    name: "Tijarati Pro",
+    category: "Mobile Business Platform",
+    tagline: "Inventory, invoicing, and operations in one app.",
     description:
-      "A cross-border payments platform with biometric auth, instant FX, and a developer SDK trusted by 200+ regional merchants.",
+      "A production Flutter app for business owners to manage inventory, invoices, purchases, payments, clients, agents, reports, subscriptions, and backups across iOS and Android.",
     metrics: [
-      { label: "TPS", value: "8.4k" },
-      { label: "Latency", value: "84ms" },
-      { label: "Markets", value: "11" },
+      { label: "Cross-platform app", value: "Flutter" },
+      { label: "Cloud backend", value: "Firebase" },
+      { label: "Store release", value: "iOS + Android" },
     ],
-    stack: ["Flutter", "Go", "Kafka", "Postgres"],
-    hue: { from: "oklch(0.55 0.24 305 / 0.55)", via: "oklch(0.6 0.25 340 / 0.4)", to: "oklch(0.7 0.2 20 / 0.25)" },
-    Mockup: PayMockup,
+    stack: ["Flutter", "Dart", "Firebase", "Firestore", "Cloud Functions", "In-App Purchase"],
+    href: "/work/tijarati-pro",
+    hue: { from: "oklch(0.66 0.18 240 / 0.52)", via: "oklch(0.72 0.16 210 / 0.34)", to: "oklch(0.82 0.16 70 / 0.2)" },
+    Mockup: TijaratiMockup,
   },
   {
     id: "04",
+    name: "The Detailing Lab",
+    category: "Automotive Services",
+    tagline: "Premium mobile detailing, packaged for conversion.",
+    description:
+      "A responsive website for a Sydney mobile detailing studio with a full-bleed automotive hero, service package discovery, inquiry form, phone and Instagram CTAs, and live deployment.",
+    metrics: [
+      { label: "Lead capture", value: "Inquiry" },
+      { label: "Service browsing", value: "Packages" },
+      { label: "Live site", value: "SEO" },
+    ],
+    stack: ["React", "TypeScript", "TanStack Start", "Tailwind CSS", "Web3Forms", "Vercel"],
+    href: "/work/detailing-lab",
+    hue: { from: "oklch(0.76 0.2 135 / 0.42)", via: "oklch(0.58 0.12 155 / 0.28)", to: "oklch(0.92 0.12 135 / 0.14)" },
+    Mockup: DetailingLabMockup,
+  },
+  {
+    id: "05",
     name: "MediFlow",
     category: "Healthcare",
     tagline: "Care, coordinated.",
@@ -83,7 +103,7 @@ const projects: Project[] = [
     Mockup: MediMockup,
   },
   {
-    id: "05",
+    id: "06",
     name: "UrbanEstate",
     category: "Real Estate",
     tagline: "A new map for living.",
@@ -99,7 +119,7 @@ const projects: Project[] = [
     Mockup: EstateMockup,
   },
   {
-    id: "06",
+    id: "07",
     name: "EduSphere",
     category: "Learning Systems",
     tagline: "Mastery, on a curve of its own.",
@@ -305,7 +325,9 @@ function ProjectsCardCarousel({
                 </div>
 
                 <a
-                  href="#contact"
+                  href={project.href || "#contact"}
+                  target={project.href ? "_blank" : undefined}
+                  rel={project.href ? "noreferrer" : undefined}
                   className="group inline-flex items-center justify-between gap-3 rounded-full px-5 py-3 text-sm font-medium text-background transition-transform hover:scale-[1.02]"
                   style={{ background: "var(--gradient-brand)" }}
                 >
@@ -464,6 +486,19 @@ function ProjectSlide({
               </span>
             ))}
           </div>
+
+          {project.href && (
+            <a
+              href={project.href}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-8 inline-flex items-center gap-3 rounded-full px-5 py-3 text-sm font-medium text-background transition-transform hover:scale-[1.02]"
+              style={{ background: "var(--gradient-brand)" }}
+            >
+              <span>View project</span>
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          )}
         </motion.div>
 
         {/* Right: mockup */}
@@ -528,95 +563,201 @@ function FloatPill({ children, className = "" }: { children: React.ReactNode; cl
 
 function SnapGoMockup() {
   return (
-    <div className="relative h-full w-full p-6">
-      {/* Storefront browser */}
-      <Browser className="absolute left-4 top-4 w-[72%]">
-        <div className="space-y-2.5">
-          {/* Top bar */}
-          <div className="flex items-center gap-2 border-b border-white/5 pb-2">
-            <div className="flex h-5 w-5 items-center justify-center rounded-full" style={{ background: "var(--gradient-brand)" }}>
-              <span className="text-[7px] font-bold text-white">N</span>
-            </div>
-            <div className="text-[9px] font-bold text-white/90">snapGo tech</div>
-            <div className="ml-2 h-4 flex-1 rounded bg-white/5" />
-            <div className="flex h-4 items-center gap-1 rounded bg-white/5 px-1.5">
-              <div className="h-1.5 w-1.5 rounded-full" style={{ background: "var(--gradient-brand)" }} />
-              <div className="text-[7px] text-white/70">Cart</div>
-            </div>
-          </div>
-          {/* Hero banner */}
-          <div className="grid grid-cols-3 gap-2">
-            <div className="col-span-2 relative h-24 overflow-hidden rounded-lg" style={{ background: "linear-gradient(135deg, oklch(0.65 0.2 265 / 0.45), oklch(0.55 0.24 280 / 0.2))" }}>
-              <div className="absolute inset-0 bg-hex opacity-25" />
-              <div className="absolute left-3 top-3">
-                <div className="font-display text-base font-bold text-gradient-brand">35%</div>
-                <div className="text-[8px] text-white/70">Sale Off</div>
-              </div>
-              <div className="absolute bottom-2 left-3">
-                <div className="text-[9px] font-bold text-white">Soundcore R50i</div>
-                <div className="mt-1 inline-block rounded px-1.5 py-0.5 text-[7px] text-white" style={{ background: "var(--gradient-brand)" }}>Shop Now</div>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="rounded-lg border border-white/5 bg-white/[0.03] p-2">
-                <div className="text-[8px] font-semibold text-white">Wireless HP</div>
-                <div className="mt-0.5 flex items-baseline gap-1">
-                  <div className="text-[9px] font-bold" style={{ color: "oklch(0.7 0.22 25)" }}>$699</div>
-                  <div className="text-[7px] text-white/40 line-through">$999</div>
-                </div>
-              </div>
-              <div className="rounded-lg border border-white/5 bg-white/[0.03] p-2">
-                <div className="text-[8px] font-semibold text-white">Test Info</div>
-                <div className="mt-0.5 flex items-baseline gap-1">
-                  <div className="text-[9px] font-bold" style={{ color: "oklch(0.7 0.22 25)" }}>$699</div>
-                  <div className="text-[7px] text-white/40 line-through">$999</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Category strip */}
-          <div className="flex gap-1.5">
-            {["Laptop", "Mobile", "Games", "Audio", "Home"].map((c) => (
-              <div key={c} className="flex-1 rounded-md border border-white/5 bg-white/[0.02] px-1.5 py-1 text-center text-[7px] text-white/70">{c}</div>
-            ))}
-          </div>
+    <div className="relative h-full w-full p-5 md:p-8">
+      <div className="absolute left-2 top-8 w-[82%] overflow-hidden rounded-2xl border border-white/10 bg-white shadow-2xl md:left-4">
+        <div className="flex items-center gap-1.5 border-b border-slate-200 bg-slate-50 px-3 py-2">
+          <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+          <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
+          <span className="h-2 w-2 rounded-full bg-[#28c840]" />
+          <span className="ml-auto rounded bg-white px-2 py-0.5 text-[7px] text-slate-400 ring-1 ring-slate-200">
+            snapgo.tech
+          </span>
         </div>
-      </Browser>
+        <img
+          src="/images/case-studies/snapgo/homepage.png"
+          alt="snapGo tech storefront homepage"
+          className="block h-auto w-full"
+          loading="lazy"
+        />
+      </div>
 
-      {/* Side cart / WhatsApp checkout phone */}
-      <Phone className="absolute bottom-3 right-4 h-[80%] w-[30%]">
-        <div className="space-y-2">
-          <div className="flex items-center gap-1.5">
-            <div className="flex h-4 w-4 items-center justify-center rounded" style={{ background: "oklch(0.7 0.18 145)" }}>
-              <span className="text-[6px] text-white">W</span>
-            </div>
-            <div className="text-[8px] font-semibold text-white/90">Send via WhatsApp</div>
-          </div>
-          <div className="space-y-1.5 rounded-lg border border-white/5 bg-white/[0.02] p-2">
-            {[1,2,3].map((i) => (
-              <div key={i} className="flex items-center gap-1.5">
-                <div className="h-6 w-6 rounded" style={{ background: "linear-gradient(135deg, oklch(0.65 0.2 265 / 0.5), oklch(0.55 0.24 280 / 0.2))" }} />
-                <div className="flex-1 space-y-0.5">
-                  <div className="h-1 w-3/4 rounded bg-white/20" />
-                  <div className="h-1 w-1/2 rounded bg-white/10" />
-                </div>
-                <div className="text-[7px] font-bold text-gradient-brand">×{i}</div>
-              </div>
-            ))}
-          </div>
-          <div className="flex items-center justify-between rounded-md bg-white/[0.03] p-2">
-            <div className="text-[7px] text-white/60">Total</div>
-            <div className="font-display text-[10px] font-bold text-gradient-brand">$2,396</div>
-          </div>
-          <div className="rounded-md py-1.5 text-center text-[8px] font-semibold text-white" style={{ background: "oklch(0.65 0.2 145)" }}>
-            Order on WhatsApp
-          </div>
+      <div className="absolute bottom-9 right-3 w-[48%] overflow-hidden rounded-xl border border-white/15 bg-white shadow-2xl md:right-5">
+        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-2.5 py-1.5">
+          <span className="font-mono text-[7px] uppercase tracking-widest text-slate-500">
+            Admin
+          </span>
+          <span className="rounded-full bg-emerald-100 px-1.5 py-0.5 text-[7px] font-medium text-emerald-700">
+            Live
+          </span>
         </div>
-      </Phone>
+        <img
+          src="/images/case-studies/snapgo/admin.png"
+          alt="snapGo tech admin categories"
+          className="block h-auto w-full"
+          loading="lazy"
+        />
+      </div>
 
-      <FloatPill className="left-2 bottom-6">
-        <div className="text-muted-foreground">Admin</div>
-        <div className="font-display text-sm font-semibold">10 SKUs</div>
+      <FloatPill className="left-1 bottom-8">
+        <div className="text-muted-foreground">Checkout</div>
+        <div className="font-display text-sm font-semibold">WhatsApp orders</div>
+      </FloatPill>
+    </div>
+  );
+}
+
+function DataInsightsMockup() {
+  return (
+    <div className="relative h-full w-full p-5 md:p-8">
+      <div className="absolute left-3 top-8 w-[80%] overflow-hidden rounded-2xl border border-white/10 bg-white shadow-2xl md:left-4">
+        <div className="flex items-center gap-1.5 border-b border-slate-200 bg-slate-50 px-3 py-2">
+          <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+          <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
+          <span className="h-2 w-2 rounded-full bg-[#28c840]" />
+          <span className="ml-auto rounded bg-white px-2 py-0.5 text-[7px] text-slate-400 ring-1 ring-slate-200">
+            data workspace
+          </span>
+        </div>
+        <img
+          src="/images/case-studies/data-insights/workspace.png"
+          alt="AI analytics workspace overview"
+          className="block h-auto w-full"
+          loading="lazy"
+        />
+      </div>
+
+      <div className="absolute bottom-9 right-3 w-[47%] overflow-hidden rounded-xl border border-white/15 bg-white shadow-2xl md:right-5">
+        <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-2.5 py-1.5">
+          <span className="font-mono text-[7px] uppercase tracking-widest text-slate-500">
+            Results
+          </span>
+          <span className="rounded-full bg-teal-100 px-1.5 py-0.5 text-[7px] font-medium text-teal-700">
+            Guided
+          </span>
+        </div>
+        <img
+          src="/images/case-studies/data-insights/results.png"
+          alt="AI analytics results view"
+          className="block h-auto w-full"
+          loading="lazy"
+        />
+      </div>
+
+      <FloatPill className="left-1 bottom-8">
+        <div className="text-muted-foreground">Role</div>
+        <div className="font-display text-sm font-semibold">UI + API layer</div>
+      </FloatPill>
+    </div>
+  );
+}
+
+function TijaratiMockup() {
+  return (
+    <div className="relative h-full w-full overflow-hidden p-5 md:p-8">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_30%,rgba(56,189,248,0.22),transparent_45%)]" />
+
+      <div className="absolute left-4 top-8 w-[34%] rotate-[-9deg] rounded-[1.7rem] border border-white/15 bg-slate-950 p-1.5 shadow-2xl">
+        <div className="pointer-events-none absolute inset-0 rounded-[1.7rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.16),transparent_35%,rgba(255,255,255,0.06)_70%,transparent)]" />
+        <div className="absolute left-1/2 top-3 z-10 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-slate-950 ring-1 ring-slate-800" />
+        <div className="relative overflow-hidden rounded-[1.35rem] bg-white">
+          <img
+            src="/images/case-studies/tijarati/reports.jpg"
+            alt="Tijarati Pro reports"
+            className="block h-auto w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div className="absolute left-1/2 top-4 z-10 w-[38%] -translate-x-1/2 rounded-[1.9rem] border border-white/20 bg-slate-950 p-1.5 shadow-2xl">
+        <div className="pointer-events-none absolute inset-0 rounded-[1.9rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.16),transparent_35%,rgba(255,255,255,0.06)_70%,transparent)]" />
+        <div className="absolute left-1/2 top-3 z-10 h-3.5 w-14 -translate-x-1/2 rounded-full bg-slate-950" />
+        <div className="relative overflow-hidden rounded-[1.45rem] bg-white">
+          <img
+            src="/images/case-studies/tijarati/home.jpg"
+            alt="Tijarati Pro home dashboard"
+            className="block h-auto w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div className="absolute right-4 top-10 w-[34%] rotate-[9deg] rounded-[1.7rem] border border-white/15 bg-slate-950 p-1.5 shadow-2xl">
+        <div className="pointer-events-none absolute inset-0 rounded-[1.7rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.16),transparent_35%,rgba(255,255,255,0.06)_70%,transparent)]" />
+        <div className="absolute left-1/2 top-3 z-10 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-slate-950 ring-1 ring-slate-800" />
+        <div className="relative overflow-hidden rounded-[1.35rem] bg-white">
+          <img
+            src="/images/case-studies/tijarati/invoices.jpg"
+            alt="Tijarati Pro invoices"
+            className="block h-auto w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <FloatPill className="left-2 bottom-8">
+        <div className="text-muted-foreground">Production</div>
+        <div className="font-display text-sm font-semibold">iOS + Android</div>
+      </FloatPill>
+      <FloatPill className="right-2 bottom-16">
+        <div className="text-muted-foreground">Backend</div>
+        <div className="font-display text-sm font-semibold">Firebase</div>
+      </FloatPill>
+    </div>
+  );
+}
+
+function DetailingLabMockup() {
+  return (
+    <div className="relative h-full w-full p-5 md:p-8">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_40%_32%,rgba(132,204,22,0.22),transparent_44%)]" />
+      <div className="absolute left-4 top-9 w-[82%] overflow-hidden rounded-2xl border border-white/10 bg-zinc-950 shadow-2xl">
+        <div className="flex items-center gap-1.5 border-b border-white/10 bg-zinc-900 px-3 py-2">
+          <span className="h-2 w-2 rounded-full bg-[#ff5f57]" />
+          <span className="h-2 w-2 rounded-full bg-[#febc2e]" />
+          <span className="h-2 w-2 rounded-full bg-[#28c840]" />
+          <span className="ml-auto rounded bg-zinc-950 px-2 py-0.5 text-[7px] text-zinc-400 ring-1 ring-white/10">
+            thedetailinglabs.com.au
+          </span>
+        </div>
+        <div className="relative aspect-[16/10] overflow-hidden">
+          <img
+            src="/images/case-studies/detailing-lab/site-hero.png"
+            alt="The Detailing Lab homepage"
+            className="h-full w-full object-cover object-top"
+            loading="lazy"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/35 via-transparent to-black/10" />
+        </div>
+      </div>
+
+      <div className="absolute bottom-12 right-4 w-[45%] overflow-hidden rounded-xl border border-lime-300/30 bg-zinc-950 shadow-2xl shadow-lime-950/40">
+        <img
+          src="/images/case-studies/detailing-lab/site-ceramic.png"
+          alt="The Detailing Lab ceramic packages"
+          className="block aspect-[4/3] w-full object-cover object-top"
+          loading="lazy"
+        />
+        <div className="border-t border-white/10 bg-zinc-950 p-3">
+          <div className="font-mono text-[8px] uppercase tracking-[0.22em] text-lime-300">
+            Package
+          </div>
+          <div className="mt-1 text-xs font-semibold text-white">Ceramic coating</div>
+        </div>
+      </div>
+
+      <div className="absolute bottom-4 left-16 w-[38%] overflow-hidden rounded-xl border border-white/15 bg-zinc-950 shadow-2xl">
+        <img
+          src="/images/case-studies/detailing-lab/site-inquiry.png"
+          alt="The Detailing Lab inquiry form"
+          className="block aspect-[16/9] w-full object-cover object-top"
+          loading="lazy"
+        />
+      </div>
+
+      <FloatPill className="left-2 bottom-8">
+        <div className="text-muted-foreground">Lead flow</div>
+        <div className="font-display text-sm font-semibold">Package inquiry</div>
       </FloatPill>
     </div>
   );
