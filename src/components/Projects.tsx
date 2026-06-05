@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform, MotionValue } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef, useState, type WheelEvent } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { HexFrame } from "./Logo";
 import { SectionLabel } from "./Journey";
@@ -138,13 +138,13 @@ const projects: Project[] = [
 
 export function Projects() {
   const ref = useRef<HTMLDivElement>(null);
+  const wheelLockRef = useRef(false);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end end"],
   });
 
   const total = projects.length;
-  const animatedStepVh = 36;
 
   // Derive a single active index from scroll. Only ONE slide is mounted at a time.
   const activeMV = useTransform(scrollYProgress, (v) =>
@@ -168,15 +168,44 @@ export function Projects() {
     return <ProjectsCardCarousel mode={mode} setView={setView} />;
   }
 
+  const scrollToAnimatedProject = (nextIndex: number) => {
+    const section = ref.current;
+    if (!section || total <= 1) return;
+
+    const clamped = Math.min(total - 1, Math.max(0, nextIndex));
+    const scrollable = section.offsetHeight - window.innerHeight;
+    const targetProgress = clamped === 0 ? 0 : (clamped + 0.5) / total;
+    const targetTop = section.offsetTop + scrollable * targetProgress;
+
+    window.scrollTo({ top: targetTop, behavior: "smooth" });
+  };
+
+  const handleAnimatedWheel = (event: WheelEvent<HTMLDivElement>) => {
+    const direction = Math.sign(event.deltaY);
+    if (direction === 0) return;
+
+    const nextIndex = active + direction;
+    const canStep = nextIndex >= 0 && nextIndex < total;
+    if (!canStep) return;
+
+    event.preventDefault();
+    if (wheelLockRef.current) return;
+
+    wheelLockRef.current = true;
+    scrollToAnimatedProject(nextIndex);
+    window.setTimeout(() => {
+      wheelLockRef.current = false;
+    }, 700);
+  };
 
   return (
     <section
       id="work"
       ref={ref}
       className="relative"
-      style={{ height: `calc(100vh + ${total * animatedStepVh}vh)` }}
+      style={{ height: `${total * 100}vh` }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
+      <div className="sticky top-0 h-screen w-full overflow-hidden" onWheel={handleAnimatedWheel}>
         {/* Section frame */}
         <div className="pointer-events-none absolute left-6 top-8 z-40 md:left-10">
           <SectionLabel>03 / Selected Work</SectionLabel>
@@ -250,7 +279,7 @@ function ProjectsCardCarousel({
         </div>
 
         {/* Card */}
-        <div className="relative min-h-[760px] overflow-hidden rounded-3xl border border-border bg-surface/60 shadow-elevated backdrop-blur-xl md:min-h-[720px] lg:min-h-[580px]">
+        <div className="relative min-h-[760px] overflow-hidden rounded-3xl border border-border bg-surface/60 shadow-elevated backdrop-blur-xl md:h-[720px] md:min-h-0 lg:h-[580px]">
           <div
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
@@ -265,7 +294,7 @@ function ProjectsCardCarousel({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: dir * -60 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="relative grid min-h-[760px] grid-cols-1 gap-0 md:min-h-[720px] lg:min-h-[580px] lg:grid-cols-12"
+              className="relative grid min-h-[760px] grid-cols-1 gap-0 md:h-[720px] md:min-h-0 lg:h-[580px] lg:grid-cols-12"
             >
               {/* Visual */}
               <div className="relative lg:col-span-7">
