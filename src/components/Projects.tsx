@@ -249,7 +249,7 @@ function ProjectsCardCarousel({
         </div>
 
         {/* Card */}
-        <div className="relative overflow-hidden rounded-3xl border border-border bg-surface/60 shadow-elevated backdrop-blur-xl">
+        <div className="relative min-h-[760px] overflow-hidden rounded-3xl border border-border bg-surface/60 shadow-elevated backdrop-blur-xl md:min-h-[720px] lg:min-h-[580px]">
           <div
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
@@ -264,7 +264,7 @@ function ProjectsCardCarousel({
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: dir * -60 }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="relative grid grid-cols-1 gap-0 lg:grid-cols-12"
+              className="relative grid min-h-[760px] grid-cols-1 gap-0 md:min-h-[720px] lg:min-h-[580px] lg:grid-cols-12"
             >
               {/* Visual */}
               <div className="relative lg:col-span-7">
@@ -282,8 +282,8 @@ function ProjectsCardCarousel({
               </div>
 
               {/* Copy */}
-              <div className="relative flex flex-col justify-between gap-8 p-7 md:p-10 lg:col-span-5">
-                <div>
+              <div className="relative flex min-h-0 flex-col justify-between gap-8 p-7 md:p-10 lg:col-span-5">
+                <div className="min-h-0">
                   <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
                     <span className="text-gradient-brand">{project.id}</span>
                     <span className="h-px w-8 bg-border" />
@@ -295,7 +295,7 @@ function ProjectsCardCarousel({
                   <p className="mt-2 font-display text-lg text-gradient-brand">
                     {project.tagline}
                   </p>
-                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+                  <p className="mt-4 text-sm leading-relaxed text-muted-foreground lg:min-h-[5.25rem]">
                     {project.description}
                   </p>
 
@@ -312,7 +312,7 @@ function ProjectsCardCarousel({
                     ))}
                   </div>
 
-                  <div className="mt-5 flex flex-wrap gap-1.5">
+                  <div className="mt-5 flex max-h-[4.75rem] flex-wrap gap-1.5 overflow-hidden">
                     {project.stack.map((s) => (
                       <span
                         key={s}
