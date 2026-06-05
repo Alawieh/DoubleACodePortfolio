@@ -144,6 +144,7 @@ export function Projects() {
   });
 
   const total = projects.length;
+  const animatedStepVh = 36;
 
   // Derive a single active index from scroll. Only ONE slide is mounted at a time.
   const activeMV = useTransform(scrollYProgress, (v) =>
@@ -173,7 +174,7 @@ export function Projects() {
       id="work"
       ref={ref}
       className="relative"
-      style={{ height: `${total * 100}vh` }}
+      style={{ height: `calc(100vh + ${total * animatedStepVh}vh)` }}
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         {/* Section frame */}
