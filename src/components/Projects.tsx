@@ -1,5 +1,5 @@
 import { AnimatePresence, motion, useMotionValueEvent, useScroll, useTransform, MotionValue } from "framer-motion";
-import { useRef, useState, type WheelEvent } from "react";
+import { useEffect, useRef, useState, type WheelEvent } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { HexFrame } from "./Logo";
 import { SectionLabel } from "./Journey";
@@ -423,7 +423,7 @@ function ProjectsMobileList() {
         </div>
 
         <div className="space-y-6">
-          {projects.map((project) => (
+          {projects.map((project, index) => (
             <article
               key={project.id}
               className="relative overflow-hidden rounded-2xl border border-border bg-surface/80 shadow-elevated"
@@ -443,9 +443,7 @@ function ProjectsMobileList() {
                       background: `radial-gradient(ellipse at 50% 34%, ${project.hue.from}, transparent 66%)`,
                     }}
                   />
-                  <div className="absolute inset-0">
-                    <project.Mockup />
-                  </div>
+                  <MobileProjectMockup project={project} priority={index < 2} />
                 </div>
 
                 <div className="p-4">
@@ -504,6 +502,37 @@ function ProjectsMobileList() {
         </div>
       </div>
     </section>
+  );
+}
+
+function MobileProjectMockup({ project, priority }: { project: Project; priority?: boolean }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shouldRender, setShouldRender] = useState(Boolean(priority));
+
+  useEffect(() => {
+    if (shouldRender) return;
+
+    const node = ref.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setShouldRender(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "640px 0px" },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [shouldRender]);
+
+  return (
+    <div ref={ref} className="absolute inset-0">
+      {shouldRender ? <project.Mockup /> : <div className="absolute inset-0 bg-hex opacity-20" />}
+    </div>
   );
 }
 

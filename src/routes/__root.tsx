@@ -11,7 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import aaLogo from "../assets/aa-logo.png";
+import aaLogo from "../assets/aa-logo.jpg";
 import pavoneFavicon from "../stores/pavone/public/assets/pavone-favicon.png";
 
 function NotFoundComponent() {
@@ -86,7 +86,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     links: [
       {
         rel: "icon",
-        type: "image/png",
+        type: "image/jpeg",
         href: aaLogo,
       },
       {
@@ -128,7 +128,7 @@ function RootComponent() {
 
     const favicon = pathname.startsWith("/stores/pavone") ? pavoneFavicon : aaLogo;
 
-    setLinkTag("icon", favicon, "image/png");
+    setLinkTag("icon", favicon, pathname.startsWith("/stores/pavone") ? "image/png" : "image/jpeg");
     setLinkTag("apple-touch-icon", favicon);
   }, [pathname]);
 
