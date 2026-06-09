@@ -1,10 +1,25 @@
 import { motion } from "framer-motion";
 
 const channels = [
-  { label: "Email", value: "hello@doublea.studio", href: "mailto:hello@doublea.studio" },
-  { label: "WhatsApp", value: "+961 00 000 000", href: "https://wa.me/" },
-  { label: "Instagram", value: "@doublea.studio", href: "https://instagram.com/" },
-  { label: "LinkedIn", value: "/company/double-a", href: "https://linkedin.com/" },
+  {
+    label: "Email",
+    value: "doubleafounder@gmail.com",
+    href: "mailto:doubleafounder@gmail.com",
+    type: "email",
+  },
+  {
+    label: "WhatsApp",
+    value: "+961 71 255 749",
+    href: "https://wa.me/96171255749",
+    type: "whatsapp",
+  },
+  {
+    label: "WhatsApp",
+    value: "+961 76 540 004",
+    href: "https://wa.me/96176540004",
+    type: "whatsapp",
+  },
+  { label: "Instagram", value: "@doublea.studio", href: "https://instagram.com/", type: "default" },
 ];
 
 export function Contact() {
@@ -45,19 +60,19 @@ export function Contact() {
           className="mt-12 flex flex-wrap items-center justify-center gap-3"
         >
           <a
-            href="mailto:hello@doublea.studio"
+            href="mailto:doubleafounder@gmail.com"
             className="rounded-full bg-foreground px-7 py-3.5 text-sm font-medium text-background transition-transform hover:scale-[1.02]"
           >
             Schedule a Call
           </a>
           <a
-            href="mailto:hello@doublea.studio"
+            href="mailto:doubleafounder@gmail.com"
             className="rounded-full border border-border bg-surface/40 px-7 py-3.5 text-sm font-medium text-foreground backdrop-blur transition-colors hover:bg-surface"
           >
             Send a Message
           </a>
           <a
-            href="mailto:hello@doublea.studio"
+            href="mailto:doubleafounder@gmail.com"
             className="rounded-full border border-border bg-surface/40 px-7 py-3.5 text-sm font-medium text-foreground backdrop-blur transition-colors hover:bg-surface"
           >
             Get a Project Estimate
@@ -67,12 +82,40 @@ export function Contact() {
         <div className="mx-auto mt-24 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-4">
           {channels.map((c) => (
             <a
-              key={c.label}
+              key={`${c.label}-${c.value}`}
               href={c.href}
-              className="group bg-background p-5 text-left transition-colors hover:bg-surface"
+              target={c.type === "whatsapp" ? "_blank" : undefined}
+              rel={c.type === "whatsapp" ? "noreferrer" : undefined}
+              className={[
+                "group bg-background p-5 text-left transition-colors",
+                c.type === "whatsapp"
+                  ? "hover:bg-[#25D366]/10"
+                  : "hover:bg-surface",
+              ].join(" ")}
             >
-              <div className="text-[10px] uppercase tracking-widest text-muted-foreground">{c.label}</div>
-              <div className="mt-2 text-sm text-foreground transition-colors group-hover:text-accent">
+              <div
+                className={[
+                  "flex items-center gap-2 text-[10px] uppercase tracking-widest",
+                  c.type === "whatsapp" ? "text-[#25D366]" : "text-muted-foreground",
+                ].join(" ")}
+              >
+                {c.type === "whatsapp" ? (
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_0_24px_rgba(37,211,102,0.28)]">
+                    <WhatsAppMark />
+                  </span>
+                ) : null}
+                <span>{c.label}</span>
+              </div>
+              <div
+                className={[
+                  "mt-2 text-sm transition-colors",
+                  c.type === "whatsapp"
+                    ? "font-semibold text-[#25D366]"
+                    : c.type === "email"
+                      ? "break-all text-foreground group-hover:text-accent"
+                      : "text-foreground group-hover:text-accent",
+                ].join(" ")}
+              >
                 {c.value}
               </div>
             </a>
@@ -85,5 +128,13 @@ export function Contact() {
         </footer>
       </div>
     </section>
+  );
+}
+
+function WhatsAppMark() {
+  return (
+    <svg viewBox="0 0 32 32" aria-hidden="true" className="h-4 w-4 fill-current">
+      <path d="M16.04 4.5A11.43 11.43 0 0 0 6.3 21.9L4.75 27.5l5.74-1.5a11.43 11.43 0 1 0 5.55-21.5Zm0 20.9c-1.8 0-3.55-.5-5.07-1.45l-.36-.21-3.4.89.91-3.31-.23-.38a9.43 9.43 0 1 1 8.15 4.46Zm5.17-7.06c-.28-.14-1.66-.82-1.92-.91-.26-.1-.45-.14-.64.14-.19.28-.73.91-.9 1.1-.17.19-.33.21-.61.07-.28-.14-1.18-.44-2.25-1.39-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.12.28-.33.42-.49.14-.17.19-.28.28-.47.09-.19.05-.35-.02-.49-.07-.14-.64-1.54-.88-2.11-.23-.55-.47-.48-.64-.49h-.55c-.19 0-.49.07-.75.35-.26.28-.99.96-.99 2.35 0 1.38 1.01 2.72 1.15 2.91.14.19 1.99 3.04 4.82 4.26.67.29 1.2.46 1.61.59.68.22 1.3.19 1.79.12.55-.08 1.66-.68 1.9-1.34.23-.66.23-1.23.16-1.34-.07-.12-.26-.19-.54-.33Z" />
+    </svg>
   );
 }

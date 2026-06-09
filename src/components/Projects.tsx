@@ -210,7 +210,7 @@ export function Projects() {
         <div className="pointer-events-none absolute left-6 top-8 z-40 md:left-10">
           <SectionLabel>03 / Selected Work</SectionLabel>
         </div>
-        <div className="absolute right-6 top-8 z-50 flex items-center gap-3 font-mono text-xs text-muted-foreground md:right-10">
+        <div className="pointer-events-auto absolute right-6 top-8 z-[120] flex items-center gap-3 font-mono text-xs text-muted-foreground md:right-10">
           <ViewToggle mode={mode} onChange={setView} />
           <ProgressIndicator progress={scrollYProgress} total={total} />
         </div>
@@ -227,13 +227,20 @@ export function Projects() {
 
 function ViewToggle({ mode, onChange }: { mode: "animated" | "list"; onChange: (m: "animated" | "list") => void }) {
   return (
-    <div className="inline-flex items-center rounded-full border border-border bg-surface/60 p-1 text-[11px] font-mono uppercase tracking-widest backdrop-blur">
+    <div
+      className="pointer-events-auto relative z-[130] inline-flex items-center rounded-full border border-border bg-surface/80 p-1 text-[11px] font-mono uppercase tracking-widest shadow-elevated backdrop-blur"
+      onClick={(event) => event.stopPropagation()}
+      onPointerDown={(event) => event.stopPropagation()}
+      onWheel={(event) => event.stopPropagation()}
+    >
       {(["animated", "list"] as const).map((m) => (
         <button
           type="button"
           key={m}
+          aria-pressed={mode === m}
+          onPointerDown={() => onChange(m)}
           onClick={() => onChange(m)}
-          className={`rounded-full px-3 py-1 transition-colors ${
+          className={`pointer-events-auto rounded-full px-3 py-1 transition-colors ${
             mode === m ? "bg-foreground text-background" : "text-muted-foreground hover:text-foreground"
           }`}
         >

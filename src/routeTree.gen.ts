@@ -14,6 +14,7 @@ import { Route as WorkTijaratiProRouteImport } from './routes/work/tijarati-pro'
 import { Route as WorkSnapgoRouteImport } from './routes/work/snapgo'
 import { Route as WorkDetailingLabRouteImport } from './routes/work/detailing-lab'
 import { Route as WorkDataInsightsRouteImport } from './routes/work/data-insights'
+import { Route as MenusMarleysRouteImport } from './routes/menus/marleys'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -40,9 +41,15 @@ const WorkDataInsightsRoute = WorkDataInsightsRouteImport.update({
   path: '/work/data-insights',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MenusMarleysRoute = MenusMarleysRouteImport.update({
+  id: '/menus/marleys',
+  path: '/menus/marleys',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/menus/marleys': typeof MenusMarleysRoute
   '/work/data-insights': typeof WorkDataInsightsRoute
   '/work/detailing-lab': typeof WorkDetailingLabRoute
   '/work/snapgo': typeof WorkSnapgoRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/menus/marleys': typeof MenusMarleysRoute
   '/work/data-insights': typeof WorkDataInsightsRoute
   '/work/detailing-lab': typeof WorkDetailingLabRoute
   '/work/snapgo': typeof WorkSnapgoRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/menus/marleys': typeof MenusMarleysRoute
   '/work/data-insights': typeof WorkDataInsightsRoute
   '/work/detailing-lab': typeof WorkDetailingLabRoute
   '/work/snapgo': typeof WorkSnapgoRoute
@@ -67,6 +76,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/menus/marleys'
     | '/work/data-insights'
     | '/work/detailing-lab'
     | '/work/snapgo'
@@ -74,6 +84,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/menus/marleys'
     | '/work/data-insights'
     | '/work/detailing-lab'
     | '/work/snapgo'
@@ -81,6 +92,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/menus/marleys'
     | '/work/data-insights'
     | '/work/detailing-lab'
     | '/work/snapgo'
@@ -89,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MenusMarleysRoute: typeof MenusMarleysRoute
   WorkDataInsightsRoute: typeof WorkDataInsightsRoute
   WorkDetailingLabRoute: typeof WorkDetailingLabRoute
   WorkSnapgoRoute: typeof WorkSnapgoRoute
@@ -132,11 +145,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkDataInsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/menus/marleys': {
+      id: '/menus/marleys'
+      path: '/menus/marleys'
+      fullPath: '/menus/marleys'
+      preLoaderRoute: typeof MenusMarleysRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MenusMarleysRoute: MenusMarleysRoute,
   WorkDataInsightsRoute: WorkDataInsightsRoute,
   WorkDetailingLabRoute: WorkDetailingLabRoute,
   WorkSnapgoRoute: WorkSnapgoRoute,
