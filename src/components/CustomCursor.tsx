@@ -9,6 +9,8 @@ export function CustomCursor() {
   const [hover, setHover] = useState(false);
 
   useEffect(() => {
+    if (!window.matchMedia("(pointer: fine)").matches) return;
+
     const move = (e: MouseEvent) => {
       x.set(e.clientX);
       y.set(e.clientY);

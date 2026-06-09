@@ -4,6 +4,7 @@ import { LogoMark, HexFrame } from "./Logo";
 
 export function Hero() {
   const ref = useRef<HTMLDivElement>(null);
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const y = useTransform(scrollYProgress, [0, 1], [0, 200]);
   const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
@@ -57,9 +58,9 @@ export function Hero() {
       {/* Main */}
       <motion.div style={{ y, opacity }} className="relative z-10 mx-auto max-w-5xl text-center">
         <motion.div
-          initial={{ opacity: 0, scale: 0.6, rotate: -20 }}
+          initial={{ opacity: 0, scale: isMobile ? 0.9 : 0.6, rotate: isMobile ? 0 : -20 }}
           animate={{ opacity: 1, scale: 1, rotate: 0 }}
-          transition={{ delay: 0.2, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ delay: isMobile ? 0.05 : 0.2, duration: isMobile ? 0.35 : 1, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto mb-8 flex justify-center"
         >
           <LogoMark className="h-24 w-24 md:h-28 md:w-28" glow />
@@ -68,7 +69,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5 }}
+          transition={{ delay: isMobile ? 0.12 : 0.5, duration: isMobile ? 0.35 : 0.5 }}
           className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur"
         >
           <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: "var(--gradient-brand)" }} />
@@ -76,8 +77,8 @@ export function Hero() {
         </motion.div>
 
         <h1 className="font-display text-5xl font-bold leading-[1.02] tracking-tight md:text-7xl lg:text-[5.5rem]">
-          <Reveal delay={0.6}>We Build Software</Reveal>
-          <Reveal delay={0.75}>
+          <Reveal delay={isMobile ? 0.16 : 0.6} fast={isMobile}>We Build Software</Reveal>
+          <Reveal delay={isMobile ? 0.22 : 0.75} fast={isMobile}>
             <span className="text-gradient-brand">That Builds Businesses.</span>
           </Reveal>
         </h1>
@@ -85,7 +86,7 @@ export function Hero() {
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.1, duration: 0.7 }}
+          transition={{ delay: isMobile ? 0.28 : 1.1, duration: isMobile ? 0.35 : 0.7 }}
           className="mx-auto mt-7 max-w-2xl text-base leading-relaxed text-muted-foreground md:text-lg"
         >
           From modern websites to enterprise systems, we transform ideas into
@@ -95,7 +96,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.3, duration: 0.6 }}
+          transition={{ delay: isMobile ? 0.36 : 1.3, duration: isMobile ? 0.35 : 0.6 }}
           className="mt-10 flex flex-wrap items-center justify-center gap-3"
         >
           <a
@@ -118,7 +119,7 @@ export function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 2 }}
+        transition={{ delay: isMobile ? 0.6 : 2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 text-[10px] uppercase tracking-[0.4em] text-muted-foreground"
       >
         scroll
@@ -127,14 +128,14 @@ export function Hero() {
   );
 }
 
-function Reveal({ children, delay = 0 }: { children: React.ReactNode; delay?: number }) {
+function Reveal({ children, delay = 0, fast = false }: { children: React.ReactNode; delay?: number; fast?: boolean }) {
   return (
     <span className="block overflow-hidden">
       <motion.span
         className="block"
         initial={{ y: "110%" }}
         animate={{ y: 0 }}
-        transition={{ delay, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ delay, duration: fast ? 0.38 : 0.9, ease: [0.16, 1, 0.3, 1] }}
       >
         {children}
       </motion.span>

@@ -8,7 +8,8 @@ export function Loader({ onDone }: { onDone: () => void }) {
 
   useEffect(() => {
     const start = Date.now();
-    const duration = 2400;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+    const duration = isMobile ? 1300 : 2400;
     const id = setInterval(() => {
       const t = Math.min(1, (Date.now() - start) / duration);
       setProgress(Math.floor(t * 100));
@@ -16,8 +17,8 @@ export function Loader({ onDone }: { onDone: () => void }) {
         clearInterval(id);
         setTimeout(() => {
           setDone(true);
-          setTimeout(onDone, 700);
-        }, 250);
+          setTimeout(onDone, isMobile ? 300 : 700);
+        }, isMobile ? 100 : 250);
       }
     }, 30);
     return () => clearInterval(id);

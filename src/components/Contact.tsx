@@ -22,6 +22,8 @@ const channels = [
   { label: "Instagram", value: "@doublea.studio", href: "https://instagram.com/", type: "default" },
 ];
 
+const web3FormsAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY ?? "";
+
 export function Contact() {
   return (
     <section id="contact" className="relative overflow-hidden py-40 px-6">
@@ -57,26 +59,52 @@ export function Contact() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2, duration: 0.8 }}
-          className="mt-12 flex flex-wrap items-center justify-center gap-3"
+          className="mx-auto mt-12 max-w-3xl rounded-3xl border border-white/15 bg-[oklch(0.13_0.018_300/0.92)] p-4 text-left shadow-[0_30px_90px_-35px_oklch(0_0_0/0.8),0_0_0_1px_oklch(1_0_0/0.04)_inset] backdrop-blur md:p-6"
         >
-          <a
-            href="mailto:doubleafounder@gmail.com"
-            className="rounded-full bg-foreground px-7 py-3.5 text-sm font-medium text-background transition-transform hover:scale-[1.02]"
-          >
-            Schedule a Call
-          </a>
-          <a
-            href="mailto:doubleafounder@gmail.com"
-            className="rounded-full border border-border bg-surface/40 px-7 py-3.5 text-sm font-medium text-foreground backdrop-blur transition-colors hover:bg-surface"
-          >
-            Send a Message
-          </a>
-          <a
-            href="mailto:doubleafounder@gmail.com"
-            className="rounded-full border border-border bg-surface/40 px-7 py-3.5 text-sm font-medium text-foreground backdrop-blur transition-colors hover:bg-surface"
-          >
-            Get a Project Estimate
-          </a>
+          <form action="https://api.web3forms.com/submit" method="POST" className="grid gap-4">
+            <input type="hidden" name="access_key" value={web3FormsAccessKey} />
+            <input type="hidden" name="subject" value="New Double A project inquiry" />
+            <input type="hidden" name="from_name" value="Double A Portfolio" />
+            <input type="hidden" name="to" value="doubleafounder@gmail.com" />
+            <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field label="Name" name="name" placeholder="Your name" autoComplete="name" required />
+              <Field label="Email" name="email" type="email" placeholder="you@example.com" autoComplete="email" required />
+            </div>
+
+            <div className="grid gap-4 md:grid-cols-2">
+              <Field label="Phone" name="phone" type="tel" placeholder="+961 ..." autoComplete="tel" required />
+              <Field label="Company" name="company" placeholder="Company or brand" autoComplete="organization" />
+            </div>
+
+            <SelectField
+              label="Inquiry Type"
+              name="inquiry_type"
+              options={["Website", "Mobile app", "Admin dashboard", "Brand/storefront", "Other"]}
+            />
+
+            <label className="grid gap-2 text-sm">
+              <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                Project Details <span className="text-accent">*</span>
+              </span>
+              <textarea
+                name="message"
+                rows={5}
+                required
+                placeholder="Tell us what you want to build, timeline, goals, and any useful links."
+                className="min-h-36 resize-y rounded-2xl border border-white/12 bg-background/95 px-4 py-3 text-sm text-foreground shadow-[0_1px_0_oklch(1_0_0/0.05)_inset] outline-none transition-colors placeholder:text-muted-foreground focus:border-accent/70 focus:bg-surface"
+              />
+            </label>
+
+            <button
+              type="submit"
+              className="mt-2 rounded-full px-7 py-3.5 text-sm font-medium text-background transition-transform hover:scale-[1.01]"
+              style={{ background: "var(--gradient-brand)" }}
+            >
+              Send Inquiry
+            </button>
+          </form>
         </motion.div>
 
         <div className="mx-auto mt-24 grid max-w-3xl grid-cols-2 gap-px overflow-hidden rounded-2xl border border-border bg-border md:grid-cols-4">
@@ -128,6 +156,56 @@ export function Contact() {
         </footer>
       </div>
     </section>
+  );
+}
+
+function Field({
+  label,
+  name,
+  type = "text",
+  placeholder,
+  autoComplete,
+  required = false,
+}: {
+  label: string;
+  name: string;
+  type?: string;
+  placeholder: string;
+  autoComplete?: string;
+  required?: boolean;
+}) {
+  return (
+    <label className="grid gap-2 text-sm">
+      <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">
+        {label} {required ? <span className="text-accent">*</span> : null}
+      </span>
+      <input
+        name={name}
+        type={type}
+        required={required}
+        placeholder={placeholder}
+        autoComplete={autoComplete}
+        className="rounded-2xl border border-white/12 bg-background/95 px-4 py-3 text-sm text-foreground shadow-[0_1px_0_oklch(1_0_0/0.05)_inset] outline-none transition-colors placeholder:text-muted-foreground focus:border-accent/70 focus:bg-surface"
+      />
+    </label>
+  );
+}
+
+function SelectField({ label, name, options }: { label: string; name: string; options: string[] }) {
+  return (
+    <label className="grid gap-2 text-sm">
+      <span className="text-xs uppercase tracking-[0.18em] text-muted-foreground">{label}</span>
+      <select
+        name={name}
+        className="rounded-2xl border border-white/12 bg-background/95 px-4 py-3 text-sm text-foreground shadow-[0_1px_0_oklch(1_0_0/0.05)_inset] outline-none transition-colors focus:border-accent/70 focus:bg-surface"
+      >
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+    </label>
   );
 }
 

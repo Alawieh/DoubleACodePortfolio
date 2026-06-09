@@ -156,8 +156,11 @@ export function Projects() {
   const current = projects[active];
 
   const [mode, setMode] = useState<"animated" | "list">(() => {
-    if (typeof window === "undefined") return "animated";
-    return (window.sessionStorage.getItem("aa-work-view") as "animated" | "list") || "animated";
+    if (typeof window === "undefined") return "list";
+    if (window.matchMedia("(max-width: 767px)").matches) return "list";
+    const saved = window.sessionStorage.getItem("aa-work-view") as "animated" | "list" | null;
+    if (saved) return saved;
+    return "animated";
   });
   const setView = (m: "animated" | "list") => {
     setMode(m);
@@ -226,6 +229,9 @@ export function Projects() {
 }
 
 function ViewToggle({ mode, onChange }: { mode: "animated" | "list"; onChange: (m: "animated" | "list") => void }) {
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+  const modes = isMobile ? (["list"] as const) : (["animated", "list"] as const);
+
   return (
     <div
       className="pointer-events-auto relative z-[130] inline-flex items-center rounded-full border border-border bg-surface/80 p-1 text-[11px] font-mono uppercase tracking-widest shadow-elevated backdrop-blur"
@@ -233,7 +239,7 @@ function ViewToggle({ mode, onChange }: { mode: "animated" | "list"; onChange: (
       onPointerDown={(event) => event.stopPropagation()}
       onWheel={(event) => event.stopPropagation()}
     >
-      {(["animated", "list"] as const).map((m) => (
+      {modes.map((m) => (
         <button
           type="button"
           key={m}
@@ -262,6 +268,11 @@ function ProjectsCardCarousel({
   const [dir, setDir] = useState<1 | -1>(1);
   const total = projects.length;
   const project = projects[index];
+  const isMobile = typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches;
+
+  if (isMobile) {
+    return <ProjectsMobileList />;
+  }
 
   const go = (next: number) => {
     const wrapped = (next + total) % total;
@@ -270,13 +281,13 @@ function ProjectsCardCarousel({
   };
 
   return (
-    <section id="work" className="relative px-6 py-32 md:px-10">
+    <section id="work" className="relative px-4 py-24 md:px-10 md:py-32">
       <div className="pointer-events-none absolute inset-0 -z-10 bg-hex opacity-30" />
       <div className="mx-auto max-w-6xl">
-        <div className="mb-10 flex flex-wrap items-end justify-between gap-6">
+        <div className="mb-8 flex flex-wrap items-end justify-between gap-5 md:mb-10 md:gap-6">
           <div>
             <SectionLabel>03 / Selected Work</SectionLabel>
-            <h2 className="mt-4 font-display text-4xl font-bold md:text-5xl">
+            <h2 className="mt-4 font-display text-3xl font-bold md:text-5xl">
               Selected <span className="text-gradient-brand">work</span>
             </h2>
             <p className="mt-3 max-w-xl text-sm text-muted-foreground md:text-base">
@@ -287,7 +298,7 @@ function ProjectsCardCarousel({
         </div>
 
         {/* Card */}
-        <div className="relative min-h-[760px] overflow-hidden rounded-3xl border border-border bg-surface/60 shadow-elevated backdrop-blur-xl md:h-[720px] md:min-h-0 lg:h-[580px]">
+        <div className="relative overflow-hidden rounded-2xl border border-border bg-surface/70 shadow-elevated backdrop-blur-xl md:h-[720px] md:min-h-0 md:rounded-3xl lg:h-[580px]">
           <div
             className="pointer-events-none absolute inset-0 opacity-70"
             style={{
@@ -298,15 +309,15 @@ function ProjectsCardCarousel({
             <motion.article
               key={project.id}
               custom={dir}
-              initial={{ opacity: 0, x: dir * 60 }}
+              initial={{ opacity: 0, x: dir * 32 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: dir * -60 }}
-              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="relative grid min-h-[760px] grid-cols-1 gap-0 md:h-[720px] md:min-h-0 lg:h-[580px] lg:grid-cols-12"
+              exit={{ opacity: 0, x: dir * -32 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="relative grid grid-cols-1 gap-0 md:h-[720px] md:min-h-0 lg:h-[580px] lg:grid-cols-12"
             >
               {/* Visual */}
               <div className="relative lg:col-span-7">
-                <div className="relative aspect-[5/4] w-full overflow-hidden border-b border-border lg:aspect-auto lg:h-full lg:border-b-0 lg:border-r">
+                <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-border md:aspect-[5/4] lg:aspect-auto lg:h-full lg:border-b-0 lg:border-r">
                   <div
                     className="absolute inset-0"
                     style={{
@@ -320,27 +331,27 @@ function ProjectsCardCarousel({
               </div>
 
               {/* Copy */}
-              <div className="relative flex min-h-0 flex-col justify-between gap-8 p-7 md:p-10 lg:col-span-5">
+              <div className="relative flex min-h-0 flex-col justify-between gap-6 p-5 md:gap-8 md:p-10 lg:col-span-5">
                 <div className="min-h-0">
-                  <div className="flex items-center gap-3 font-mono text-[11px] uppercase tracking-widest text-muted-foreground">
+                  <div className="flex flex-wrap items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground md:gap-3 md:text-[11px]">
                     <span className="text-gradient-brand">{project.id}</span>
-                    <span className="h-px w-8 bg-border" />
+                    <span className="h-px w-6 bg-border md:w-8" />
                     <span>{project.category}</span>
                   </div>
-                  <h3 className="mt-4 font-display text-3xl font-bold leading-tight md:text-4xl">
+                  <h3 className="mt-3 font-display text-2xl font-bold leading-tight md:mt-4 md:text-4xl">
                     {project.name}
                   </h3>
-                  <p className="mt-2 font-display text-lg text-gradient-brand">
+                  <p className="mt-2 font-display text-base text-gradient-brand md:text-lg">
                     {project.tagline}
                   </p>
                   <p className="mt-4 text-sm leading-relaxed text-muted-foreground lg:min-h-[5.25rem]">
                     {project.description}
                   </p>
 
-                  <div className="mt-6 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-border bg-border/60">
+                  <div className="mt-5 grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-border bg-border/60 sm:grid-cols-3 md:mt-6">
                     {project.metrics.map((m) => (
-                      <div key={m.label} className="bg-background/80 p-3 backdrop-blur">
-                        <div className="font-display text-lg font-bold text-gradient-brand">
+                      <div key={m.label} className="bg-background/85 p-3 backdrop-blur">
+                        <div className="font-display text-base font-bold text-gradient-brand md:text-lg">
                           {m.value}
                         </div>
                         <div className="mt-1 text-[9px] uppercase tracking-widest text-muted-foreground">
@@ -350,7 +361,7 @@ function ProjectsCardCarousel({
                     ))}
                   </div>
 
-                  <div className="mt-5 flex max-h-[4.75rem] flex-wrap gap-1.5 overflow-hidden">
+                  <div className="mt-5 flex flex-wrap gap-1.5 md:max-h-[4.75rem] md:overflow-hidden">
                     {project.stack.map((s) => (
                       <span
                         key={s}
@@ -388,7 +399,7 @@ function ProjectsCardCarousel({
           </div>
 
           {/* Dots */}
-          <div className="order-3 flex items-center gap-2 sm:order-2">
+          <div className="order-3 flex w-full items-center justify-center gap-2 sm:order-2 sm:w-auto">
             {projects.map((p, i) => (
               <button
                 key={p.id}
@@ -421,6 +432,106 @@ function ProjectsCardCarousel({
               <ArrowRight className="h-4 w-4" />
             </button>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function ProjectsMobileList() {
+  return (
+    <section id="work" className="relative px-4 pb-20 pt-28">
+      <div className="pointer-events-none absolute inset-0 -z-10 bg-hex opacity-25" />
+      <div className="mx-auto max-w-xl">
+        <div className="mb-7">
+          <SectionLabel>03 / Selected Work</SectionLabel>
+          <h2 className="mt-4 font-display text-3xl font-bold leading-tight">
+            Selected <span className="text-gradient-brand">work</span>
+          </h2>
+          <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+            A quick look at the products, stores, apps, and systems we build.
+          </p>
+        </div>
+
+        <div className="space-y-6">
+          {projects.map((project) => (
+            <article
+              key={project.id}
+              className="relative overflow-hidden rounded-2xl border border-border bg-surface/80 shadow-elevated"
+            >
+              <div
+                className="pointer-events-none absolute inset-0 opacity-70"
+                style={{
+                  background: `radial-gradient(ellipse at 0% 0%, ${project.hue.from}, transparent 48%), radial-gradient(ellipse at 100% 100%, ${project.hue.to}, transparent 58%)`,
+                }}
+              />
+
+              <div className="relative">
+                <div className="relative h-[22rem] overflow-hidden border-b border-border sm:h-[26rem]">
+                  <div
+                    className="absolute inset-0"
+                    style={{
+                      background: `radial-gradient(ellipse at 50% 34%, ${project.hue.from}, transparent 66%)`,
+                    }}
+                  />
+                  <div className="absolute inset-0">
+                    <project.Mockup />
+                  </div>
+                </div>
+
+                <div className="p-4">
+                <div className="flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <span className="text-gradient-brand">{project.id}</span>
+                  <span className="h-px w-6 bg-border" />
+                  <span>{project.category}</span>
+                </div>
+
+                <h3 className="mt-3 font-display text-xl font-bold leading-tight">
+                  {project.name}
+                </h3>
+                <p className="mt-1.5 font-display text-sm leading-snug text-gradient-brand">
+                  {project.tagline}
+                </p>
+
+                <div className="mt-4 grid grid-cols-3 gap-px overflow-hidden rounded-xl border border-border bg-border/60">
+                  {project.metrics.map((metric) => (
+                    <div
+                      key={metric.label}
+                      className="bg-background/70 px-2.5 py-2"
+                    >
+                      <div className="font-display text-[13px] font-bold leading-tight text-gradient-brand">
+                        {metric.value}
+                      </div>
+                      <div className="mt-1 text-[7px] uppercase tracking-widest text-muted-foreground">
+                        {metric.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 flex flex-wrap gap-1.5">
+                  {project.stack.slice(0, 5).map((item) => (
+                    <span
+                      key={item}
+                      className="rounded-full border border-border bg-background/70 px-2.5 py-1 font-mono text-[10px] text-muted-foreground"
+                    >
+                      {item}
+                    </span>
+                  ))}
+                </div>
+
+                <a
+                  href={project.href || "#contact"}
+                  className="mt-5 inline-flex w-full items-center justify-between rounded-full px-5 py-3 text-sm font-medium text-background"
+                  style={{ background: "var(--gradient-brand)" }}
+                >
+                  <span>View project</span>
+                  <ArrowUpRight className="h-4 w-4" />
+                </a>
+                </div>
+              </div>
+            </article>
+          ))}
         </div>
       </div>
     </section>
