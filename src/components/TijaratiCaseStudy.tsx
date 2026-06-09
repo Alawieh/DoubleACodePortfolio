@@ -119,9 +119,9 @@ function PhoneFrame({
         opacity: { duration: 0.55, delay },
         y: { duration: 5.5, delay, repeat: Infinity, ease: "easeInOut" },
       }}
-      className={`relative mx-auto w-full max-w-[280px] rounded-[2.4rem] border border-slate-800 bg-slate-950 p-2 shadow-[0_28px_80px_-28px_rgba(15,23,42,0.55)] ${className}`}
+      className={`relative mx-auto w-full max-w-[220px] rounded-[2rem] border border-slate-800 bg-slate-950 p-1.5 shadow-[0_28px_80px_-28px_rgba(15,23,42,0.55)] sm:max-w-[280px] sm:rounded-[2.4rem] sm:p-2 ${className}`}
     >
-      <div className="pointer-events-none absolute inset-0 rounded-[2.4rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.16),transparent_28%,rgba(255,255,255,0.06)_72%,transparent)]" />
+      <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.16),transparent_28%,rgba(255,255,255,0.06)_72%,transparent)] sm:rounded-[2.4rem]" />
       <div className="absolute -left-1 top-24 h-16 w-1 rounded-l-full bg-slate-800" />
       <div className="absolute -right-1 top-28 h-20 w-1 rounded-r-full bg-slate-800" />
       {isIphone ? (
@@ -129,7 +129,7 @@ function PhoneFrame({
       ) : (
         <div className="absolute left-1/2 top-5 z-10 h-3.5 w-3.5 -translate-x-1/2 rounded-full bg-slate-950 ring-2 ring-slate-800" />
       )}
-      <div className={`relative overflow-hidden bg-white ${isIphone ? "rounded-[2rem]" : "rounded-[1.85rem]"}`}>
+      <div className={`relative overflow-hidden bg-white ${isIphone ? "rounded-[1.65rem] sm:rounded-[2rem]" : "rounded-[1.55rem] sm:rounded-[1.85rem]"}`}>
         <img src={src} alt={alt} className="block h-auto w-full" loading="lazy" />
       </div>
     </motion.div>
@@ -187,7 +187,7 @@ export function TijaratiCaseStudy() {
   return (
     <section
       id="tijarati-case-study"
-      className="relative isolate overflow-hidden bg-[#f5f8fc] py-24 text-slate-950 sm:py-32"
+      className="relative isolate overflow-hidden bg-[#f5f8fc] pb-20 pt-36 text-slate-950 sm:py-32"
       style={{ colorScheme: "light" }}
     >
       <div
@@ -200,7 +200,7 @@ export function TijaratiCaseStudy() {
       />
 
       <div className="mx-auto w-full max-w-7xl px-6">
-        <div className="grid gap-14 lg:grid-cols-12 lg:items-center">
+        <div className="grid gap-10 lg:grid-cols-12 lg:items-center">
           <motion.div
             initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -240,10 +240,10 @@ export function TijaratiCaseStudy() {
               transition={{ duration: 0.8 }}
               className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full bg-sky-200/40 blur-3xl"
             />
-            <div className="relative grid grid-cols-3 items-center gap-3">
-              <PhoneFrame src={images.reports} alt="Tijarati Pro reports screen" variant="android" className="translate-y-8 rotate-[-8deg]" delay={0.1} />
-              <PhoneFrame src={images.home} alt="Tijarati Pro home dashboard" variant="iphone" className="z-10 scale-110" delay={0.2} />
-              <PhoneFrame src={images.invoices} alt="Tijarati Pro invoices screen" variant="android" className="translate-y-10 rotate-[8deg]" delay={0.3} />
+            <div className="relative mx-auto flex max-w-[300px] items-center justify-center sm:grid sm:max-w-none sm:grid-cols-3 sm:gap-3">
+              <PhoneFrame src={images.reports} alt="Tijarati Pro reports screen" variant="android" className="hidden translate-y-8 rotate-[-8deg] sm:block" delay={0.1} />
+              <PhoneFrame src={images.home} alt="Tijarati Pro home dashboard" variant="iphone" className="z-10 sm:scale-110" delay={0.2} />
+              <PhoneFrame src={images.invoices} alt="Tijarati Pro invoices screen" variant="android" className="hidden translate-y-10 rotate-[8deg] sm:block" delay={0.3} />
             </div>
           </div>
         </div>

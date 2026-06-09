@@ -71,6 +71,23 @@ const projects: Project[] = [
   },
   {
     id: "04",
+    name: "Uno400",
+    category: "Multiplayer Card Game",
+    tagline: "Real-time card play without a custom server.",
+    description:
+      "A SwiftUI multiplayer card game using Firebase Realtime Database, host-device arbitration, optimistic UI, event-sourced repair, and transparent AI bot players.",
+    metrics: [
+      { label: "Realtime sync", value: "Firebase" },
+      { label: "Architecture", value: "MVVM" },
+      { label: "Game arbiter", value: "Host" },
+    ],
+    stack: ["Swift", "SwiftUI", "Firebase", "MVVM", "Combine", "XCTest"],
+    href: "/work/uno400",
+    hue: { from: "oklch(0.66 0.18 150 / 0.5)", via: "oklch(0.64 0.14 205 / 0.32)", to: "oklch(0.82 0.16 92 / 0.18)" },
+    Mockup: Uno400Mockup,
+  },
+  {
+    id: "05",
     name: "The Detailing Lab",
     category: "Automotive Services",
     tagline: "Premium mobile detailing, packaged for conversion.",
@@ -85,54 +102,6 @@ const projects: Project[] = [
     href: "/work/detailing-lab",
     hue: { from: "oklch(0.76 0.2 135 / 0.42)", via: "oklch(0.58 0.12 155 / 0.28)", to: "oklch(0.92 0.12 135 / 0.14)" },
     Mockup: DetailingLabMockup,
-  },
-  {
-    id: "05",
-    name: "MediFlow",
-    category: "Healthcare",
-    tagline: "Care, coordinated.",
-    description:
-      "An end-to-end patient platform connecting clinicians, labs, and pharmacies through a HIPAA-aligned data fabric and ambient AI scribe.",
-    metrics: [
-      { label: "Visits / month", value: "84k" },
-      { label: "No-show drop", value: "-41%" },
-      { label: "Avg NPS", value: "72" },
-    ],
-    stack: ["React", "FastAPI", "FHIR", "Supabase"],
-    hue: { from: "oklch(0.65 0.2 240 / 0.45)", via: "oklch(0.6 0.22 280 / 0.35)", to: "oklch(0.7 0.2 330 / 0.2)" },
-    Mockup: MediMockup,
-  },
-  {
-    id: "06",
-    name: "UrbanEstate",
-    category: "Real Estate",
-    tagline: "A new map for living.",
-    description:
-      "A discovery platform pairing 3D building tours with neighborhood intelligence and instant qualification for serious buyers.",
-    metrics: [
-      { label: "Listings", value: "24k" },
-      { label: "Tour completion", value: "73%" },
-      { label: "Time on site", value: "9m 12s" },
-    ],
-    stack: ["Next.js", "Mapbox", "Three.js", "Postgres"],
-    hue: { from: "oklch(0.7 0.18 60 / 0.45)", via: "oklch(0.65 0.22 30 / 0.35)", to: "oklch(0.6 0.25 5 / 0.2)" },
-    Mockup: EstateMockup,
-  },
-  {
-    id: "07",
-    name: "EduSphere",
-    category: "Learning Systems",
-    tagline: "Mastery, on a curve of its own.",
-    description:
-      "An adaptive learning OS that personalizes pacing, schedules deliberate practice, and ties every minute studied to measurable outcomes.",
-    metrics: [
-      { label: "Learners", value: "120k" },
-      { label: "Retention", value: "+62%" },
-      { label: "Courses", value: "1.8k" },
-    ],
-    stack: ["React", "Nest.js", "DuckDB", "OpenAI"],
-    hue: { from: "oklch(0.65 0.27 5 / 0.45)", via: "oklch(0.6 0.25 340 / 0.3)", to: "oklch(0.55 0.24 305 / 0.2)" },
-    Mockup: EduMockup,
   },
 ];
 
@@ -679,7 +648,7 @@ function ProjectSlide({
   );
 }
 
-/* ---------- Mockups (pure SVG/CSS, no images) ---------- */
+/* ---------- Mockups ---------- */
 
 function Browser({ children, className = "" }: { children: React.ReactNode; className?: string }) {
   return (
@@ -851,6 +820,62 @@ function TijaratiMockup() {
       <FloatPill className="right-2 bottom-16">
         <div className="text-muted-foreground">Backend</div>
         <div className="font-display text-sm font-semibold">Firebase</div>
+      </FloatPill>
+    </div>
+  );
+}
+
+function Uno400Mockup() {
+  return (
+    <div className="relative h-full w-full overflow-hidden p-5 md:p-8">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_48%_34%,rgba(16,185,129,0.22),transparent_44%),radial-gradient(circle_at_70%_72%,rgba(14,165,233,0.16),transparent_38%)]" />
+
+      <div className="absolute left-5 top-8 w-[34%] rotate-[-8deg] rounded-[1.7rem] border border-emerald-200/20 bg-slate-950 p-1.5 shadow-2xl">
+        <div className="pointer-events-none absolute inset-0 rounded-[1.7rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.16),transparent_35%,rgba(255,255,255,0.06)_70%,transparent)]" />
+        <div className="absolute left-1/2 top-3 z-10 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-slate-950 ring-1 ring-emerald-900" />
+        <div className="relative overflow-hidden rounded-[1.35rem] bg-emerald-950">
+          <img
+            src="/images/case-studies/uno400/lobby.jpg"
+            alt="Uno400 room lobby"
+            className="block h-auto w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div className="absolute left-1/2 top-4 z-10 w-[38%] -translate-x-1/2 rounded-[1.9rem] border border-emerald-200/25 bg-slate-950 p-1.5 shadow-2xl">
+        <div className="pointer-events-none absolute inset-0 rounded-[1.9rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.16),transparent_35%,rgba(255,255,255,0.06)_70%,transparent)]" />
+        <div className="absolute left-1/2 top-3 z-10 h-3.5 w-14 -translate-x-1/2 rounded-full bg-slate-950" />
+        <div className="relative overflow-hidden rounded-[1.45rem] bg-emerald-950">
+          <img
+            src="/images/case-studies/uno400/game-table.jpg"
+            alt="Uno400 real-time card table"
+            className="block h-auto w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div className="absolute right-5 top-10 w-[34%] rotate-[8deg] rounded-[1.7rem] border border-emerald-200/20 bg-slate-950 p-1.5 shadow-2xl">
+        <div className="pointer-events-none absolute inset-0 rounded-[1.7rem] bg-[linear-gradient(135deg,rgba(255,255,255,0.16),transparent_35%,rgba(255,255,255,0.06)_70%,transparent)]" />
+        <div className="absolute left-1/2 top-3 z-10 h-2.5 w-2.5 -translate-x-1/2 rounded-full bg-slate-950 ring-1 ring-emerald-900" />
+        <div className="relative overflow-hidden rounded-[1.35rem] bg-emerald-950">
+          <img
+            src="/images/case-studies/uno400/hand-play.jpg"
+            alt="Uno400 card play screen"
+            className="block h-auto w-full"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <FloatPill className="left-2 bottom-8">
+        <div className="text-muted-foreground">Realtime</div>
+        <div className="font-display text-sm font-semibold">Firebase rooms</div>
+      </FloatPill>
+      <FloatPill className="right-2 bottom-16">
+        <div className="text-muted-foreground">Logic</div>
+        <div className="font-display text-sm font-semibold">Host arbiter</div>
       </FloatPill>
     </div>
   );
