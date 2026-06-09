@@ -6,6 +6,7 @@ import {
   Boxes,
   Cloud,
   FileText,
+  Globe2,
   LockKeyhole,
   QrCode,
   ReceiptText,
@@ -16,6 +17,7 @@ import {
 
 const playStoreUrl = "https://play.google.com/store/apps/details?id=com.tijarati.pro&pli=1";
 const appStoreUrl = "https://apps.apple.com/us/app/tijarati-pro/id6757103664";
+const websiteUrl = "https://www.tijaratipro.com";
 
 const images = {
   home: "/images/case-studies/tijarati/home.jpg",
@@ -183,6 +185,25 @@ function StoreLink({
   );
 }
 
+function WebsiteLink() {
+  return (
+    <a
+      href={websiteUrl}
+      target="_blank"
+      rel="noreferrer"
+      className="inline-flex items-center gap-3 rounded-2xl bg-white px-4 py-2.5 text-left text-slate-950 shadow-[0_14px_34px_-18px_rgba(15,23,42,0.45)] ring-1 ring-slate-200 transition-transform hover:-translate-y-0.5"
+    >
+      <Globe2 className="h-5 w-5 text-sky-600" />
+      <span className="leading-none">
+        <span className="block text-[10px] font-medium uppercase tracking-wide text-slate-500">
+          Visit
+        </span>
+        <span className="mt-1 block text-sm font-semibold">Website</span>
+      </span>
+    </a>
+  );
+}
+
 export function TijaratiCaseStudy() {
   return (
     <section
@@ -226,6 +247,7 @@ export function TijaratiCaseStudy() {
               and store publishing for iOS and Android.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
+              <WebsiteLink />
               <StoreLink href={playStoreUrl} label="Google Play" store="google" />
               <StoreLink href={appStoreUrl} label="App Store" store="apple" />
             </div>
@@ -364,6 +386,7 @@ export function TijaratiCaseStudy() {
               </p>
             </div>
             <div className="flex flex-wrap gap-3">
+              <WebsiteLink />
               <StoreLink href={playStoreUrl} label="Google Play" store="google" />
               <StoreLink href={appStoreUrl} label="App Store" store="apple" />
             </div>
