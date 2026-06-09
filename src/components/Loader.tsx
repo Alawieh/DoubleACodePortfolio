@@ -9,7 +9,7 @@ export function Loader({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     const start = Date.now();
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    const duration = isMobile ? 750 : 1800;
+    const duration = isMobile ? 1650 : 1800;
     const id = setInterval(() => {
       const t = Math.min(1, (Date.now() - start) / duration);
       setProgress(Math.floor(t * 100));
@@ -17,8 +17,8 @@ export function Loader({ onDone }: { onDone: () => void }) {
         clearInterval(id);
         setTimeout(() => {
           setDone(true);
-          setTimeout(onDone, isMobile ? 250 : 550);
-        }, isMobile ? 80 : 220);
+          setTimeout(onDone, isMobile ? 450 : 550);
+        }, isMobile ? 180 : 220);
       }
     }, 30);
     return () => clearInterval(id);
