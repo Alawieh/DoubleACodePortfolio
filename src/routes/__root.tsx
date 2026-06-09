@@ -4,12 +4,15 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
+import aaLogo from "../assets/aa-logo.png";
+import pavoneFavicon from "../stores/pavone/public/assets/pavone-favicon.png";
 
 function NotFoundComponent() {
   return (
@@ -82,6 +85,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     ],
     links: [
       {
+        rel: "icon",
+        type: "image/png",
+        href: aaLogo,
+      },
+      {
+        rel: "apple-touch-icon",
+        href: aaLogo,
+      },
+      {
         rel: "stylesheet",
         href: appCss,
       },
@@ -109,6 +121,16 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+
+  useEffect(() => {
+    applySavedAaTheme();
+
+    const favicon = pathname.startsWith("/stores/pavone") ? pavoneFavicon : aaLogo;
+
+    setLinkTag("icon", favicon, "image/png");
+    setLinkTag("apple-touch-icon", favicon);
+  }, [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -116,4 +138,38 @@ function RootComponent() {
       <Outlet />
     </QueryClientProvider>
   );
+}
+
+function applySavedAaTheme() {
+  if (typeof window === "undefined") return;
+
+  const saved = window.localStorage.getItem("aa-theme");
+  const theme = saved === "light" ? "light" : "dark";
+  const root = document.documentElement;
+
+  root.classList.toggle("light", theme === "light");
+  root.style.colorScheme = theme;
+}
+
+function setLinkTag(rel: string, href: string, type?: string) {
+  if (typeof document === "undefined") return;
+
+  const links = Array.from(document.querySelectorAll<HTMLLinkElement>(`link[rel="${rel}"]`));
+  let link = links[0];
+
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = rel;
+    document.head.appendChild(link);
+  }
+
+  links.slice(1).forEach((extraLink) => extraLink.remove());
+
+  if (type) {
+    link.type = type;
+  } else {
+    link.removeAttribute("type");
+  }
+
+  link.href = href;
 }

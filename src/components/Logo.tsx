@@ -14,7 +14,7 @@ export function LogoMark({ className = "h-9 w-9", glow = false }: { className?: 
         src={logo}
         alt="Double A"
         className="h-full w-full object-contain"
-        style={{ objectPosition: "center 28%", clipPath: "inset(4% 4% 35% 4%)", transform: "scale(1.35)" }}
+        style={{ objectPosition: "center 28%", clipPath: "inset(4% 4% 34% 4%)", transform: "scale(1.35)" }}
       />
     </span>
   );

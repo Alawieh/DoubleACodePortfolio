@@ -9,17 +9,47 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as StoresRouteImport } from './routes/stores'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StoresIndexRouteImport } from './routes/stores.index'
 import { Route as WorkTijaratiProRouteImport } from './routes/work/tijarati-pro'
 import { Route as WorkSnapgoRouteImport } from './routes/work/snapgo'
 import { Route as WorkDetailingLabRouteImport } from './routes/work/detailing-lab'
 import { Route as WorkDataInsightsRouteImport } from './routes/work/data-insights'
+import { Route as StoresPavoneRouteImport } from './routes/stores/pavone'
 import { Route as MenusMarleysRouteImport } from './routes/menus/marleys'
+import { Route as StoresPavoneIndexRouteImport } from './routes/stores/pavone.index'
+import { Route as StoresPavoneWishlistRouteImport } from './routes/stores/pavone.wishlist'
+import { Route as StoresPavoneShopRouteImport } from './routes/stores/pavone.shop'
+import { Route as StoresPavoneAdminRouteImport } from './routes/stores/pavone.admin'
+import { Route as StoresPavoneAdminIndexRouteImport } from './routes/stores/pavone.admin.index'
+import { Route as StoresPavoneProductSlugRouteImport } from './routes/stores/pavone.product.$slug'
+import { Route as StoresPavoneCategorySlugRouteImport } from './routes/stores/pavone.category.$slug'
+import { Route as StoresPavoneAdminProductsRouteImport } from './routes/stores/pavone.admin.products'
+import { Route as StoresPavoneAdminOrdersRouteImport } from './routes/stores/pavone.admin.orders'
+import { Route as StoresPavoneAdminLoginRouteImport } from './routes/stores/pavone.admin.login'
+import { Route as StoresPavoneAdminCategoriesRouteImport } from './routes/stores/pavone.admin.categories'
 
+const StoresRoute = StoresRouteImport.update({
+  id: '/stores',
+  path: '/stores',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const StoresIndexRoute = StoresIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StoresRoute,
 } as any)
 const WorkTijaratiProRoute = WorkTijaratiProRouteImport.update({
   id: '/work/tijarati-pro',
@@ -41,66 +71,215 @@ const WorkDataInsightsRoute = WorkDataInsightsRouteImport.update({
   path: '/work/data-insights',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StoresPavoneRoute = StoresPavoneRouteImport.update({
+  id: '/pavone',
+  path: '/pavone',
+  getParentRoute: () => StoresRoute,
+} as any)
 const MenusMarleysRoute = MenusMarleysRouteImport.update({
   id: '/menus/marleys',
   path: '/menus/marleys',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StoresPavoneIndexRoute = StoresPavoneIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StoresPavoneRoute,
+} as any)
+const StoresPavoneWishlistRoute = StoresPavoneWishlistRouteImport.update({
+  id: '/wishlist',
+  path: '/wishlist',
+  getParentRoute: () => StoresPavoneRoute,
+} as any)
+const StoresPavoneShopRoute = StoresPavoneShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => StoresPavoneRoute,
+} as any)
+const StoresPavoneAdminRoute = StoresPavoneAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => StoresPavoneRoute,
+} as any)
+const StoresPavoneAdminIndexRoute = StoresPavoneAdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => StoresPavoneAdminRoute,
+} as any)
+const StoresPavoneProductSlugRoute = StoresPavoneProductSlugRouteImport.update({
+  id: '/product/$slug',
+  path: '/product/$slug',
+  getParentRoute: () => StoresPavoneRoute,
+} as any)
+const StoresPavoneCategorySlugRoute =
+  StoresPavoneCategorySlugRouteImport.update({
+    id: '/category/$slug',
+    path: '/category/$slug',
+    getParentRoute: () => StoresPavoneRoute,
+  } as any)
+const StoresPavoneAdminProductsRoute =
+  StoresPavoneAdminProductsRouteImport.update({
+    id: '/products',
+    path: '/products',
+    getParentRoute: () => StoresPavoneAdminRoute,
+  } as any)
+const StoresPavoneAdminOrdersRoute = StoresPavoneAdminOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => StoresPavoneAdminRoute,
+} as any)
+const StoresPavoneAdminLoginRoute = StoresPavoneAdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => StoresPavoneAdminRoute,
+} as any)
+const StoresPavoneAdminCategoriesRoute =
+  StoresPavoneAdminCategoriesRouteImport.update({
+    id: '/categories',
+    path: '/categories',
+    getParentRoute: () => StoresPavoneAdminRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/stores': typeof StoresRouteWithChildren
   '/menus/marleys': typeof MenusMarleysRoute
+  '/stores/pavone': typeof StoresPavoneRouteWithChildren
   '/work/data-insights': typeof WorkDataInsightsRoute
   '/work/detailing-lab': typeof WorkDetailingLabRoute
   '/work/snapgo': typeof WorkSnapgoRoute
   '/work/tijarati-pro': typeof WorkTijaratiProRoute
+  '/stores/': typeof StoresIndexRoute
+  '/stores/pavone/admin': typeof StoresPavoneAdminRouteWithChildren
+  '/stores/pavone/shop': typeof StoresPavoneShopRoute
+  '/stores/pavone/wishlist': typeof StoresPavoneWishlistRoute
+  '/stores/pavone/': typeof StoresPavoneIndexRoute
+  '/stores/pavone/admin/categories': typeof StoresPavoneAdminCategoriesRoute
+  '/stores/pavone/admin/login': typeof StoresPavoneAdminLoginRoute
+  '/stores/pavone/admin/orders': typeof StoresPavoneAdminOrdersRoute
+  '/stores/pavone/admin/products': typeof StoresPavoneAdminProductsRoute
+  '/stores/pavone/category/$slug': typeof StoresPavoneCategorySlugRoute
+  '/stores/pavone/product/$slug': typeof StoresPavoneProductSlugRoute
+  '/stores/pavone/admin/': typeof StoresPavoneAdminIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/menus/marleys': typeof MenusMarleysRoute
   '/work/data-insights': typeof WorkDataInsightsRoute
   '/work/detailing-lab': typeof WorkDetailingLabRoute
   '/work/snapgo': typeof WorkSnapgoRoute
   '/work/tijarati-pro': typeof WorkTijaratiProRoute
+  '/stores': typeof StoresIndexRoute
+  '/stores/pavone/shop': typeof StoresPavoneShopRoute
+  '/stores/pavone/wishlist': typeof StoresPavoneWishlistRoute
+  '/stores/pavone': typeof StoresPavoneIndexRoute
+  '/stores/pavone/admin/categories': typeof StoresPavoneAdminCategoriesRoute
+  '/stores/pavone/admin/login': typeof StoresPavoneAdminLoginRoute
+  '/stores/pavone/admin/orders': typeof StoresPavoneAdminOrdersRoute
+  '/stores/pavone/admin/products': typeof StoresPavoneAdminProductsRoute
+  '/stores/pavone/category/$slug': typeof StoresPavoneCategorySlugRoute
+  '/stores/pavone/product/$slug': typeof StoresPavoneProductSlugRoute
+  '/stores/pavone/admin': typeof StoresPavoneAdminIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
+  '/stores': typeof StoresRouteWithChildren
   '/menus/marleys': typeof MenusMarleysRoute
+  '/stores/pavone': typeof StoresPavoneRouteWithChildren
   '/work/data-insights': typeof WorkDataInsightsRoute
   '/work/detailing-lab': typeof WorkDetailingLabRoute
   '/work/snapgo': typeof WorkSnapgoRoute
   '/work/tijarati-pro': typeof WorkTijaratiProRoute
+  '/stores/': typeof StoresIndexRoute
+  '/stores/pavone/admin': typeof StoresPavoneAdminRouteWithChildren
+  '/stores/pavone/shop': typeof StoresPavoneShopRoute
+  '/stores/pavone/wishlist': typeof StoresPavoneWishlistRoute
+  '/stores/pavone/': typeof StoresPavoneIndexRoute
+  '/stores/pavone/admin/categories': typeof StoresPavoneAdminCategoriesRoute
+  '/stores/pavone/admin/login': typeof StoresPavoneAdminLoginRoute
+  '/stores/pavone/admin/orders': typeof StoresPavoneAdminOrdersRoute
+  '/stores/pavone/admin/products': typeof StoresPavoneAdminProductsRoute
+  '/stores/pavone/category/$slug': typeof StoresPavoneCategorySlugRoute
+  '/stores/pavone/product/$slug': typeof StoresPavoneProductSlugRoute
+  '/stores/pavone/admin/': typeof StoresPavoneAdminIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
+    | '/stores'
     | '/menus/marleys'
+    | '/stores/pavone'
     | '/work/data-insights'
     | '/work/detailing-lab'
     | '/work/snapgo'
     | '/work/tijarati-pro'
+    | '/stores/'
+    | '/stores/pavone/admin'
+    | '/stores/pavone/shop'
+    | '/stores/pavone/wishlist'
+    | '/stores/pavone/'
+    | '/stores/pavone/admin/categories'
+    | '/stores/pavone/admin/login'
+    | '/stores/pavone/admin/orders'
+    | '/stores/pavone/admin/products'
+    | '/stores/pavone/category/$slug'
+    | '/stores/pavone/product/$slug'
+    | '/stores/pavone/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/menus/marleys'
     | '/work/data-insights'
     | '/work/detailing-lab'
     | '/work/snapgo'
     | '/work/tijarati-pro'
+    | '/stores'
+    | '/stores/pavone/shop'
+    | '/stores/pavone/wishlist'
+    | '/stores/pavone'
+    | '/stores/pavone/admin/categories'
+    | '/stores/pavone/admin/login'
+    | '/stores/pavone/admin/orders'
+    | '/stores/pavone/admin/products'
+    | '/stores/pavone/category/$slug'
+    | '/stores/pavone/product/$slug'
+    | '/stores/pavone/admin'
   id:
     | '__root__'
     | '/'
+    | '/admin'
+    | '/stores'
     | '/menus/marleys'
+    | '/stores/pavone'
     | '/work/data-insights'
     | '/work/detailing-lab'
     | '/work/snapgo'
     | '/work/tijarati-pro'
+    | '/stores/'
+    | '/stores/pavone/admin'
+    | '/stores/pavone/shop'
+    | '/stores/pavone/wishlist'
+    | '/stores/pavone/'
+    | '/stores/pavone/admin/categories'
+    | '/stores/pavone/admin/login'
+    | '/stores/pavone/admin/orders'
+    | '/stores/pavone/admin/products'
+    | '/stores/pavone/category/$slug'
+    | '/stores/pavone/product/$slug'
+    | '/stores/pavone/admin/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
+  StoresRoute: typeof StoresRouteWithChildren
   MenusMarleysRoute: typeof MenusMarleysRoute
   WorkDataInsightsRoute: typeof WorkDataInsightsRoute
   WorkDetailingLabRoute: typeof WorkDetailingLabRoute
@@ -110,12 +289,33 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/stores': {
+      id: '/stores'
+      path: '/stores'
+      fullPath: '/stores'
+      preLoaderRoute: typeof StoresRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/stores/': {
+      id: '/stores/'
+      path: '/'
+      fullPath: '/stores/'
+      preLoaderRoute: typeof StoresIndexRouteImport
+      parentRoute: typeof StoresRoute
     }
     '/work/tijarati-pro': {
       id: '/work/tijarati-pro'
@@ -145,6 +345,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WorkDataInsightsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stores/pavone': {
+      id: '/stores/pavone'
+      path: '/pavone'
+      fullPath: '/stores/pavone'
+      preLoaderRoute: typeof StoresPavoneRouteImport
+      parentRoute: typeof StoresRoute
+    }
     '/menus/marleys': {
       id: '/menus/marleys'
       path: '/menus/marleys'
@@ -152,11 +359,144 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MenusMarleysRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stores/pavone/': {
+      id: '/stores/pavone/'
+      path: '/'
+      fullPath: '/stores/pavone/'
+      preLoaderRoute: typeof StoresPavoneIndexRouteImport
+      parentRoute: typeof StoresPavoneRoute
+    }
+    '/stores/pavone/wishlist': {
+      id: '/stores/pavone/wishlist'
+      path: '/wishlist'
+      fullPath: '/stores/pavone/wishlist'
+      preLoaderRoute: typeof StoresPavoneWishlistRouteImport
+      parentRoute: typeof StoresPavoneRoute
+    }
+    '/stores/pavone/shop': {
+      id: '/stores/pavone/shop'
+      path: '/shop'
+      fullPath: '/stores/pavone/shop'
+      preLoaderRoute: typeof StoresPavoneShopRouteImport
+      parentRoute: typeof StoresPavoneRoute
+    }
+    '/stores/pavone/admin': {
+      id: '/stores/pavone/admin'
+      path: '/admin'
+      fullPath: '/stores/pavone/admin'
+      preLoaderRoute: typeof StoresPavoneAdminRouteImport
+      parentRoute: typeof StoresPavoneRoute
+    }
+    '/stores/pavone/admin/': {
+      id: '/stores/pavone/admin/'
+      path: '/'
+      fullPath: '/stores/pavone/admin/'
+      preLoaderRoute: typeof StoresPavoneAdminIndexRouteImport
+      parentRoute: typeof StoresPavoneAdminRoute
+    }
+    '/stores/pavone/product/$slug': {
+      id: '/stores/pavone/product/$slug'
+      path: '/product/$slug'
+      fullPath: '/stores/pavone/product/$slug'
+      preLoaderRoute: typeof StoresPavoneProductSlugRouteImport
+      parentRoute: typeof StoresPavoneRoute
+    }
+    '/stores/pavone/category/$slug': {
+      id: '/stores/pavone/category/$slug'
+      path: '/category/$slug'
+      fullPath: '/stores/pavone/category/$slug'
+      preLoaderRoute: typeof StoresPavoneCategorySlugRouteImport
+      parentRoute: typeof StoresPavoneRoute
+    }
+    '/stores/pavone/admin/products': {
+      id: '/stores/pavone/admin/products'
+      path: '/products'
+      fullPath: '/stores/pavone/admin/products'
+      preLoaderRoute: typeof StoresPavoneAdminProductsRouteImport
+      parentRoute: typeof StoresPavoneAdminRoute
+    }
+    '/stores/pavone/admin/orders': {
+      id: '/stores/pavone/admin/orders'
+      path: '/orders'
+      fullPath: '/stores/pavone/admin/orders'
+      preLoaderRoute: typeof StoresPavoneAdminOrdersRouteImport
+      parentRoute: typeof StoresPavoneAdminRoute
+    }
+    '/stores/pavone/admin/login': {
+      id: '/stores/pavone/admin/login'
+      path: '/login'
+      fullPath: '/stores/pavone/admin/login'
+      preLoaderRoute: typeof StoresPavoneAdminLoginRouteImport
+      parentRoute: typeof StoresPavoneAdminRoute
+    }
+    '/stores/pavone/admin/categories': {
+      id: '/stores/pavone/admin/categories'
+      path: '/categories'
+      fullPath: '/stores/pavone/admin/categories'
+      preLoaderRoute: typeof StoresPavoneAdminCategoriesRouteImport
+      parentRoute: typeof StoresPavoneAdminRoute
+    }
   }
 }
 
+interface StoresPavoneAdminRouteChildren {
+  StoresPavoneAdminCategoriesRoute: typeof StoresPavoneAdminCategoriesRoute
+  StoresPavoneAdminLoginRoute: typeof StoresPavoneAdminLoginRoute
+  StoresPavoneAdminOrdersRoute: typeof StoresPavoneAdminOrdersRoute
+  StoresPavoneAdminProductsRoute: typeof StoresPavoneAdminProductsRoute
+  StoresPavoneAdminIndexRoute: typeof StoresPavoneAdminIndexRoute
+}
+
+const StoresPavoneAdminRouteChildren: StoresPavoneAdminRouteChildren = {
+  StoresPavoneAdminCategoriesRoute: StoresPavoneAdminCategoriesRoute,
+  StoresPavoneAdminLoginRoute: StoresPavoneAdminLoginRoute,
+  StoresPavoneAdminOrdersRoute: StoresPavoneAdminOrdersRoute,
+  StoresPavoneAdminProductsRoute: StoresPavoneAdminProductsRoute,
+  StoresPavoneAdminIndexRoute: StoresPavoneAdminIndexRoute,
+}
+
+const StoresPavoneAdminRouteWithChildren =
+  StoresPavoneAdminRoute._addFileChildren(StoresPavoneAdminRouteChildren)
+
+interface StoresPavoneRouteChildren {
+  StoresPavoneAdminRoute: typeof StoresPavoneAdminRouteWithChildren
+  StoresPavoneShopRoute: typeof StoresPavoneShopRoute
+  StoresPavoneWishlistRoute: typeof StoresPavoneWishlistRoute
+  StoresPavoneIndexRoute: typeof StoresPavoneIndexRoute
+  StoresPavoneCategorySlugRoute: typeof StoresPavoneCategorySlugRoute
+  StoresPavoneProductSlugRoute: typeof StoresPavoneProductSlugRoute
+}
+
+const StoresPavoneRouteChildren: StoresPavoneRouteChildren = {
+  StoresPavoneAdminRoute: StoresPavoneAdminRouteWithChildren,
+  StoresPavoneShopRoute: StoresPavoneShopRoute,
+  StoresPavoneWishlistRoute: StoresPavoneWishlistRoute,
+  StoresPavoneIndexRoute: StoresPavoneIndexRoute,
+  StoresPavoneCategorySlugRoute: StoresPavoneCategorySlugRoute,
+  StoresPavoneProductSlugRoute: StoresPavoneProductSlugRoute,
+}
+
+const StoresPavoneRouteWithChildren = StoresPavoneRoute._addFileChildren(
+  StoresPavoneRouteChildren,
+)
+
+interface StoresRouteChildren {
+  StoresPavoneRoute: typeof StoresPavoneRouteWithChildren
+  StoresIndexRoute: typeof StoresIndexRoute
+}
+
+const StoresRouteChildren: StoresRouteChildren = {
+  StoresPavoneRoute: StoresPavoneRouteWithChildren,
+  StoresIndexRoute: StoresIndexRoute,
+}
+
+const StoresRouteWithChildren =
+  StoresRoute._addFileChildren(StoresRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
+  StoresRoute: StoresRouteWithChildren,
   MenusMarleysRoute: MenusMarleysRoute,
   WorkDataInsightsRoute: WorkDataInsightsRoute,
   WorkDetailingLabRoute: WorkDetailingLabRoute,
