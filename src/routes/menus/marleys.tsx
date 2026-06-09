@@ -215,57 +215,57 @@ function MarleysMenuPage() {
     <main className="min-h-screen bg-[#050505] text-white">
       <section className="relative overflow-hidden border-b border-[#f9c516]/20 bg-[#050505]">
         <PatternBackdrop />
-        <DiagonalStripes className="right-[-5rem] top-8 h-56 w-[28rem] opacity-80" />
-        <DiagonalStripes className="bottom-[-5rem] left-[-7rem] h-48 w-[25rem] rotate-180 opacity-45" />
+        <DiagonalStripes className="right-[-5rem] top-8 hidden h-56 w-[28rem] opacity-80 sm:block" />
+        <DiagonalStripes className="bottom-[-5rem] left-[-7rem] hidden h-48 w-[25rem] rotate-180 opacity-45 sm:block" />
 
-        <div className="relative z-10 mx-auto max-w-6xl px-4 py-6 sm:px-6 lg:px-8">
+        <div className="relative z-10 mx-auto max-w-6xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
           <div className="flex items-center justify-between gap-4">
-            <a href="/" className="text-xs font-bold uppercase tracking-[0.24em] text-zinc-400">
+            <a href="/" className="text-[0.65rem] font-bold uppercase tracking-[0.2em] text-zinc-400 sm:text-xs sm:tracking-[0.24em]">
               Double A Menus
             </a>
-            <span className="rounded-full border border-[#f9c516]/30 px-3 py-1 text-xs font-black uppercase tracking-[0.18em] text-[#f9c516]">
+            <span className="rounded-full border border-[#f9c516]/30 px-2.5 py-1 text-[0.65rem] font-black uppercase tracking-[0.14em] text-[#f9c516] sm:px-3 sm:text-xs sm:tracking-[0.18em]">
               QR Menu
             </span>
           </div>
 
-          <div className="grid gap-6 py-10 md:grid-cols-[1.05fr_0.95fr] md:items-end">
+          <div className="grid gap-5 py-8 sm:gap-6 sm:py-10 md:grid-cols-[1.05fr_0.95fr] md:items-end">
             <div>
-              <div className="mb-3 flex h-12 w-16 items-center text-[#f9c516]">
+              <div className="mb-3 flex h-10 w-14 items-center text-[#f9c516] sm:h-12 sm:w-16">
                 <CrownMark />
               </div>
-              <p className="font-display text-5xl font-black uppercase leading-none tracking-[0.08em] sm:text-7xl">
+              <p className="font-display text-[2.85rem] font-black uppercase leading-none tracking-[0.04em] sm:text-7xl sm:tracking-[0.08em]">
                 Marley's
               </p>
-              <h1 className="font-display text-5xl font-black italic leading-[0.75] text-[#f9c516] sm:text-7xl">
+              <h1 className="font-display text-[2.85rem] font-black italic leading-[0.85] text-[#f9c516] sm:text-7xl sm:leading-[0.75]">
                 Menu
               </h1>
-              <p className="mt-5 max-w-xl text-base font-semibold leading-relaxed text-zinc-300 sm:text-lg">
+              <p className="mt-4 max-w-xl text-sm font-semibold leading-7 text-zinc-300 sm:mt-5 sm:text-lg sm:leading-relaxed">
                 Burgers, sandwiches, fries, appetizers, extras, and drinks built
                 into a fast mobile menu for table-side ordering.
               </p>
             </div>
 
-            <div className="relative overflow-hidden rounded-lg border border-[#f9c516]/25 bg-[#111]/90 p-4 shadow-[0_24px_70px_rgba(0,0,0,0.45)]">
-              <div className="absolute right-0 top-0 h-full w-24 opacity-25 [background:repeating-linear-gradient(150deg,transparent_0_14px,#f9c516_14px_22px,transparent_22px_36px)]" />
-              <p className="text-xs font-black uppercase tracking-[0.22em] text-[#f9c516]">
+            <div className="relative overflow-hidden rounded-lg border border-[#f9c516]/20 bg-[#111]/90 p-3 shadow-[0_18px_50px_rgba(0,0,0,0.35)] sm:border-[#f9c516]/25 sm:p-4 sm:shadow-[0_24px_70px_rgba(0,0,0,0.45)]">
+              <div className="absolute right-0 top-0 hidden h-full w-24 opacity-25 [background:repeating-linear-gradient(150deg,transparent_0_14px,#f9c516_14px_22px,transparent_22px_36px)] sm:block" />
+              <p className="text-[0.68rem] font-black uppercase tracking-[0.2em] text-[#f9c516] sm:text-xs sm:tracking-[0.22em]">
                 Popular Picks
               </p>
-              <div className="mt-4 grid gap-3">
-                {featuredProducts.slice(0, 4).map((product) => (
+              <div className="mt-3 grid gap-2 sm:mt-4 sm:gap-3">
+                {featuredProducts.slice(0, 3).map((product) => (
                   <div
                     key={`${product.category}-${product.name}`}
-                    className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-b border-white/10 pb-3 last:border-0 last:pb-0"
+                    className="grid grid-cols-[minmax(0,1fr)_auto] gap-3 border-b border-white/10 pb-2.5 last:border-0 last:pb-0 sm:pb-3"
                   >
                     <div>
-                      <p className="font-display text-lg font-black leading-tight">
+                      <p className="font-display text-base font-black leading-tight sm:text-lg">
                         {product.name}
                       </p>
-                      <p className="mt-0.5 text-xs font-bold uppercase tracking-[0.14em] text-zinc-500">
+                      <p className="mt-0.5 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-zinc-500 sm:text-xs sm:tracking-[0.14em]">
                         {product.category}
                       </p>
                     </div>
                     {product.price ? (
-                      <p className="whitespace-nowrap font-display text-base font-black text-[#f9c516]">
+                      <p className="whitespace-nowrap font-display text-sm font-black text-[#f9c516] sm:text-base">
                         {product.price}
                       </p>
                     ) : null}
@@ -278,9 +278,9 @@ function MarleysMenuPage() {
       </section>
 
       <section className="sticky top-0 z-30 border-b border-[#f9c516]/15 bg-[#050505]/95 backdrop-blur">
-        <div className="mx-auto max-w-6xl px-4 py-3 sm:px-6 lg:px-8">
-          <div className="grid gap-3 lg:grid-cols-[1fr_18rem] lg:items-center">
-            <nav className="flex gap-2 overflow-x-auto pb-1" aria-label="Menu categories">
+        <div className="mx-auto max-w-6xl px-3 py-2.5 sm:px-6 sm:py-3 lg:px-8">
+          <div className="grid gap-2.5 lg:grid-cols-[1fr_18rem] lg:items-center">
+            <nav className="-mx-3 flex gap-1.5 overflow-x-auto px-3 pb-1 sm:mx-0 sm:gap-2 sm:px-0" aria-label="Menu categories">
               <CategoryButton
                 active={activeCategory === "all"}
                 label="All"
@@ -309,7 +309,7 @@ function MarleysMenuPage() {
         </div>
       </section>
 
-      <section className="relative mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
+      <section className="relative mx-auto max-w-6xl px-3 py-6 sm:px-6 sm:py-8 lg:px-8">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-96 opacity-30 [background-image:radial-gradient(#f9c516_1px,transparent_1px)] [background-size:12px_12px] [mask-image:linear-gradient(to_bottom,black,transparent)]" />
 
         <div className="relative z-10 space-y-8">
@@ -357,7 +357,7 @@ function CategoryButton({
       type="button"
       onClick={onClick}
       className={[
-        "shrink-0 rounded-full border px-4 py-2 text-sm font-black uppercase tracking-[0.12em] transition",
+        "shrink-0 rounded-full border px-3.5 py-2 text-xs font-black uppercase tracking-[0.12em] transition sm:px-4 sm:text-sm",
         active
           ? "border-[#f9c516] bg-[#f9c516] text-black"
           : "border-white/12 bg-white/[0.04] text-zinc-300 hover:border-[#f9c516]/70 hover:text-[#f9c516]",
@@ -372,15 +372,15 @@ function MenuCategory({ category }: { category: Category }) {
   return (
     <section
       id={category.id}
-      className="relative scroll-mt-28 overflow-hidden rounded-lg border border-white/10 bg-[#0d0d0d] p-4 sm:p-5"
+      className="relative scroll-mt-28 overflow-hidden rounded-lg border border-white/10 bg-[#0d0d0d] p-3.5 sm:p-5"
     >
-      <div className="pointer-events-none absolute right-0 top-0 h-16 w-40 opacity-70 [background:linear-gradient(150deg,transparent_0_38%,#f9c516_38%_54%,transparent_54%)]" />
-      <div className="mb-5 flex flex-wrap items-end justify-between gap-3 border-b border-[#f9c516]/20 pb-4">
+      <div className="pointer-events-none absolute right-0 top-0 hidden h-16 w-40 opacity-70 [background:linear-gradient(150deg,transparent_0_38%,#f9c516_38%_54%,transparent_54%)] sm:block" />
+      <div className="mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-[#f9c516]/20 pb-3.5 sm:mb-5 sm:pb-4">
         <div>
-          <h2 className="font-display text-3xl font-black uppercase leading-none text-[#f9c516] underline decoration-[#f9c516] decoration-2 underline-offset-4 sm:text-4xl">
+          <h2 className="font-display text-2xl font-black uppercase leading-none text-[#f9c516] underline decoration-[#f9c516] decoration-2 underline-offset-4 sm:text-4xl">
             {category.name}
           </h2>
-          <p className="mt-3 max-w-2xl text-sm font-semibold leading-relaxed text-zinc-400">
+          <p className="mt-2 max-w-2xl text-sm font-semibold leading-relaxed text-zinc-400 sm:mt-3">
             {category.summary}
           </p>
         </div>
@@ -400,11 +400,11 @@ function MenuCategory({ category }: { category: Category }) {
 
 function ProductCard({ product }: { product: Product }) {
   return (
-    <article className="group rounded-lg border border-white/10 bg-[#151515] p-4 transition hover:border-[#f9c516]/60 hover:bg-[#181818]">
-      <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4">
+    <article className="group rounded-lg border border-white/10 bg-[#151515] p-3.5 transition hover:border-[#f9c516]/60 hover:bg-[#181818] sm:p-4">
+      <div className="grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-start sm:gap-4">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <h3 className="font-display text-xl font-black leading-tight text-white">
+            <h3 className="font-display text-lg font-black leading-tight text-white sm:text-xl">
               {product.name}
             </h3>
             {product.featured ? (
@@ -423,11 +423,11 @@ function ProductCard({ product }: { product: Product }) {
         </div>
 
         {product.price ? (
-          <p className="whitespace-nowrap rounded-md bg-[#f9c516] px-2.5 py-1 font-display text-sm font-black text-black sm:text-base">
+          <p className="w-fit whitespace-nowrap rounded-md bg-[#f9c516] px-2.5 py-1 font-display text-sm font-black text-black sm:text-base">
             {product.price}
           </p>
         ) : (
-          <p className="whitespace-nowrap rounded-md border border-white/10 px-2.5 py-1 text-xs font-black uppercase tracking-[0.14em] text-zinc-400">
+          <p className="w-fit whitespace-nowrap rounded-md border border-white/10 px-2.5 py-1 text-xs font-black uppercase tracking-[0.14em] text-zinc-400">
             Ask
           </p>
         )}
