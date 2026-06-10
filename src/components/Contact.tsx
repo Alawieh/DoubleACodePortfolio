@@ -19,7 +19,12 @@ const channels = [
     href: "https://wa.me/96176540004",
     type: "whatsapp",
   },
-  { label: "Instagram", value: "@doublea.studio", href: "https://instagram.com/", type: "default" },
+  {
+    label: "Instagram",
+    value: "@doubleacode",
+    href: "https://www.instagram.com/doubleacode?igsh=YTg1M3o0bmNjZWZh&utm_source=qr",
+    type: "external",
+  },
 ];
 
 const web3FormsAccessKey = import.meta.env.VITE_WEB3FORMS_ACCESS_KEY ?? "";
@@ -112,8 +117,8 @@ export function Contact() {
             <a
               key={`${c.label}-${c.value}`}
               href={c.href}
-              target={c.type === "whatsapp" ? "_blank" : undefined}
-              rel={c.type === "whatsapp" ? "noreferrer" : undefined}
+              target={c.type === "whatsapp" || c.type === "external" ? "_blank" : undefined}
+              rel={c.type === "whatsapp" || c.type === "external" ? "noreferrer" : undefined}
               className={[
                 "group bg-background p-5 text-left transition-colors",
                 c.type === "whatsapp"

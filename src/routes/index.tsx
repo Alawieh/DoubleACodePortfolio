@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Loader } from "@/components/Loader";
 import { CustomCursor } from "@/components/CustomCursor";
 import { ScrollProgress } from "@/components/ScrollProgress";
@@ -33,25 +33,22 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
-  const [loaded, setLoaded] = useState(false);
+  const [showLoader, setShowLoader] = useState(true);
+  const handleLoaderDone = useCallback(() => setShowLoader(false), []);
 
   return (
     <main className="relative min-h-screen bg-background text-foreground">
-      <Loader onDone={() => setLoaded(true)} />
-      {loaded && (
-        <>
-          <CustomCursor />
-          <ScrollProgress />
-          <Nav />
-          <Hero />
-          <Journey />
-          <Capabilities />
-          <Projects />
-          <Metrics />
-          <Founders />
-          <Contact />
-        </>
-      )}
+      <CustomCursor />
+      <ScrollProgress />
+      <Nav />
+      <Hero />
+      <Journey />
+      <Capabilities />
+      <Projects />
+      <Metrics />
+      <Founders />
+      <Contact />
+      {showLoader && <Loader onDone={handleLoaderDone} />}
     </main>
   );
 }

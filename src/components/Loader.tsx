@@ -9,7 +9,7 @@ export function Loader({ onDone }: { onDone: () => void }) {
   useEffect(() => {
     const start = Date.now();
     const isMobile = window.matchMedia("(max-width: 767px)").matches;
-    const duration = isMobile ? 1300 : 2400;
+    const duration = isMobile ? 1650 : 1800;
     const id = setInterval(() => {
       const t = Math.min(1, (Date.now() - start) / duration);
       setProgress(Math.floor(t * 100));
@@ -17,8 +17,8 @@ export function Loader({ onDone }: { onDone: () => void }) {
         clearInterval(id);
         setTimeout(() => {
           setDone(true);
-          setTimeout(onDone, isMobile ? 300 : 700);
-        }, isMobile ? 100 : 250);
+          setTimeout(onDone, isMobile ? 450 : 550);
+        }, isMobile ? 180 : 220);
       }
     }, 30);
     return () => clearInterval(id);
@@ -32,7 +32,7 @@ export function Loader({ onDone }: { onDone: () => void }) {
           exit={{ opacity: 0, transition: { duration: 0.6 } }}
         >
           <div className="absolute inset-0 bg-hex opacity-40" />
-          <div className="absolute inset-0" style={{ background: "var(--gradient-radial)" }} />
+          <div className="absolute inset-0 hidden md:block" style={{ background: "var(--gradient-radial)" }} />
 
           <div className="relative flex flex-col items-center gap-8">
             <motion.div

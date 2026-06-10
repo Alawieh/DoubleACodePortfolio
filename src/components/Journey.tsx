@@ -15,14 +15,14 @@ export function Journey() {
   const lineHeight = useTransform(scrollYProgress, [0.1, 0.9], ["0%", "100%"]);
 
   return (
-    <section ref={ref} className="relative py-32 px-6">
+    <section ref={ref} className="relative px-6 py-24 md:py-32">
       <div className="mx-auto max-w-6xl">
         <SectionLabel>01 / Journey</SectionLabel>
-        <h2 className="mt-4 max-w-3xl font-display text-4xl font-bold leading-tight tracking-tight md:text-6xl">
+        <h2 className="mt-4 max-w-3xl font-display text-4xl font-bold leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
           Watch an idea become <span className="text-gradient-accent">a product</span>.
         </h2>
 
-        <div className="relative mt-24 grid grid-cols-1 gap-16 md:grid-cols-[1fr_2px_1fr]">
+        <div className="relative mt-10 grid grid-cols-1 gap-4 md:mt-24 md:grid-cols-[1fr_2px_1fr] md:gap-16">
           {/* Spine */}
           <div className="absolute left-6 top-0 hidden h-full w-px bg-border md:left-1/2 md:block">
             <motion.div
@@ -48,12 +48,12 @@ function Stage({ stage, index }: { stage: (typeof stages)[number]; index: number
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
       transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-      className={`col-span-full grid grid-cols-1 items-center gap-8 md:grid-cols-[1fr_2px_1fr] ${isLeft ? "" : ""}`}
+      className={`col-span-full grid grid-cols-1 items-center gap-8 rounded-2xl border border-border bg-surface/45 p-5 md:grid-cols-[1fr_2px_1fr] md:rounded-none md:border-0 md:bg-transparent md:p-0 ${isLeft ? "" : ""}`}
     >
       <div className={`${isLeft ? "md:text-right md:pr-12" : "md:order-3 md:pl-12"}`}>
         <div className="font-mono text-xs text-accent">{stage.id}</div>
-        <h3 className="mt-2 font-display text-3xl font-semibold md:text-4xl">{stage.title}</h3>
-        <p className="mt-3 max-w-md text-muted-foreground md:ml-auto">{stage.text}</p>
+        <h3 className="mt-2 font-display text-2xl font-semibold md:text-4xl">{stage.title}</h3>
+        <p className="mt-2 max-w-md text-sm leading-relaxed text-muted-foreground md:mt-3 md:ml-auto md:text-base">{stage.text}</p>
       </div>
 
       <div className="hidden items-center justify-center md:order-2 md:flex">

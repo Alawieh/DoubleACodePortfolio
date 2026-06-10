@@ -16,7 +16,7 @@ export function Hero() {
       {/* Backgrounds — hexagonal field */}
       <div className="absolute inset-0 bg-hex opacity-60" />
       <div className="absolute inset-0" style={{ background: "var(--gradient-radial)" }} />
-      <div className="absolute left-1/2 top-1/2 -z-10 h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[140px] animate-pulse-glow"
+      <div className="absolute left-1/2 top-1/2 -z-10 hidden h-[700px] w-[700px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[140px] animate-pulse-glow md:block"
         style={{ background: "conic-gradient(from 120deg, oklch(0.55 0.24 305 / 0.4), oklch(0.65 0.27 5 / 0.35), oklch(0.78 0.18 55 / 0.3), oklch(0.55 0.24 305 / 0.4))" }}
       />
 
@@ -70,7 +70,7 @@ export function Hero() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: isMobile ? 0.12 : 0.5, duration: isMobile ? 0.35 : 0.5 }}
-          className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface/60 px-4 py-1.5 text-xs text-muted-foreground backdrop-blur"
+          className="mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-surface/80 px-4 py-1.5 text-xs text-muted-foreground md:bg-surface/60 md:backdrop-blur"
         >
           <span className="h-1.5 w-1.5 rounded-full animate-pulse" style={{ background: "var(--gradient-brand)" }} />
           Now accepting new partnerships · 2026
@@ -108,7 +108,7 @@ export function Hero() {
           </a>
           <a
             href="#contact"
-            className="rounded-full border border-border bg-surface/40 px-7 py-3.5 text-sm font-medium text-foreground backdrop-blur transition-colors hover:bg-surface"
+            className="rounded-full border border-border bg-surface/70 px-7 py-3.5 text-sm font-medium text-foreground transition-colors hover:bg-surface md:bg-surface/40 md:backdrop-blur"
           >
             Start Your Project
           </a>

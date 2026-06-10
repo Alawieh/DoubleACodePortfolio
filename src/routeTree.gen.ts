@@ -13,6 +13,7 @@ import { Route as StoresRouteImport } from './routes/stores'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StoresIndexRouteImport } from './routes/stores.index'
+import { Route as WorkUno400RouteImport } from './routes/work/uno400'
 import { Route as WorkTijaratiProRouteImport } from './routes/work/tijarati-pro'
 import { Route as WorkSnapgoRouteImport } from './routes/work/snapgo'
 import { Route as WorkDetailingLabRouteImport } from './routes/work/detailing-lab'
@@ -52,6 +53,11 @@ const StoresIndexRoute = StoresIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => StoresRoute,
+} as any)
+const WorkUno400Route = WorkUno400RouteImport.update({
+  id: '/work/uno400',
+  path: '/work/uno400',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const WorkTijaratiProRoute = WorkTijaratiProRouteImport.update({
   id: '/work/tijarati-pro',
@@ -164,6 +170,7 @@ export interface FileRoutesByFullPath {
   '/work/detailing-lab': typeof WorkDetailingLabRoute
   '/work/snapgo': typeof WorkSnapgoRoute
   '/work/tijarati-pro': typeof WorkTijaratiProRoute
+  '/work/uno400': typeof WorkUno400Route
   '/stores/': typeof StoresIndexRoute
   '/stores/pavone/admin': typeof StoresPavoneAdminRouteWithChildren
   '/stores/pavone/shop': typeof StoresPavoneShopRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/work/detailing-lab': typeof WorkDetailingLabRoute
   '/work/snapgo': typeof WorkSnapgoRoute
   '/work/tijarati-pro': typeof WorkTijaratiProRoute
+  '/work/uno400': typeof WorkUno400Route
   '/stores': typeof StoresIndexRoute
   '/stores/pavone/shop': typeof StoresPavoneShopRoute
   '/stores/pavone/wishlist': typeof StoresPavoneWishlistRoute
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/work/detailing-lab': typeof WorkDetailingLabRoute
   '/work/snapgo': typeof WorkSnapgoRoute
   '/work/tijarati-pro': typeof WorkTijaratiProRoute
+  '/work/uno400': typeof WorkUno400Route
   '/stores/': typeof StoresIndexRoute
   '/stores/pavone/admin': typeof StoresPavoneAdminRouteWithChildren
   '/stores/pavone/shop': typeof StoresPavoneShopRoute
@@ -239,6 +248,7 @@ export interface FileRouteTypes {
     | '/work/detailing-lab'
     | '/work/snapgo'
     | '/work/tijarati-pro'
+    | '/work/uno400'
     | '/stores/'
     | '/stores/pavone/admin'
     | '/stores/pavone/shop'
@@ -262,6 +272,7 @@ export interface FileRouteTypes {
     | '/work/detailing-lab'
     | '/work/snapgo'
     | '/work/tijarati-pro'
+    | '/work/uno400'
     | '/stores'
     | '/stores/pavone/shop'
     | '/stores/pavone/wishlist'
@@ -286,6 +297,7 @@ export interface FileRouteTypes {
     | '/work/detailing-lab'
     | '/work/snapgo'
     | '/work/tijarati-pro'
+    | '/work/uno400'
     | '/stores/'
     | '/stores/pavone/admin'
     | '/stores/pavone/shop'
@@ -311,6 +323,7 @@ export interface RootRouteChildren {
   WorkDetailingLabRoute: typeof WorkDetailingLabRoute
   WorkSnapgoRoute: typeof WorkSnapgoRoute
   WorkTijaratiProRoute: typeof WorkTijaratiProRoute
+  WorkUno400Route: typeof WorkUno400Route
 }
 
 declare module '@tanstack/react-router' {
@@ -342,6 +355,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/stores/'
       preLoaderRoute: typeof StoresIndexRouteImport
       parentRoute: typeof StoresRoute
+    }
+    '/work/uno400': {
+      id: '/work/uno400'
+      path: '/work/uno400'
+      fullPath: '/work/uno400'
+      preLoaderRoute: typeof WorkUno400RouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/work/tijarati-pro': {
       id: '/work/tijarati-pro'
@@ -546,6 +566,7 @@ const rootRouteChildren: RootRouteChildren = {
   WorkDetailingLabRoute: WorkDetailingLabRoute,
   WorkSnapgoRoute: WorkSnapgoRoute,
   WorkTijaratiProRoute: WorkTijaratiProRoute,
+  WorkUno400Route: WorkUno400Route,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

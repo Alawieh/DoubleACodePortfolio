@@ -1,4 +1,4 @@
-import logo from "@/assets/aa-logo.png";
+import logo from "@/assets/aa-logo-optimized.png";
 
 export function LogoMark({ className = "h-9 w-9", glow = false }: { className?: string; glow?: boolean }) {
   return (

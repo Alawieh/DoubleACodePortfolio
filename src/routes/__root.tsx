@@ -11,7 +11,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import aaLogo from "../assets/aa-logo.png";
+import aaLogo from "../assets/aa-logo-optimized.png";
 import pavoneFavicon from "../stores/pavone/public/assets/pavone-favicon.png";
 
 function NotFoundComponent() {
