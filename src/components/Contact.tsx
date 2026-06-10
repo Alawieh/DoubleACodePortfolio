@@ -3,8 +3,8 @@ import { motion } from "framer-motion";
 const channels = [
   {
     label: "Email",
-    value: "doubleafounder@gmail.com",
-    href: "mailto:doubleafounder@gmail.com",
+    value: "info@doubleacode.com",
+    href: "mailto:info@doubleacode.com",
     type: "email",
   },
   {
@@ -70,7 +70,7 @@ export function Contact() {
             <input type="hidden" name="access_key" value={web3FormsAccessKey} />
             <input type="hidden" name="subject" value="New Double A project inquiry" />
             <input type="hidden" name="from_name" value="Double A Portfolio" />
-            <input type="hidden" name="to" value="doubleafounder@gmail.com" />
+            <input type="hidden" name="to" value="info@doubleacode.com" />
             <input type="checkbox" name="botcheck" className="hidden" tabIndex={-1} autoComplete="off" />
 
             <div className="grid gap-4 md:grid-cols-2">
