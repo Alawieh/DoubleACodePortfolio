@@ -1,9 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ProductCard } from "@/stores/pavone/components/ProductCard";
-import { products, categories, type CategorySlug } from "@/stores/pavone/data/products";
+import type { CategorySlug } from "@/stores/pavone/data/products";
 import { useMemo, useState } from "react";
 import { Search } from "lucide-react";
 import { PavoneShell } from "@/stores/pavone/PavoneShell";
+import { PavoneDataState, usePavoneCatalog } from "@/stores/pavone/lib/use-pavone-data";
 
 export const Route = createFileRoute("/stores/pavone/shop")({
   head: () => ({
@@ -28,6 +29,8 @@ function PavoneShopRoute() {
 }
 
 function ShopPage() {
+  const { data, loading, error } = usePavoneCatalog();
+  const { products, categories } = data;
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<CategorySlug | "all">("all");
   const [maxPrice, setMaxPrice] = useState(300);
@@ -45,9 +48,10 @@ function ShopPage() {
     if (sort === "price-desc") list = [...list].sort((a, b) => (b.salePrice ?? b.price) - (a.salePrice ?? a.price));
     if (sort === "new") list = [...list].sort((a, b) => Number(b.tags?.includes("new")) - Number(a.tags?.includes("new")));
     return list;
-  }, [q, cat, maxPrice, sort]);
+  }, [products, q, cat, maxPrice, sort]);
 
   return (
+    <PavoneDataState loading={loading} error={error} empty={products.length === 0}>
     <div className="container-page py-12 md:py-16">
       <div className="text-center max-w-2xl mx-auto">
         <h1 className="font-display text-5xl md:text-6xl">The Collection</h1>
@@ -109,6 +113,7 @@ function ShopPage() {
         </div>
       </div>
     </div>
+    </PavoneDataState>
   );
 }
 

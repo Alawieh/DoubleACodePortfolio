@@ -1,22 +1,18 @@
-import { createFileRoute, Outlet, Link, useRouterState, useNavigate, redirect } from "@tanstack/react-router";
-import { LayoutDashboard, Package, FolderTree, ShoppingCart, LogOut, RotateCcw, Store } from "lucide-react";
-import { adminActions, useAdminStore } from "@/stores/pavone/lib/admin/mock-store";
+import { createFileRoute, Outlet, Link, useRouterState, useNavigate } from "@tanstack/react-router";
+import { LayoutDashboard, Package, FolderTree, ShoppingCart, LogOut, Database, Store, Settings, Sparkles } from "lucide-react";
+import { getStoredSession, signOutAdmin } from "@/stores/pavone/lib/supabase";
+import { seedCatalogIfEmpty } from "@/stores/pavone/lib/pavone-api";
+import { useState } from "react";
 
 export const Route = createFileRoute("/stores/pavone/admin")({
   component: AdminLayout,
-  beforeLoad: ({ location }) => {
-    if (typeof window === "undefined") return;
-    const authed = localStorage.getItem("pavone_admin_authed") === "1";
-    if (!authed && location.pathname !== "/stores/pavone/admin/login") {
-      throw redirect({ to: "/stores/pavone/admin/login" });
-    }
-  },
 });
 
 function AdminLayout() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navigate = useNavigate();
-  const authed = useAdminStore((s) => s.authed);
+  const authed = Boolean(getStoredSession()?.access_token);
+  const [seedMessage, setSeedMessage] = useState("");
 
   if (pathname === "/stores/pavone/admin/login") {
     return (
@@ -27,18 +23,17 @@ function AdminLayout() {
   }
 
   if (!authed) {
-    return (
-      <div className="pavone-store">
-        <Outlet />
-      </div>
-    );
+    navigate({ to: "/stores/pavone/admin/login" });
+    return null;
   }
 
   const nav: { to: string; label: string; icon: typeof LayoutDashboard; exact?: boolean }[] = [
     { to: "/stores/pavone/admin", label: "Dashboard", icon: LayoutDashboard, exact: true },
     { to: "/stores/pavone/admin/products", label: "Products", icon: Package },
     { to: "/stores/pavone/admin/categories", label: "Categories", icon: FolderTree },
+    { to: "/stores/pavone/admin/inspirations", label: "Inspirations", icon: Sparkles },
     { to: "/stores/pavone/admin/orders", label: "Orders", icon: ShoppingCart },
+    { to: "/stores/pavone/admin/settings", label: "Settings", icon: Settings },
   ];
 
   return (
@@ -72,13 +67,22 @@ function AdminLayout() {
               <Store className="h-4 w-4" /> View storefront
             </Link>
             <button
-              onClick={() => { adminActions.resetDemo(); }}
+              onClick={async () => {
+                setSeedMessage("");
+                try {
+                  const result = await seedCatalogIfEmpty();
+                  setSeedMessage(result.inserted ? "Catalog seeded." : "Catalog already has products.");
+                } catch (err) {
+                  setSeedMessage(err instanceof Error ? err.message : "Could not seed catalog.");
+                }
+              }}
               className="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground hover:bg-cream hover:text-cocoa"
             >
-              <RotateCcw className="h-4 w-4" /> Reset demo data
+              <Database className="h-4 w-4" /> Seed catalog
             </button>
+            {seedMessage && <p className="px-3 text-xs text-muted-foreground">{seedMessage}</p>}
             <button
-              onClick={() => { adminActions.logout(); navigate({ to: "/stores/pavone/admin/login" }); }}
+              onClick={() => { signOutAdmin(); navigate({ to: "/stores/pavone/admin/login" }); }}
               className="w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm text-muted-foreground hover:bg-cream hover:text-cocoa"
             >
               <LogOut className="h-4 w-4" /> Sign out
@@ -100,7 +104,7 @@ function AdminLayout() {
                   </Link>
                 );
               })}
-              <button onClick={() => { adminActions.logout(); navigate({ to: "/stores/pavone/admin/login" }); }} className="p-2 text-muted-foreground">
+              <button onClick={() => { signOutAdmin(); navigate({ to: "/stores/pavone/admin/login" }); }} className="p-2 text-muted-foreground">
                 <LogOut className="h-4 w-4" />
               </button>
             </div>

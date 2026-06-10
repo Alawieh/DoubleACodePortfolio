@@ -4,19 +4,21 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useCart } from "@/stores/pavone/context/CartContext";
 import { useFavorites } from "@/stores/pavone/context/FavoritesContext";
-import { BRAND_NAME } from "@/stores/pavone/lib/whatsapp";
-import { categories } from "@/stores/pavone/data/products";
+import { usePavoneCatalog } from "@/stores/pavone/lib/use-pavone-data";
 import logo from "@/stores/pavone/public/assets/logo-image.jpg";
+
+const BRAND_NAME = "Pavone.lb";
 
 export function Header() {
   const { count, open } = useCart();
   const { count: favCount } = useFavorites();
+  const { data } = usePavoneCatalog();
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="bg-gradient-to-r from-sage via-lavender to-peach text-cocoa text-center text-[11px] py-2 tracking-[0.22em] uppercase font-medium">
-        ✿ Spring/Summer Edit — Complimentary shipping over $150 · WhatsApp ordering
+        Spring/Summer Edit - Complimentary shipping over $150
       </div>
       <div className="container-page flex items-center justify-between h-16 md:h-20">
         <button
@@ -39,7 +41,7 @@ export function Header() {
           <Link to="/stores/pavone/shop" className="hover:text-taupe transition-colors" activeProps={{ className: "text-taupe" }}>
             Shop All
           </Link>
-          {categories.slice(0, 4).map((c) => (
+          {data.categories.slice(0, 4).map((c) => (
             <Link
               key={c.slug}
               to="/stores/pavone/category/$slug"
@@ -93,7 +95,7 @@ export function Header() {
           <nav className="container-page flex flex-col gap-4 py-6 text-lg font-display">
             <Link to="/stores/pavone" onClick={() => setMobileOpen(false)}>Home</Link>
             <Link to="/stores/pavone/shop" onClick={() => setMobileOpen(false)}>Shop All</Link>
-            {categories.map((c) => (
+            {data.categories.map((c) => (
               <Link
                 key={c.slug}
                 to="/stores/pavone/category/$slug"

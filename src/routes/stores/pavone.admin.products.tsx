@@ -1,16 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { adminActions, newProductId, useAdminStore } from "@/stores/pavone/lib/admin/mock-store";
 import type { Product, CategorySlug } from "@/stores/pavone/data/products";
-import { Plus, Pencil, Trash2, Search, X } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, X, Upload } from "lucide-react";
+import { deleteProduct, upsertProduct } from "@/stores/pavone/lib/pavone-api";
+import { usePavoneCatalog } from "@/stores/pavone/lib/use-pavone-data";
+import { uploadPavoneImage } from "@/stores/pavone/lib/supabase";
 
 export const Route = createFileRoute("/stores/pavone/admin/products")({
   component: AdminProducts,
 });
 
 function AdminProducts() {
-  const products = useAdminStore((s) => s.products);
-  const categories = useAdminStore((s) => s.categories);
+  const { data, error, reload } = usePavoneCatalog();
+  const { products, categories } = data;
   const [q, setQ] = useState("");
   const [cat, setCat] = useState<"all" | CategorySlug>("all");
   const [editing, setEditing] = useState<Product | null>(null);
@@ -26,7 +28,7 @@ function AdminProducts() {
 
   function openNew() {
     setEditing({
-      id: newProductId(),
+      id: "p" + Math.random().toString(36).slice(2, 8),
       slug: "new-product",
       name: "",
       description: "",
@@ -45,10 +47,11 @@ function AdminProducts() {
     setOpen(true);
   }
 
-  function save() {
+  async function save() {
     if (!editing) return;
     const slug = editing.slug || editing.name.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-    adminActions.upsertProduct({ ...editing, slug });
+    await upsertProduct({ ...editing, slug });
+    await reload();
     setOpen(false);
     setEditing(null);
   }
@@ -59,6 +62,7 @@ function AdminProducts() {
         <div>
           <h1 className="font-display text-3xl text-cocoa">Products</h1>
           <p className="text-sm text-muted-foreground mt-1">{products.length} items in your catalog</p>
+          {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
         </div>
         <button onClick={openNew} className="inline-flex items-center gap-2 rounded-lg bg-cocoa text-ivory px-4 py-2.5 text-sm hover:bg-cocoa/90">
           <Plus className="h-4 w-4" /> Add product
@@ -110,7 +114,14 @@ function AdminProducts() {
                     )}
                     <div>
                       <div className="font-medium text-cocoa">{p.name || <span className="italic text-muted-foreground">Untitled</span>}</div>
-                      <div className="text-xs text-muted-foreground">/{p.slug}</div>
+                      <div className="mt-1 flex flex-wrap items-center gap-1.5">
+                        <span className="text-xs text-muted-foreground">/{p.slug}</span>
+                        {p.tags?.includes("new") && (
+                          <span className="rounded-full bg-pink/15 px-2 py-0.5 text-[10px] uppercase tracking-[0.12em] text-pink">
+                            New arrival
+                          </span>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </td>
@@ -133,7 +144,7 @@ function AdminProducts() {
                       <Pencil className="h-4 w-4" />
                     </button>
                     <button
-                      onClick={() => { if (confirm(`Delete "${p.name}"?`)) adminActions.deleteProduct(p.id); }}
+                      onClick={async () => { if (confirm(`Delete "${p.name}"?`)) { await deleteProduct(p.id); await reload(); } }}
                       className="p-2 rounded-md hover:bg-destructive/10 text-muted-foreground hover:text-destructive"
                     >
                       <Trash2 className="h-4 w-4" />
@@ -171,6 +182,31 @@ function ProductDialog({
   onClose: () => void;
   onSave: () => void;
 }) {
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
+
+  async function uploadImage(file: File | undefined) {
+    if (!file) return;
+    setUploading(true);
+    setUploadError("");
+    try {
+      const url = await uploadPavoneImage(file, "products");
+      onChange({ ...product, images: [url, ...product.images.slice(1)] });
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Could not upload image.");
+    } finally {
+      setUploading(false);
+    }
+  }
+
+  function toggleNewArrival(checked: boolean) {
+    const tags = product.tags ?? [];
+    const nextTags = checked
+      ? Array.from(new Set([...tags, "new"]))
+      : tags.filter((tag) => tag !== "new");
+    onChange({ ...product, tags: nextTags });
+  }
+
   return (
     <div className="fixed inset-0 z-50 bg-cocoa/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
       <div className="bg-background rounded-2xl max-w-2xl w-full my-8 shadow-soft border border-border">
@@ -207,11 +243,35 @@ function ProductDialog({
               <input type="number" value={product.salePrice ?? ""} onChange={(e) => onChange({ ...product, salePrice: e.target.value ? Number(e.target.value) : undefined })} className={inputCls} />
             </Field>
           </div>
-          <Field label="Image URL">
+          <label className="flex items-start gap-3 rounded-xl border border-border bg-cream/35 p-4">
+            <input
+              type="checkbox"
+              checked={product.tags?.includes("new") ?? false}
+              onChange={(e) => toggleNewArrival(e.target.checked)}
+              className="mt-1 h-4 w-4 accent-pink"
+            />
+            <span>
+              <span className="block text-sm font-medium text-cocoa">Show in New Arrivals</span>
+              <span className="mt-0.5 block text-xs text-muted-foreground">Checked products appear in the homepage New Arrivals section.</span>
+            </span>
+          </label>
+          <Field label="Product image">
+            <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-cream/40 px-4 py-4 text-sm text-cocoa hover:bg-cream">
+              <Upload className="h-4 w-4" />
+              {uploading ? "Uploading..." : "Upload image"}
+              <input
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                disabled={uploading}
+                onChange={(e) => void uploadImage(e.target.files?.[0])}
+              />
+            </label>
+            {uploadError && <p className="mt-2 text-sm text-destructive">{uploadError}</p>}
             <input
               value={product.images[0] ?? ""}
               onChange={(e) => onChange({ ...product, images: [e.target.value, ...product.images.slice(1)] })}
-              className={inputCls}
+              className={`${inputCls} mt-2`}
               placeholder="https://..."
             />
             {product.images[0] && <img src={product.images[0]} alt="" className="mt-2 h-32 w-32 rounded-lg object-cover" />}

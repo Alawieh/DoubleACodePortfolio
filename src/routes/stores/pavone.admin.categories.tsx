@@ -1,29 +1,48 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { adminActions, useAdminStore } from "@/stores/pavone/lib/admin/mock-store";
 import type { Category, CategorySlug } from "@/stores/pavone/data/products";
-import { Plus, Pencil, Trash2, X } from "lucide-react";
+import { Plus, Pencil, Trash2, X, Upload } from "lucide-react";
+import { deleteCategory, upsertCategory } from "@/stores/pavone/lib/pavone-api";
+import { usePavoneCatalog } from "@/stores/pavone/lib/use-pavone-data";
+import { uploadPavoneImage } from "@/stores/pavone/lib/supabase";
 
 export const Route = createFileRoute("/stores/pavone/admin/categories")({
   component: AdminCategories,
 });
 
 function AdminCategories() {
-  const categories = useAdminStore((s) => s.categories);
-  const products = useAdminStore((s) => s.products);
+  const { data, error, reload } = usePavoneCatalog();
+  const { categories, products } = data;
   const [editing, setEditing] = useState<Category | null>(null);
   const [isNew, setIsNew] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState("");
 
   function openNew() {
     setEditing({ slug: "" as CategorySlug, name: "", description: "", image: "" });
     setIsNew(true);
   }
 
-  function save() {
+  async function save() {
     if (!editing || !editing.slug || !editing.name) return;
-    adminActions.upsertCategory(editing);
+    await upsertCategory(editing);
+    await reload();
     setEditing(null);
     setIsNew(false);
+  }
+
+  async function uploadImage(file: File | undefined) {
+    if (!file || !editing) return;
+    setUploading(true);
+    setUploadError("");
+    try {
+      const url = await uploadPavoneImage(file, "categories");
+      setEditing({ ...editing, image: url });
+    } catch (err) {
+      setUploadError(err instanceof Error ? err.message : "Could not upload image.");
+    } finally {
+      setUploading(false);
+    }
   }
 
   return (
@@ -32,6 +51,7 @@ function AdminCategories() {
         <div>
           <h1 className="font-display text-3xl text-cocoa">Categories</h1>
           <p className="text-sm text-muted-foreground mt-1">{categories.length} active collections</p>
+          {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
         </div>
         <button onClick={openNew} className="inline-flex items-center gap-2 rounded-lg bg-cocoa text-ivory px-4 py-2.5 text-sm hover:bg-cocoa/90">
           <Plus className="h-4 w-4" /> Add category
@@ -50,7 +70,7 @@ function AdminCategories() {
                     <Pencil className="h-3.5 w-3.5" />
                   </button>
                   <button
-                    onClick={() => { if (confirm(`Delete "${c.name}"?`)) adminActions.deleteCategory(c.slug); }}
+                    onClick={async () => { if (confirm(`Delete "${c.name}"?`)) { await deleteCategory(c.slug); await reload(); } }}
                     className="p-2 bg-background/90 rounded-md hover:bg-destructive/10 text-destructive"
                   >
                     <Trash2 className="h-3.5 w-3.5" />
@@ -96,8 +116,20 @@ function AdminCategories() {
                 <textarea rows={2} value={editing.description} onChange={(e) => setEditing({ ...editing, description: e.target.value })} className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background" />
               </label>
               <label className="block">
-                <span className="block text-xs uppercase tracking-[0.16em] text-muted-foreground mb-1.5">Image URL</span>
-                <input value={editing.image} onChange={(e) => setEditing({ ...editing, image: e.target.value })} className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background" />
+                <span className="block text-xs uppercase tracking-[0.16em] text-muted-foreground mb-1.5">Category image</span>
+                <label className="flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-border bg-cream/40 px-4 py-4 text-sm text-cocoa hover:bg-cream">
+                  <Upload className="h-4 w-4" />
+                  {uploading ? "Uploading..." : "Upload image"}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    disabled={uploading}
+                    onChange={(e) => void uploadImage(e.target.files?.[0])}
+                  />
+                </label>
+                {uploadError && <p className="mt-2 text-sm text-destructive">{uploadError}</p>}
+                <input value={editing.image} onChange={(e) => setEditing({ ...editing, image: e.target.value })} className="mt-2 w-full px-3 py-2 text-sm rounded-md border border-input bg-background" placeholder="https://..." />
                 {editing.image && <img src={editing.image} alt="" className="mt-2 h-32 w-full rounded-lg object-cover" />}
               </label>
             </div>

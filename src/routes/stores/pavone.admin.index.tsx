@@ -1,29 +1,31 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useAdminStore } from "@/stores/pavone/lib/admin/mock-store";
 import { DollarSign, Package, ShoppingCart, TrendingUp, Clock } from "lucide-react";
+import { usePavoneCatalog, usePavoneOrders } from "@/stores/pavone/lib/use-pavone-data";
 
 export const Route = createFileRoute("/stores/pavone/admin/")({
   component: AdminDashboard,
 });
 
 function AdminDashboard() {
-  const products = useAdminStore((s) => s.products);
-  const orders = useAdminStore((s) => s.orders);
-  const categories = useAdminStore((s) => s.categories);
+  const catalog = usePavoneCatalog();
+  const ordersState = usePavoneOrders();
+  const products = catalog.data.products;
+  const categories = catalog.data.categories;
+  const orders = ordersState.data;
 
-  const revenue = orders.filter((o) => o.status !== "cancelled").reduce((sum, o) => sum + o.total, 0);
+  const revenue = orders.filter((o) => o.status !== "canceled").reduce((sum, o) => sum + o.total, 0);
   const pendingCount = orders.filter((o) => o.status === "pending").length;
-  const recentOrders = [...orders].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, 5);
+  const recentOrders = orders.slice(0, 5);
 
-  // Top sellers by units
   const unitMap = new Map<string, { name: string; units: number; revenue: number }>();
   for (const o of orders) {
-    if (o.status === "cancelled") continue;
+    if (o.status === "canceled") continue;
     for (const it of o.items) {
-      const cur = unitMap.get(it.productId) ?? { name: it.name, units: 0, revenue: 0 };
-      cur.units += it.qty;
-      cur.revenue += it.qty * it.price;
-      unitMap.set(it.productId, cur);
+      const key = it.productId ?? it.productName;
+      const cur = unitMap.get(key) ?? { name: it.productName, units: 0, revenue: 0 };
+      cur.units += it.quantity;
+      cur.revenue += it.quantity * it.price;
+      unitMap.set(key, cur);
     }
   }
   const topSellers = [...unitMap.entries()].sort((a, b) => b[1].units - a[1].units).slice(0, 5);
@@ -35,11 +37,14 @@ function AdminDashboard() {
     { label: "Pending", value: pendingCount, icon: Clock, accent: "from-peach/40 to-coral/20" },
   ];
 
+  const error = catalog.error || ordersState.error;
+
   return (
     <div className="space-y-8">
       <header>
         <h1 className="font-display text-3xl text-cocoa">Dashboard</h1>
-        <p className="text-sm text-muted-foreground mt-1">Welcome back. Here's what's happening with your boutique today.</p>
+        <p className="text-sm text-muted-foreground mt-1">Live Supabase overview for Pavone.</p>
+        {error && <p className="mt-2 text-sm text-destructive">{error}</p>}
       </header>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -67,8 +72,8 @@ function AdminDashboard() {
             {recentOrders.map((o) => (
               <div key={o.id} className="flex items-center justify-between py-3">
                 <div>
-                  <div className="text-sm font-medium text-cocoa">{o.id} · {o.customerName}</div>
-                  <div className="text-xs text-muted-foreground">{new Date(o.createdAt).toLocaleString()} · {o.items.length} item(s)</div>
+                  <div className="text-sm font-medium text-cocoa">{o.orderNumber} - {o.customerName}</div>
+                  <div className="text-xs text-muted-foreground">{new Date(o.createdAt).toLocaleString()} - {o.items.length} item(s)</div>
                 </div>
                 <div className="text-right">
                   <div className="text-sm font-medium text-cocoa">${o.total}</div>
@@ -117,7 +122,7 @@ export function StatusPill({ status }: { status: string }) {
     confirmed: "bg-sky/40 text-cocoa",
     shipped: "bg-lavender/40 text-cocoa",
     delivered: "bg-mint/50 text-cocoa",
-    cancelled: "bg-destructive/15 text-destructive",
+    canceled: "bg-destructive/15 text-destructive",
   };
   return (
     <span className={`inline-block text-[10px] uppercase tracking-[0.16em] px-2 py-0.5 rounded-full ${map[status] ?? "bg-cream"}`}>

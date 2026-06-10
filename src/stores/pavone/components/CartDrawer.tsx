@@ -1,20 +1,31 @@
 import { useCart } from "@/stores/pavone/context/CartContext";
-import { products } from "@/stores/pavone/data/products";
-import { X, Minus, Plus, MessageCircle, Trash2 } from "lucide-react";
+import { X, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useState } from "react";
-import { buildOrderMessage, buildWhatsAppUrl, type OrderLine } from "@/stores/pavone/lib/whatsapp";
 import { Link } from "@tanstack/react-router";
+import { createOrder } from "@/stores/pavone/lib/pavone-api";
+import { usePavoneCatalog } from "@/stores/pavone/lib/use-pavone-data";
 
 export function CartDrawer() {
   const { isOpen, close, items, setQty, remove, subtotal, clear } = useCart();
+  const { data } = usePavoneCatalog();
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [city, setCity] = useState("");
+  const [address, setAddress] = useState("");
+  const [notes, setNotes] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [confirmation, setConfirmation] = useState("");
 
-  const lines: OrderLine[] = items.flatMap((i) => {
-    const p = products.find((x) => x.id === i.productId);
+  const orderItems = items.flatMap((i) => {
+    const p = data.products.find((x) => x.id === i.productId);
     if (!p) return [];
     return [{
-      name: p.name,
+      productId: p.id,
+      productName: p.name,
+      productSlug: p.slug,
+      productImage: p.images[0],
       quantity: i.quantity,
       price: p.salePrice ?? p.price,
       size: i.size,
@@ -22,9 +33,42 @@ export function CartDrawer() {
     }];
   });
 
-  const handleCheckout = () => {
-    const msg = buildOrderMessage(lines, subtotal, name, phone);
-    window.open(buildWhatsAppUrl(msg), "_blank");
+  const handleCheckout = async () => {
+    setError("");
+    setConfirmation("");
+    if (!name.trim() || !phone.trim() || !city.trim() || !address.trim()) {
+      setError("Name, phone, city, and delivery address are required.");
+      return;
+    }
+    if (orderItems.length === 0) {
+      setError("Your bag has no valid items.");
+      return;
+    }
+    setSubmitting(true);
+    try {
+      const order = await createOrder({
+        customerName: name.trim(),
+        customerPhone: phone.trim(),
+        customerEmail: email.trim(),
+        city: city.trim(),
+        address: address.trim(),
+        notes: notes.trim(),
+        total: subtotal,
+        items: orderItems,
+      });
+      clear();
+      setName("");
+      setPhone("");
+      setEmail("");
+      setCity("");
+      setAddress("");
+      setNotes("");
+      setConfirmation(`Order ${order.orderNumber} was placed successfully.`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Could not place your order.");
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -62,7 +106,7 @@ export function CartDrawer() {
           ) : (
             <ul className="divide-y divide-border">
               {items.map((it) => {
-                const p = products.find((x) => x.id === it.productId);
+                const p = data.products.find((x) => x.id === it.productId);
                 if (!p) return null;
                 const price = p.salePrice ?? p.price;
                 return (
@@ -100,30 +144,67 @@ export function CartDrawer() {
 
         {items.length > 0 && (
           <div className="border-t border-border px-6 py-5 space-y-3 bg-cream/50">
+            {confirmation && (
+              <div className="rounded-lg border border-sage bg-mint/40 px-3 py-2 text-sm text-cocoa">
+                {confirmation}
+              </div>
+            )}
+            {error && (
+              <div className="rounded-lg border border-destructive/30 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+                {error}
+              </div>
+            )}
             <div className="grid grid-cols-2 gap-2">
               <input
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
+                placeholder="Full name *"
                 className="px-3 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               />
               <input
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                placeholder="Phone"
+                placeholder="Phone *"
                 className="px-3 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               />
             </div>
+            <input
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+            <input
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              placeholder="City *"
+              className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+            <textarea
+              rows={2}
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+              placeholder="Delivery address *"
+              className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            />
+            <textarea
+              rows={2}
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="Order notes"
+              className="w-full px-3 py-2.5 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            />
             <div className="flex items-center justify-between pt-2">
               <span className="text-sm text-muted-foreground">Subtotal</span>
               <span className="font-display text-2xl">${subtotal.toFixed(2)}</span>
             </div>
             <button
               onClick={handleCheckout}
+              disabled={submitting}
               className="w-full bg-cocoa text-ivory py-3.5 rounded-full text-sm tracking-[0.15em] uppercase hover:bg-cocoa/90 transition-colors inline-flex items-center justify-center gap-2"
             >
-              <MessageCircle className="h-4 w-4" />
-              Checkout via WhatsApp
+              <ShoppingBag className="h-4 w-4" />
+              {submitting ? "Placing order..." : "Place order"}
             </button>
             <button onClick={clear} className="w-full text-xs text-muted-foreground hover:text-cocoa">
               Clear bag

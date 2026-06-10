@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Sun, Instagram, Heart, Sparkles } from "lucide-react";
-import { categories, products, getByTag } from "@/stores/pavone/data/products";
 import { ProductCard } from "@/stores/pavone/components/ProductCard";
-import { buildWhatsAppUrl } from "@/stores/pavone/lib/whatsapp";
 import { PavoneShell } from "@/stores/pavone/PavoneShell";
+import { PavoneDataState, usePavoneCatalog, usePavoneOutfits, usePavoneSiteSettings } from "@/stores/pavone/lib/use-pavone-data";
 
 import beigeCoat from "@/stores/pavone/public/assets/beige-coat.jpg";
 import blackDress from "@/stores/pavone/public/assets/black-dress.jpg";
@@ -17,7 +16,7 @@ export const Route = createFileRoute("/stores/pavone/")({
   head: () => ({
     meta: [
       { title: "Pavone.lb — Modern Modest Fashion for Spring & Summer" },
-      { name: "description", content: "Pavone.lb — fresh, feminine, modern modest fashion. Discover spring/summer abayas, sets, dresses, and hijab styling. Order via WhatsApp." },
+      { name: "description", content: "Pavone.lb — fresh, feminine, modern modest fashion. Discover spring/summer abayas, sets, dresses, and hijab styling." },
       { property: "og:title", content: "Pavone.lb — Modern Modest Fashion" },
       { property: "og:description", content: "Fresh, feminine, modern modest fashion." },
       { property: "og:image", content: pinkFloralDress },
@@ -37,25 +36,41 @@ function PavoneHomeRoute() {
 }
 
 function HomePage() {
-  const newArrivals = getByTag("new");
-
-  const looks = [
-    { id: "look-1", title: "Garden Stroll", note: "Linen knit + silk scarf for golden hour.", items: [products[1], products[5], products[6]] },
-    { id: "look-2", title: "Sunday Lunch",  note: "Pleated set with a soft hijab.",            items: [products[3], products[6], products[7]] },
-    { id: "look-3", title: "Evening Bloom", note: "Floral abaya for occasions to remember.",   items: [products[0], products[4], products[5]] },
+  const { data, loading, error } = usePavoneCatalog();
+  const outfits = usePavoneOutfits();
+  const settingsState = usePavoneSiteSettings();
+  const { categories, products } = data;
+  const newArrivals = products.filter((p) => p.tags?.includes("new"));
+  const siteSettings = settingsState.data;
+  const heroMainImage = siteSettings?.heroMainImage || pinkFloralDress;
+  const heroMobileImage = siteSettings?.heroMobileImage || heroMainImage;
+  const heroGalleryImages = [
+    siteSettings?.heroGalleryImages?.[0] || bluePleatedSet,
+    siteSettings?.heroGalleryImages?.[1] || redCoat,
+    siteSettings?.heroGalleryImages?.[2] || blackDress,
   ];
+  const heroBadge = siteSettings?.heroBadge || "Spring / Summer '26 Collection";
+  const heroTitle = siteSettings?.heroTitle || "Modern modest fashion, made to bloom.";
+  const heroSubtitle = siteSettings?.heroSubtitle || "Flowing abayas, coordinated sets and signature scarves - curated for the woman who dresses with intention and a love of color.";
+  const featuredLookLabel = siteSettings?.featuredLookLabel || "Blossom Knit - $89";
+  const featuredProductSlug = siteSettings?.featuredProductSlug || "blossom-knit-dress";
+
+  const looks = outfits.data
+    .map((look) => ({
+      ...look,
+      items: look.productIds.map((id) => products.find((p) => p.id === id)).filter(Boolean),
+    }))
+    .filter((look) => look.items.length >= 3);
 
   const featuredCategories = categories.filter(c => c.slug !== "new-collection");
   const tones = ["bg-blush", "bg-sage", "bg-lavender", "bg-peach"];
 
   return (
+    <PavoneDataState loading={loading || settingsState.loading} error={error || outfits.error || settingsState.error} empty={products.length === 0 || categories.length === 0}>
     <div className="overflow-x-hidden">
-      {/* ============== HERO — adaptive per breakpoint ============== */}
-
-      {/* MOBILE HERO (<md): full-bleed image with overlay copy */}
       <section className="md:hidden relative h-[88vh] min-h-[560px] max-h-[780px] overflow-hidden bg-blush/30">
         <img
-          src={pinkFloralDress}
+          src={heroMobileImage}
           alt="Pavone.lb signature spring look"
           className="absolute inset-0 h-full w-full object-cover object-top scale-105"
         />
@@ -69,11 +84,9 @@ function HomePage() {
         </div>
 
         <div className="absolute inset-x-0 bottom-0 px-5 pb-8 pt-24 animate-fade-up">
-          <h1 className="font-display text-[2.5rem] leading-[1.02] text-ivory">
-            Modern modest <em className="not-italic text-pink">fashion,</em> made to bloom.
-          </h1>
+          <h1 className="font-display text-[2.5rem] leading-[1.02] text-ivory">{heroTitle}</h1>
           <p className="mt-3 max-w-md text-sm text-ivory/90 leading-relaxed">
-            Flowing abayas, coordinated sets and signature scarves.
+            {heroSubtitle}
           </p>
           <div className="mt-5 flex flex-wrap items-center gap-2.5">
             <Link to="/stores/pavone/shop" className="inline-flex items-center gap-2 bg-pink text-primary-foreground px-6 py-3.5 rounded-full text-xs tracking-[0.18em] uppercase shadow-soft">
@@ -86,32 +99,31 @@ function HomePage() {
         </div>
       </section>
 
-      {/* TABLET HERO (md→lg): balanced stacked editorial — image first, content below */}
       <section className="hidden md:block lg:hidden bg-gradient-to-br from-blush/40 via-cream to-lavender/30">
         <div className="container-page py-10">
           <div className="relative rounded-[2rem] overflow-hidden shadow-soft bg-blush/30 aspect-[16/9] max-h-[480px]">
             <img
-              src={pinkFloralDress}
+              src={heroMainImage}
               alt="Pavone.lb signature spring look"
               className="absolute inset-0 h-full w-full object-cover object-[center_25%]"
             />
             <div className="absolute top-5 left-5 bg-background/85 backdrop-blur rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.22em] text-cocoa">
-              Featured Look · Blossom Knit · $89
+              Featured Look - {featuredLookLabel}
             </div>
           </div>
 
           <div className="mt-8 grid grid-cols-[1.2fr_1fr] gap-8 items-end animate-fade-up">
             <div>
               <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-taupe">
-                <Sun className="h-3.5 w-3.5" /> Spring / Summer '26
+                <Sun className="h-3.5 w-3.5" /> {heroBadge}
               </span>
               <h1 className="mt-3 font-display text-5xl leading-[1.04] text-cocoa">
-                Modern modest <em className="not-italic text-pink">fashion,</em> made to bloom.
+                {heroTitle}
               </h1>
             </div>
             <div>
               <p className="text-base text-muted-foreground leading-relaxed">
-                Flowing abayas, coordinated sets and signature scarves — for the woman who dresses with intention.
+                {heroSubtitle}
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
                 <Link to="/stores/pavone/shop" className="inline-flex items-center gap-2 bg-pink text-primary-foreground px-6 py-3 rounded-full text-xs tracking-[0.18em] uppercase shadow-soft hover:opacity-90">
@@ -126,19 +138,17 @@ function HomePage() {
         </div>
       </section>
 
-      {/* DESKTOP HERO (lg+): balanced two-column editorial */}
       <section className="hidden lg:block bg-gradient-to-br from-blush/40 via-cream to-lavender/30">
         <div className="container-page grid grid-cols-[1fr_1.1fr] gap-14 xl:gap-20 py-14 xl:py-20 items-center">
-          {/* LEFT — content */}
           <div className="animate-fade-up">
             <span className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.28em] text-taupe">
-              <Sun className="h-3.5 w-3.5" /> Spring / Summer '26 Collection
+              <Sun className="h-3.5 w-3.5" /> {heroBadge}
             </span>
             <h1 className="mt-5 font-display text-6xl xl:text-7xl leading-[1.02] text-cocoa">
-              Modern modest <em className="not-italic text-pink">fashion,</em> made to bloom.
+              {heroTitle}
             </h1>
             <p className="mt-6 max-w-md text-lg text-muted-foreground leading-relaxed">
-              Flowing abayas, coordinated sets and signature scarves — curated for the woman who dresses with intention and a love of color.
+              {heroSubtitle}
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link to="/stores/pavone/shop" className="inline-flex items-center gap-2 bg-pink text-primary-foreground px-7 py-3.5 rounded-full text-sm tracking-[0.18em] uppercase hover:opacity-90 transition-opacity shadow-soft">
@@ -151,9 +161,9 @@ function HomePage() {
 
             <div className="mt-10 grid grid-cols-3 gap-3">
               {[
-                { src: bluePleatedSet, alt: "Ivory pleated set" },
-                { src: redCoat, alt: "Merlot coat" },
-                { src: blackDress, alt: "Silk scarf styling" },
+                { src: heroGalleryImages[0], alt: "Pavone hero gallery look 1" },
+                { src: heroGalleryImages[1], alt: "Pavone hero gallery look 2" },
+                { src: heroGalleryImages[2], alt: "Pavone hero gallery look 3" },
               ].map((img) => (
                 <div key={img.alt} className="relative aspect-[3/4] rounded-xl overflow-hidden bg-cream shadow-card">
                   <img src={img.src} alt={img.alt} className="h-full w-full object-cover object-top transition-transform duration-700 hover:scale-105" />
@@ -162,10 +172,9 @@ function HomePage() {
             </div>
           </div>
 
-          {/* RIGHT — featured image, wider crop on desktop */}
           <div className="relative rounded-[2rem] overflow-hidden shadow-soft bg-blush/30 aspect-[4/5] xl:aspect-[5/6] max-h-[760px]">
             <img
-              src={pinkFloralDress}
+              src={heroMainImage}
               alt="Pavone.lb signature spring look"
               className="absolute inset-0 h-full w-full object-cover object-[center_20%]"
             />
@@ -175,9 +184,9 @@ function HomePage() {
             <div className="absolute bottom-5 left-5 right-5 flex items-end justify-between gap-3">
               <div className="bg-background/90 backdrop-blur rounded-2xl px-5 py-3">
                 <div className="text-[9px] uppercase tracking-[0.22em] text-taupe">New drop</div>
-                <div className="font-display text-lg leading-tight text-cocoa">Blossom Knit · $89</div>
+                <div className="font-display text-lg leading-tight text-cocoa">{featuredLookLabel}</div>
               </div>
-              <Link to="/stores/pavone/product/$slug" params={{ slug: "blossom-knit-dress" }} className="bg-pink text-primary-foreground rounded-full h-12 w-12 grid place-items-center hover:opacity-90 shadow-soft">
+              <Link to="/stores/pavone/product/$slug" params={{ slug: featuredProductSlug }} className="bg-pink text-primary-foreground rounded-full h-12 w-12 grid place-items-center hover:opacity-90 shadow-soft">
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -185,8 +194,6 @@ function HomePage() {
         </div>
       </section>
 
-
-      {/* ============== CATEGORIES — mobile swipeable carousel ============== */}
       <section className="py-12 md:py-20">
         <div className="container-page flex items-end justify-between mb-6 md:mb-10 gap-6">
           <div>
@@ -198,7 +205,6 @@ function HomePage() {
           </Link>
         </div>
 
-        {/* Mobile: swipeable horizontal scroll */}
         <div className="md:hidden flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 px-5 -mx-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {featuredCategories.map((c, i) => (
             <Link
@@ -226,7 +232,6 @@ function HomePage() {
           ))}
         </div>
 
-        {/* Desktop: bento grid */}
         <div className="container-page hidden md:grid grid-cols-12 grid-rows-2 gap-5 h-[640px]">
           {featuredCategories.map((c, i) => {
             const spans = [
@@ -255,7 +260,6 @@ function HomePage() {
         </div>
       </section>
 
-      {/* ============== NEW ARRIVALS — horizontal scroll on mobile ============== */}
       {newArrivals.length > 0 && (
         <section className="py-12 md:py-20 bg-gradient-to-b from-background to-cream/40">
           <div className="container-page flex items-end justify-between mb-6 md:mb-10 gap-6">
@@ -268,7 +272,6 @@ function HomePage() {
             <Link to="/stores/pavone/shop" className="text-xs uppercase tracking-[0.2em] text-taupe hover:text-pink shrink-0">See all</Link>
           </div>
 
-          {/* Mobile horizontal scroll */}
           <div className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 px-5 -mx-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {newArrivals.map((p) => (
               <div key={p.id} className="shrink-0 w-[68%] snap-start">
@@ -277,14 +280,12 @@ function HomePage() {
             ))}
           </div>
 
-          {/* Desktop grid */}
           <div className="container-page hidden md:grid grid-cols-4 gap-8">
             {newArrivals.slice(0, 4).map((p) => <ProductCard key={p.id} product={p} />)}
           </div>
         </section>
       )}
-
-      {/* ============== OUTFIT INSPIRATIONS ============== */}
+      {looks.length > 0 && (
       <section className="py-12 md:py-20">
         <div className="container-page mb-6 md:mb-10">
           <span className="text-[10px] uppercase tracking-[0.28em] text-taupe">Style inspiration</span>
@@ -310,21 +311,28 @@ function HomePage() {
                 <div className="min-w-0">
                   <h3 className="font-display text-xl md:text-2xl text-cocoa truncate">{look.title}</h3>
                   <p className="text-[11px] md:text-xs text-muted-foreground mt-0.5 line-clamp-2">{look.note}</p>
+                  <div className="mt-2 flex flex-wrap gap-1.5">
+                    {look.items.map((item) => (
+                      <span key={item.id} className="rounded-full bg-background/70 px-2 py-1 text-[10px] text-cocoa">
+                        {item.name} · ${item.salePrice ?? item.price}
+                      </span>
+                    ))}
+                  </div>
                 </div>
-                <a
-                  href={buildWhatsAppUrl(`Hi Pavone! I'd love to order the "${look.title}" look 🌸`)}
-                  target="_blank" rel="noreferrer"
+                <Link
+                  to="/stores/pavone/product/$slug"
+                  params={{ slug: look.items[0].slug }}
                   className="shrink-0 text-[10px] tracking-[0.18em] uppercase bg-pink text-primary-foreground rounded-full px-3.5 py-2.5 hover:opacity-90"
                 >
                   Shop look
-                </a>
+                </Link>
               </div>
             </article>
           ))}
         </div>
       </section>
+      )}
 
-      {/* ============== INSTAGRAM ============== */}
       <section className="py-12 md:py-20">
         <div className="container-page mb-6 md:mb-10 text-center">
           <span className="text-[10px] uppercase tracking-[0.28em] text-taupe flex items-center justify-center gap-1.5">
@@ -345,8 +353,8 @@ function HomePage() {
         </div>
       </section>
 
-      {/* Spacer for floating WhatsApp button */}
       <div className="h-4" />
     </div>
+    </PavoneDataState>
   );
 }

@@ -26,9 +26,11 @@ import { Route as StoresPavoneAdminRouteImport } from './routes/stores/pavone.ad
 import { Route as StoresPavoneAdminIndexRouteImport } from './routes/stores/pavone.admin.index'
 import { Route as StoresPavoneProductSlugRouteImport } from './routes/stores/pavone.product.$slug'
 import { Route as StoresPavoneCategorySlugRouteImport } from './routes/stores/pavone.category.$slug'
+import { Route as StoresPavoneAdminSettingsRouteImport } from './routes/stores/pavone.admin.settings'
 import { Route as StoresPavoneAdminProductsRouteImport } from './routes/stores/pavone.admin.products'
 import { Route as StoresPavoneAdminOrdersRouteImport } from './routes/stores/pavone.admin.orders'
 import { Route as StoresPavoneAdminLoginRouteImport } from './routes/stores/pavone.admin.login'
+import { Route as StoresPavoneAdminInspirationsRouteImport } from './routes/stores/pavone.admin.inspirations'
 import { Route as StoresPavoneAdminCategoriesRouteImport } from './routes/stores/pavone.admin.categories'
 
 const StoresRoute = StoresRouteImport.update({
@@ -117,6 +119,12 @@ const StoresPavoneCategorySlugRoute =
     path: '/category/$slug',
     getParentRoute: () => StoresPavoneRoute,
   } as any)
+const StoresPavoneAdminSettingsRoute =
+  StoresPavoneAdminSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => StoresPavoneAdminRoute,
+  } as any)
 const StoresPavoneAdminProductsRoute =
   StoresPavoneAdminProductsRouteImport.update({
     id: '/products',
@@ -133,6 +141,12 @@ const StoresPavoneAdminLoginRoute = StoresPavoneAdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => StoresPavoneAdminRoute,
 } as any)
+const StoresPavoneAdminInspirationsRoute =
+  StoresPavoneAdminInspirationsRouteImport.update({
+    id: '/inspirations',
+    path: '/inspirations',
+    getParentRoute: () => StoresPavoneAdminRoute,
+  } as any)
 const StoresPavoneAdminCategoriesRoute =
   StoresPavoneAdminCategoriesRouteImport.update({
     id: '/categories',
@@ -156,9 +170,11 @@ export interface FileRoutesByFullPath {
   '/stores/pavone/wishlist': typeof StoresPavoneWishlistRoute
   '/stores/pavone/': typeof StoresPavoneIndexRoute
   '/stores/pavone/admin/categories': typeof StoresPavoneAdminCategoriesRoute
+  '/stores/pavone/admin/inspirations': typeof StoresPavoneAdminInspirationsRoute
   '/stores/pavone/admin/login': typeof StoresPavoneAdminLoginRoute
   '/stores/pavone/admin/orders': typeof StoresPavoneAdminOrdersRoute
   '/stores/pavone/admin/products': typeof StoresPavoneAdminProductsRoute
+  '/stores/pavone/admin/settings': typeof StoresPavoneAdminSettingsRoute
   '/stores/pavone/category/$slug': typeof StoresPavoneCategorySlugRoute
   '/stores/pavone/product/$slug': typeof StoresPavoneProductSlugRoute
   '/stores/pavone/admin/': typeof StoresPavoneAdminIndexRoute
@@ -176,9 +192,11 @@ export interface FileRoutesByTo {
   '/stores/pavone/wishlist': typeof StoresPavoneWishlistRoute
   '/stores/pavone': typeof StoresPavoneIndexRoute
   '/stores/pavone/admin/categories': typeof StoresPavoneAdminCategoriesRoute
+  '/stores/pavone/admin/inspirations': typeof StoresPavoneAdminInspirationsRoute
   '/stores/pavone/admin/login': typeof StoresPavoneAdminLoginRoute
   '/stores/pavone/admin/orders': typeof StoresPavoneAdminOrdersRoute
   '/stores/pavone/admin/products': typeof StoresPavoneAdminProductsRoute
+  '/stores/pavone/admin/settings': typeof StoresPavoneAdminSettingsRoute
   '/stores/pavone/category/$slug': typeof StoresPavoneCategorySlugRoute
   '/stores/pavone/product/$slug': typeof StoresPavoneProductSlugRoute
   '/stores/pavone/admin': typeof StoresPavoneAdminIndexRoute
@@ -200,9 +218,11 @@ export interface FileRoutesById {
   '/stores/pavone/wishlist': typeof StoresPavoneWishlistRoute
   '/stores/pavone/': typeof StoresPavoneIndexRoute
   '/stores/pavone/admin/categories': typeof StoresPavoneAdminCategoriesRoute
+  '/stores/pavone/admin/inspirations': typeof StoresPavoneAdminInspirationsRoute
   '/stores/pavone/admin/login': typeof StoresPavoneAdminLoginRoute
   '/stores/pavone/admin/orders': typeof StoresPavoneAdminOrdersRoute
   '/stores/pavone/admin/products': typeof StoresPavoneAdminProductsRoute
+  '/stores/pavone/admin/settings': typeof StoresPavoneAdminSettingsRoute
   '/stores/pavone/category/$slug': typeof StoresPavoneCategorySlugRoute
   '/stores/pavone/product/$slug': typeof StoresPavoneProductSlugRoute
   '/stores/pavone/admin/': typeof StoresPavoneAdminIndexRoute
@@ -225,9 +245,11 @@ export interface FileRouteTypes {
     | '/stores/pavone/wishlist'
     | '/stores/pavone/'
     | '/stores/pavone/admin/categories'
+    | '/stores/pavone/admin/inspirations'
     | '/stores/pavone/admin/login'
     | '/stores/pavone/admin/orders'
     | '/stores/pavone/admin/products'
+    | '/stores/pavone/admin/settings'
     | '/stores/pavone/category/$slug'
     | '/stores/pavone/product/$slug'
     | '/stores/pavone/admin/'
@@ -245,9 +267,11 @@ export interface FileRouteTypes {
     | '/stores/pavone/wishlist'
     | '/stores/pavone'
     | '/stores/pavone/admin/categories'
+    | '/stores/pavone/admin/inspirations'
     | '/stores/pavone/admin/login'
     | '/stores/pavone/admin/orders'
     | '/stores/pavone/admin/products'
+    | '/stores/pavone/admin/settings'
     | '/stores/pavone/category/$slug'
     | '/stores/pavone/product/$slug'
     | '/stores/pavone/admin'
@@ -268,9 +292,11 @@ export interface FileRouteTypes {
     | '/stores/pavone/wishlist'
     | '/stores/pavone/'
     | '/stores/pavone/admin/categories'
+    | '/stores/pavone/admin/inspirations'
     | '/stores/pavone/admin/login'
     | '/stores/pavone/admin/orders'
     | '/stores/pavone/admin/products'
+    | '/stores/pavone/admin/settings'
     | '/stores/pavone/category/$slug'
     | '/stores/pavone/product/$slug'
     | '/stores/pavone/admin/'
@@ -408,6 +434,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoresPavoneCategorySlugRouteImport
       parentRoute: typeof StoresPavoneRoute
     }
+    '/stores/pavone/admin/settings': {
+      id: '/stores/pavone/admin/settings'
+      path: '/settings'
+      fullPath: '/stores/pavone/admin/settings'
+      preLoaderRoute: typeof StoresPavoneAdminSettingsRouteImport
+      parentRoute: typeof StoresPavoneAdminRoute
+    }
     '/stores/pavone/admin/products': {
       id: '/stores/pavone/admin/products'
       path: '/products'
@@ -429,6 +462,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoresPavoneAdminLoginRouteImport
       parentRoute: typeof StoresPavoneAdminRoute
     }
+    '/stores/pavone/admin/inspirations': {
+      id: '/stores/pavone/admin/inspirations'
+      path: '/inspirations'
+      fullPath: '/stores/pavone/admin/inspirations'
+      preLoaderRoute: typeof StoresPavoneAdminInspirationsRouteImport
+      parentRoute: typeof StoresPavoneAdminRoute
+    }
     '/stores/pavone/admin/categories': {
       id: '/stores/pavone/admin/categories'
       path: '/categories'
@@ -441,17 +481,21 @@ declare module '@tanstack/react-router' {
 
 interface StoresPavoneAdminRouteChildren {
   StoresPavoneAdminCategoriesRoute: typeof StoresPavoneAdminCategoriesRoute
+  StoresPavoneAdminInspirationsRoute: typeof StoresPavoneAdminInspirationsRoute
   StoresPavoneAdminLoginRoute: typeof StoresPavoneAdminLoginRoute
   StoresPavoneAdminOrdersRoute: typeof StoresPavoneAdminOrdersRoute
   StoresPavoneAdminProductsRoute: typeof StoresPavoneAdminProductsRoute
+  StoresPavoneAdminSettingsRoute: typeof StoresPavoneAdminSettingsRoute
   StoresPavoneAdminIndexRoute: typeof StoresPavoneAdminIndexRoute
 }
 
 const StoresPavoneAdminRouteChildren: StoresPavoneAdminRouteChildren = {
   StoresPavoneAdminCategoriesRoute: StoresPavoneAdminCategoriesRoute,
+  StoresPavoneAdminInspirationsRoute: StoresPavoneAdminInspirationsRoute,
   StoresPavoneAdminLoginRoute: StoresPavoneAdminLoginRoute,
   StoresPavoneAdminOrdersRoute: StoresPavoneAdminOrdersRoute,
   StoresPavoneAdminProductsRoute: StoresPavoneAdminProductsRoute,
+  StoresPavoneAdminSettingsRoute: StoresPavoneAdminSettingsRoute,
   StoresPavoneAdminIndexRoute: StoresPavoneAdminIndexRoute,
 }
 

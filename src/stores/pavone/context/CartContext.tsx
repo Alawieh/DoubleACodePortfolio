@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { products } from "@/stores/pavone/data/products";
+import { usePavoneCatalog } from "@/stores/pavone/lib/use-pavone-data";
 
 export interface CartItem {
   productId: string;
@@ -28,6 +28,7 @@ const keyOf = (i: { productId: string; size?: string; color?: string }) =>
   `${i.productId}__${i.size ?? ""}__${i.color ?? ""}`;
 
 export function CartProvider({ children }: { children: ReactNode }) {
+  const { data } = usePavoneCatalog();
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
@@ -68,14 +69,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
     let c = 0;
     let s = 0;
     for (const it of items) {
-      const prod = products.find((p) => p.id === it.productId);
+      const prod = data.products.find((p) => p.id === it.productId);
       if (!prod) continue;
       const price = prod.salePrice ?? prod.price;
       c += it.quantity;
       s += price * it.quantity;
     }
     return { count: c, subtotal: s };
-  }, [items]);
+  }, [items, data.products]);
 
   return (
     <Ctx.Provider
