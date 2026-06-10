@@ -117,10 +117,11 @@ export function Contact() {
             <a
               key={`${c.label}-${c.value}`}
               href={c.href}
+              title={c.value}
               target={c.type === "whatsapp" || c.type === "external" ? "_blank" : undefined}
               rel={c.type === "whatsapp" || c.type === "external" ? "noreferrer" : undefined}
               className={[
-                "group bg-background p-5 text-left transition-colors",
+                "group min-w-0 bg-background p-5 text-left transition-colors",
                 c.type === "whatsapp"
                   ? "hover:bg-[#25D366]/10"
                   : "hover:bg-surface",
@@ -141,11 +142,11 @@ export function Contact() {
               </div>
               <div
                 className={[
-                  "mt-2 text-sm transition-colors",
+                  "mt-2 min-w-0 text-sm transition-colors",
                   c.type === "whatsapp"
                     ? "font-semibold text-[#25D366]"
                     : c.type === "email"
-                      ? "break-all text-foreground group-hover:text-accent"
+                    ? "block overflow-hidden text-ellipsis whitespace-nowrap text-foreground group-hover:text-accent"
                       : "text-foreground group-hover:text-accent",
                 ].join(" ")}
               >
