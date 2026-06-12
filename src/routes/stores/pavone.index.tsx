@@ -3,6 +3,8 @@ import { ArrowRight, Sun, Instagram, Heart, Sparkles } from "lucide-react";
 import { ProductCard } from "@/stores/pavone/components/ProductCard";
 import { PavoneShell } from "@/stores/pavone/PavoneShell";
 import { PavoneDataState, usePavoneCatalog, usePavoneOutfits, usePavoneSiteSettings } from "@/stores/pavone/lib/use-pavone-data";
+import type { Product } from "@/stores/pavone/data/products";
+import type { OutfitInspiration } from "@/stores/pavone/lib/pavone-api";
 
 import beigeCoat from "@/stores/pavone/public/assets/beige-coat.jpg";
 import blackDress from "@/stores/pavone/public/assets/black-dress.jpg";
@@ -11,6 +13,18 @@ import greyCoat from "@/stores/pavone/public/assets/grey-coat.jpg";
 import pinkFloralDress from "@/stores/pavone/public/assets/pink-floral-dress.jpg";
 import redCoat from "@/stores/pavone/public/assets/red-coat.jpg";
 import whiteDress from "@/stores/pavone/public/assets/white-dress.jpg";
+
+type OutfitWithProducts = OutfitInspiration & {
+  items: [Product, Product, Product, ...Product[]];
+};
+
+function isProduct(product: Product | undefined): product is Product {
+  return Boolean(product);
+}
+
+function hasAtLeastThreeProducts(items: Product[]): items is OutfitWithProducts["items"] {
+  return items.length >= 3;
+}
 
 export const Route = createFileRoute("/stores/pavone/")({
   head: () => ({
@@ -55,12 +69,13 @@ function HomePage() {
   const featuredLookLabel = siteSettings?.featuredLookLabel || "Blossom Knit - $89";
   const featuredProductSlug = siteSettings?.featuredProductSlug || "blossom-knit-dress";
 
-  const looks = outfits.data
-    .map((look) => ({
-      ...look,
-      items: look.productIds.map((id) => products.find((p) => p.id === id)).filter(Boolean),
-    }))
-    .filter((look) => look.items.length >= 3);
+  const looks: OutfitWithProducts[] = outfits.data.flatMap((look) => {
+    const items = look.productIds
+      .map((id) => products.find((p) => p.id === id))
+      .filter(isProduct);
+
+    return hasAtLeastThreeProducts(items) ? [{ ...look, items }] : [];
+  });
 
   const featuredCategories = categories.filter(c => c.slug !== "new-collection");
   const tones = ["bg-blush", "bg-sage", "bg-lavender", "bg-peach"];
@@ -205,13 +220,13 @@ function HomePage() {
           </Link>
         </div>
 
-        <div className="md:hidden flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 px-5 -mx-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        <div className="md:hidden flex gap-3 overflow-x-auto snap-x snap-mandatory pb-2 px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {featuredCategories.map((c, i) => (
             <Link
               key={c.slug}
               to="/stores/pavone/category/$slug"
               params={{ slug: c.slug }}
-              className="group relative shrink-0 w-[72%] snap-start aspect-[3/4] rounded-3xl overflow-hidden shadow-card"
+              className={`group relative shrink-0 w-[72%] snap-center aspect-[3/4] rounded-3xl overflow-hidden shadow-card ${i === 0 ? "ml-[8vw]" : ""} ${i === featuredCategories.length - 1 ? "mr-[10vw]" : ""}`}
             >
               <div className={`absolute inset-0 ${tones[i % tones.length]}`} />
               <img src={c.image} alt={c.name} className="absolute inset-0 h-full w-full object-cover object-top" loading="lazy" />
@@ -272,9 +287,9 @@ function HomePage() {
             <Link to="/stores/pavone/shop" className="text-xs uppercase tracking-[0.2em] text-taupe hover:text-pink shrink-0">See all</Link>
           </div>
 
-          <div className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 px-5 -mx-5 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {newArrivals.map((p) => (
-              <div key={p.id} className="shrink-0 w-[68%] snap-start">
+          <div className="md:hidden flex gap-4 overflow-x-auto snap-x snap-mandatory pb-3 px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {newArrivals.map((p, i) => (
+              <div key={p.id} className={`shrink-0 w-[68%] snap-center ${i === 0 ? "ml-[10vw]" : ""} ${i === newArrivals.length - 1 ? "mr-[12vw]" : ""}`}>
                 <ProductCard product={p} />
               </div>
             ))}

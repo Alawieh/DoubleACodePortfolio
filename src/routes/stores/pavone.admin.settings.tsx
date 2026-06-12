@@ -6,7 +6,7 @@ import {
   updatePavoneSiteSettings,
   type PavoneSiteSettings,
 } from "@/stores/pavone/lib/pavone-api";
-import { getStoredSession, updateAdminAccount, uploadPavoneImage } from "@/stores/pavone/lib/supabase";
+import { adminEmailToUsername, getStoredSession, updateAdminAccount, uploadPavoneImage } from "@/stores/pavone/lib/supabase";
 
 export const Route = createFileRoute("/stores/pavone/admin/settings")({
   component: AdminSettings,
@@ -15,7 +15,7 @@ export const Route = createFileRoute("/stores/pavone/admin/settings")({
 function AdminSettings() {
   const session = getStoredSession();
   const [displayName, setDisplayName] = useState(String(session?.user?.user_metadata?.display_name ?? ""));
-  const [email, setEmail] = useState(session?.user?.email ?? "");
+  const [username, setUsername] = useState(adminEmailToUsername(session?.user?.email));
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
@@ -48,7 +48,7 @@ function AdminSettings() {
     try {
       await updateAdminAccount({
         displayName: displayName.trim(),
-        email: email.trim(),
+        username: username.trim(),
         password: password.trim() || undefined,
       });
       setPassword("");
@@ -118,13 +118,13 @@ function AdminSettings() {
       <form onSubmit={save} className="rounded-2xl border border-border bg-background p-6 space-y-4">
         <div>
           <h2 className="font-display text-2xl text-cocoa">Admin account</h2>
-          <p className="text-sm text-muted-foreground mt-1">Change the email, display name, or password used for this dashboard.</p>
+          <p className="text-sm text-muted-foreground mt-1">Change the username, display name, or password used for this dashboard.</p>
         </div>
         <Field label="Display name">
           <input value={displayName} onChange={(e) => setDisplayName(e.target.value)} className={inputCls} />
         </Field>
-        <Field label="Email">
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} className={inputCls} required />
+        <Field label="Username">
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} className={inputCls} required autoComplete="username" />
         </Field>
         <Field label="New password">
           <input

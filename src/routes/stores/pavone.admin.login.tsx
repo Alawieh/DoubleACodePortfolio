@@ -8,7 +8,7 @@ export const Route = createFileRoute("/stores/pavone/admin/login")({
 });
 
 function AdminLogin() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -19,7 +19,7 @@ function AdminLogin() {
     setError("");
     setLoading(true);
     try {
-      await signInAdmin(email, password);
+      await signInAdmin(username, password);
       navigate({ to: "/stores/pavone/admin" });
     } catch (err) {
       setError(err instanceof Error ? err.message : "Could not sign in.");
@@ -37,20 +37,21 @@ function AdminLogin() {
           </div>
           <div>
             <div className="font-display text-2xl text-cocoa">Pavone Admin</div>
-            <div className="text-xs text-muted-foreground">Secure Supabase admin</div>
+            <div className="text-xs text-muted-foreground">Secure owner admin</div>
           </div>
         </div>
 
         <form onSubmit={onSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs uppercase tracking-[0.18em] text-muted-foreground mb-2">Email</label>
+            <label className="block text-xs uppercase tracking-[0.18em] text-muted-foreground mb-2">Username</label>
             <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
               autoFocus
               required
-              placeholder="owner@example.com"
+              autoComplete="username"
+              placeholder="owner"
               className="w-full rounded-lg border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-pink/40"
             />
           </div>

@@ -2,6 +2,7 @@ const SUPABASE_URL = (import.meta.env.VITE_SUPABASE_URL as string | undefined)?.
 const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
 const SESSION_KEY = "pavone_supabase_session";
+const ADMIN_USERNAME_DOMAIN = "pavone.local";
 
 export type SupabaseSession = {
   access_token: string;
@@ -32,6 +33,24 @@ export function getStoredSession(): SupabaseSession | null {
   } catch {
     return null;
   }
+}
+
+export function usernameToAdminEmail(usernameOrEmail: string) {
+  const value = usernameOrEmail.trim().toLowerCase();
+  if (value.includes("@")) return value;
+
+  const username = value
+    .replace(/[^a-z0-9._-]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  if (!username) throw new Error("Enter a username.");
+  return `${username}@${ADMIN_USERNAME_DOMAIN}`;
+}
+
+export function adminEmailToUsername(email?: string) {
+  if (!email) return "";
+  const suffix = `@${ADMIN_USERNAME_DOMAIN}`;
+  return email.endsWith(suffix) ? email.slice(0, -suffix.length) : email;
 }
 
 function storeSession(session: SupabaseSession | null) {
@@ -120,7 +139,8 @@ export async function uploadPavoneImage(file: File, folder: "products" | "catego
   return `${url}/storage/v1/object/public/pavone-images/${path}`;
 }
 
-export async function signInAdmin(email: string, password: string) {
+export async function signInAdmin(usernameOrEmail: string, password: string) {
+  const email = usernameToAdminEmail(usernameOrEmail);
   const session = await supabaseAuth<SupabaseSession>("/token?grant_type=password", {
     method: "POST",
     body: JSON.stringify({ email, password }),
@@ -134,7 +154,7 @@ export function signOutAdmin() {
 }
 
 export async function updateAdminAccount(values: {
-  email?: string;
+  username?: string;
   password?: string;
   displayName?: string;
 }) {
@@ -144,7 +164,7 @@ export async function updateAdminAccount(values: {
     method: "PUT",
     accessToken: session.access_token,
     body: JSON.stringify({
-      ...(values.email ? { email: values.email } : {}),
+      ...(values.username ? { email: usernameToAdminEmail(values.username) } : {}),
       ...(values.password ? { password: values.password } : {}),
       ...(values.displayName ? { data: { display_name: values.displayName } } : {}),
     }),
